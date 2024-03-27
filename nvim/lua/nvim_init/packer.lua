@@ -47,6 +47,7 @@ return require('packer').startup(function(use)
     use('nuchs/vim-hypr-nav')
     use('knubie/vim-kitty-navigator', {run = 'cp ./*.py ~/.config/kitty/'})
     use('toppair/peek.nvim', {run = 'deno task --quiet build:fast' })
+    use('christoomey/vim-tmux-navigator')
     use('github/copilot.vim')
 
     use {
