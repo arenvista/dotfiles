@@ -8,9 +8,9 @@
     "spacing": 10, // Gaps between modules (4px)
 
     // Choose the order of the modules
-    "modules-left": ["mpd", "custom/pipewire", "tray"],
+    "modules-left": ["custom/poweroff", "custom/pipewire", "tray", ],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["clock"],
+    "modules-right": ["clock",],
 
     "custom/pipewire": {
         "tooltip": false,
@@ -18,6 +18,12 @@
         "signal": 8,
         "restart-interval": 0,
         "exec": "$HOME/.config/waybar/pipe.sh"
+    },
+
+    "custom/poweroff":{
+        "format":" 󰤄",
+        "tooltip":false,
+        "on-click": "wlogout"
     },
 
     "hyprland/workspaces": {
