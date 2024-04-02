@@ -2,6 +2,7 @@ vim.opt.guicursor = ""
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
+vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
