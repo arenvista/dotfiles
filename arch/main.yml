@@ -1,0 +1,21 @@
+- hosts: localhost
+  pre_tasks:
+    - name: Update pacman
+      become: true
+      pacman:
+        update_cache: true
+      tags: install
+    - name: Install yay 
+      become: true
+      pacman:
+        name: yay
+        state: present
+      tags: install
+    tasks:
+      - include: tasks/yay.yml
+      - include: tasks/core.yml
+      - include: tasks/zsh.yml
+      - include: tasks/nvim.yml
+      - include: tasks/hypr.yml
+
+
