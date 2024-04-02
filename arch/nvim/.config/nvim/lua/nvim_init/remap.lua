@@ -14,6 +14,7 @@ vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
 
 -- This is going to get me cancelled
 vim.keymap.set("n", "<Del>", "<Esc>")
+vim.keymap.set("v", "<Del>", "<Esc>")
 vim.keymap.set("i", "<Del>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
