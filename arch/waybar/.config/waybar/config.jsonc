@@ -6,7 +6,7 @@
 	"modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray"],
 	"modules-center": ["hyprland/workspaces"],
 	"modules-right": ["backlight","pulseaudio","clock", "battery", "custom/power"],
-	
+
 	"pulseaudio": {
 		"tooltip": false,
 		"scroll-step": 5,
@@ -78,10 +78,21 @@
         "on-click": "wlogout",
     },
     // The code following below is given in the great documentation for Waybar status bar under Useful Utilities in Hyprland wiki
-    "hyrpland/workspaces": {
-    	"format": "{icon}",
-	"on-scroll-up": "hyprctl dispatch workspace e+1",
-	"on-scroll-down": "hyprctl dispatch workspace e-1",
-	"on-click": "activate"
-	}
+    "hyprland/workspaces": {
+        "active-only": false,
+        "all-outputs": false,
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": " ",
+            "urgent": "",
+            "default": ""
+        },
+        "sort-by-number": true
+    }
 }
