@@ -1,18 +1,11 @@
-- name: Install yay dependencies
-  become: true
-  pacman:
-    name:
-      - base-devel
-      - git
 - name: Clone yay
-  become: true
   git:
     repo: https://aur.archlinux.org/yay.git
     dest: /tmp/yay
-- name: Build yay
-  become: true
-  command: makepkg -si
-  args:
-    chdir: /tmp/yay
 
+- name: Build and install yay
+  command:
+    chdir: "/tmp/yay"
+    cmd: "makepkg -sfi --noconfirm"
+    creates: /usr/bin/yay
 

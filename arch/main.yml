@@ -14,19 +14,8 @@
           - git
       tags: install
 
-
-    - name: Clone yay from AUR
-      ansible.builtin.git:
-        repo: 'https://aur.archlinux.org/yay.git'
-        dest: '/tmp/yay'
-      become: true
-
-    - name: Build and install yay
-      shell: cd /tmp/yay && makepkg -si --noconfirm
-      args:
-        creates: /usr/bin/yay
-        become_user: myuser
   tasks:
+    - include_tasks: tasks/yay.yml
     - include_tasks: tasks/core.yml
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/nvim.yml
