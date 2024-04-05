@@ -39,7 +39,7 @@
 
     - include_tasks: tasks/yay.yml
     - include_tasks: tasks/core.yml
+    - include_tasks: tasks/hypr.yml
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/nvim.yml
-    - include_tasks: tasks/hypr.yml
 
