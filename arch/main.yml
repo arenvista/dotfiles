@@ -1,20 +1,42 @@
 - hosts: localhost
-  pre_tasks:
+  tasks:
+    - name: Make sure we have a 'wheel' group
+      ansible.builtin.group:
+        name: wheel
+        state: present
+
+    - name: Allow 'wheel' group to have passwordless sudo
+      ansible.builtin.lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Add sudoers users to wheel group
+      ansible.builtin.user:
+        name: ansible
+        groups: wheel
+        append: yes
+        state: present
+        createhome: yes
+
     - name: Update pacman
       become: true
-      pacman:
+      ansible.builtin.pacman:
         update_cache: true
-      tags: install
+      tags: 
+        - install
 
     - name: Install dependencies for yay
       become: true
-      pacman:
+      ansible.builtin.pacman:
         name:
           - base-devel
           - git
-      tags: install
+      tags: 
+        - install
 
-  tasks:
     - include_tasks: tasks/yay.yml
     - include_tasks: tasks/core.yml
     - include_tasks: tasks/zsh.yml
