@@ -22,13 +22,14 @@ echo "Wallpaper state is now $wallpaper_state"
 if [ "$wallpaper_state" -eq 0 ]; then
     cd ~/.dotfiles/arch/
     sh call_stow.sh orange
-    cd ~/.config/waybar
-    sh launch_waybar.sh
-    swww img ~/wallpapers/orange_uw.png --transition-type center --resize fit --fill-color d2d0c4
+    #cd ~/.config/waybar
+    #sh launch_waybar.sh
+    swww img ~/wallpapers/misc/orange_uw.png --transition-type center --resize fit --fill-color d2d0c4
 elif [ "$wallpaper_state" -eq 1 ]; then
+    swww img ~/wallpapers/misc/8bit/demon.gif --transition-type center --resize fit --fill-color 551B7F
     echo "1"
 elif [ "$wallpaper_state" -eq 2 ]; then
-    echo "2"
+   echo "2"
 fi
 
 

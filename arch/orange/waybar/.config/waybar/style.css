@@ -184,6 +184,16 @@ window#waybar {
     
 }
 
+#custom-wallpaper {
+	font-size: 14px;
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 5px;
+	border-radius: 50px;
+	transition: none;
+    background: #161320;
+}
 #custom-launcher {
 	font-size: 14px;
 	margin-top: 6px;
@@ -210,17 +220,6 @@ window#waybar {
 	background: #F28FAD;
 }
 
-#custom-wallpaper {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 0px;
-	border-radius: 10px;
-	transition: none;
-	color: #161320;
-	background: #C9CBFF;
-}
 
 #custom-spotify {
 	margin-top: 6px;
