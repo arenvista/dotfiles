@@ -27,5 +27,8 @@ if [ "$wallpaper_state" -eq 0 ]; then
     swww img ~/wallpapers/orange_uw.png --transition-type center --resize fit --fill-color d2d0c4
 elif [ "$wallpaper_state" -eq 1 ]; then
     echo "1"
+elif [ "$wallpaper_state" -eq 2 ]; then
+    echo "2"
 fi
+
 
