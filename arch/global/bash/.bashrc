@@ -16,7 +16,7 @@ alias tns="tmux new-session"
 alias tks="tmux kill-server"
 alias dwm='startx dwm'
 export EDITOR='nvim'
-neofetch --kitty ~/.config/neofetch/images/a.png
+neofetch --kitty ~/.config/neofetch/images/hey2.png
 
 
 

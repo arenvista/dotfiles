@@ -1,0 +1,10 @@
+- name: Download neovim
+  become: true
+  ansible.builtin.pacman:
+    name: neovim
+  tags: install
+
+- name: Install packer
+  become: true
+  shell: git clone --depth 1 https://github.com/wbthomason/packer.nvim\ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
