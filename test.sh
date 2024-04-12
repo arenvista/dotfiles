@@ -8,3 +8,4 @@ echo "testuser:nsth" | chpasswd
 mv /.dotfiles /home/testuser
 cd /home/testuser/.dotfiles
 su testuser
+sh setup.sh

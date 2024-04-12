@@ -1,9 +1,10 @@
 - hosts: localhost
   become: true
-  become_user: {{ ansible_user }} 
+  become_user: testuser
 
   tasks:
     - name: Install dependencies for yay
+      sudo: yes
       ansible.builtin.pacman:
         name:
           - base-devel
@@ -12,7 +13,6 @@
           - tmux
       tags: 
         - install
-
     - include_tasks: nvim.yml
     - include_tasks: yay.yml
     - include_tasks: core.yml
