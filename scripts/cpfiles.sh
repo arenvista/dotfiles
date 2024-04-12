@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo docker cp arch/ test:/
+sudo docker cp ~/.dotfiles test:/
