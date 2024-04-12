@@ -1,36 +1,19 @@
 #!/bin/bash
 
-# Read the contents of wallpaper_state into a variable
+# Create an array of all image files in favorites directory
+images=($(ls ~/wallpapers/favorites))
+# Get the number of images in the array
+num_images=${#images[@]}
+# Get the current wallpaper state
 wallpaper_state=$(cat ~/wallpapers/scripts/wallpaper_state)
-
-# If empty or greater than 1, set to 0
-if [ -z "$wallpaper_state" ] || [ "$wallpaper_state" -gt 1 ]; then
-    wallpaper_state=0
+# If empty or greater than the number of images, set to 0
+if [ -z "$wallpaper_state" ] || [ "$wallpaper_state" -ge "$num_images" ]; then
+	wallpaper_state=0
 else
-    # Otherwise, increment by 1
-    wallpaper_state=$((wallpaper_state + 1))
+	# Otherwise, increment by 1
+	wallpaper_state=$((wallpaper_state + 1))
 fi
-
 # Write the new value to the file
-echo "$wallpaper_state" > ~/wallpapers/scripts/wallpaper_state
-
-
-# echo "Wallpaper state is now $wallpaper_state"
-echo "Wallpaper state is now $wallpaper_state"
-
+echo "$wallpaper_state" >~/wallpapers/scripts/wallpaper_state
 # Set the wallpaper based on the new value
-if [ "$wallpaper_state" -eq 0 ]; then
-    cd ~/.dotfiles/arch/
-    sh call_stow.sh orange
-    #cd ~/.config/waybar
-    #sh launch_waybar.sh
-    swww img ~/wallpapers/misc/orange_uw.png --transition-type center --resize fit --fill-color d2d0c4
-elif [ "$wallpaper_state" -eq 1 ]; then
-    swww img ~/wallpapers/misc/sunlit_eyes.png --transition-type center --resize fit --fill-color 080808
-    echo "1"
-elif [ "$wallpaper_state" -eq 2 ]; then
-    swww img ~/wallpapers/misc/headphones.png --transition-type center --resize fit --fill-color 551B7F
-   echo "2"
-fi
-
-
+swww img ~/wallpapers/favorites/${images[$wallpaper_state]} --transition-type center --resize fit --fill-color 080808
