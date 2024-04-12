@@ -1,0 +1,30 @@
+- hosts: localhost
+  tasks:
+
+    - name: Update pacman
+      become: true
+      ansible.builtin.pacman:
+        update_cache: true
+      tags: 
+        - install
+
+    - name: Install dependencies for yay
+      become: true
+      become_method: su
+      become_user: username
+      sudo: true
+
+      ansible.builtin.pacman:
+        name:
+          - base-devel
+          - git
+          - stow
+          - tmux
+      tags: 
+        - install
+
+    - include_tasks: nvim.yml
+    - include_tasks: yay.yml
+    - include_tasks: core.yml
+    - include_tasks: zsh.yml
+
