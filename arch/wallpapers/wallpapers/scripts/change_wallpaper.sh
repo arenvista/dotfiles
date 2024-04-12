@@ -26,7 +26,7 @@ if [ "$wallpaper_state" -eq 0 ]; then
     #sh launch_waybar.sh
     swww img ~/wallpapers/misc/orange_uw.png --transition-type center --resize fit --fill-color d2d0c4
 elif [ "$wallpaper_state" -eq 1 ]; then
-    swww img ~/wallpapers/misc/8bit/demon.gif --transition-type center --resize fit --fill-color 551B7F
+    swww img ~/wallpapers/misc/sunlit_eyes.png --transition-type center --resize fit --fill-color 080808
     echo "1"
 elif [ "$wallpaper_state" -eq 2 ]; then
     swww img ~/wallpapers/misc/headphones.png --transition-type center --resize fit --fill-color 551B7F

@@ -117,6 +117,7 @@ alias trs="tmux rename-session"
 alias tks="tmux kill-server"
 alias ls="lsd"
 bindkey -s '^f' "tmux-sessionizer\n"
+bindkey -s '^n' "nvim\n"
 bindkey -s '^[c' "exit\n"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
