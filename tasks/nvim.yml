@@ -1,10 +1,8 @@
 - name: Download neovim
-  become: true
   ansible.builtin.pacman:
     name: neovim
   tags: install
 
 - name: Move neovim config
-  become: true
   shell: "cd ~/.dotfiles/arch/ && stow -D nvim && stow -t ~"
 

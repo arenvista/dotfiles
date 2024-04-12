@@ -1,19 +1,9 @@
 - hosts: localhost
+  become: true
+  become_user: {{ ansible_user }} 
+
   tasks:
-
-    - name: Update pacman
-      become: true
-      ansible.builtin.pacman:
-        update_cache: true
-      tags: 
-        - install
-
     - name: Install dependencies for yay
-      become: true
-      become_method: su
-      become_user: username
-      sudo: true
-
       ansible.builtin.pacman:
         name:
           - base-devel

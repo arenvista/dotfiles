@@ -1,12 +1,8 @@
 - name: Clone yay
-  become: true 
-  become_user: ansible
   ansible.builtin.git:
     repo: https://aur.archlinux.org/yay.git
     dest: /home/ansible/yay
 
 - name: Install yay
-  become: true
-  become_user: ansible
   shell: cd /home/ansible/yay && makepkg -si --noconfirm
 
