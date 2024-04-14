@@ -34,3 +34,4 @@ keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split   ―"})
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize  "})
 keymap.set("n", "<leader>sc", "<cmd>close<CR>", { desc = "Close  "})
 
+keymap.set("n", "<leader>qa", "<cmd>qa<CR>", { desc = "󰩈 Exit"})
