@@ -1,1 +1,2 @@
-require("nvim_init")
+require("sybil.core")
+require("sybil.lazy")
