@@ -1,6 +1,7 @@
 local keymap = vim.keymap 
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>ex", vim.cmd.Ex, { desc = "󰭇 Explorer"})
+vim.keymap.set("n", "<leader>ee", vim.cmd.Neotree, { desc = " Neotree"})
 vim.keymap.set("n", "<leader>g", vim.cmd.Git, { desc = "  Fugitive" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -34,4 +35,5 @@ keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split   ―"})
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize  "})
 keymap.set("n", "<leader>sc", "<cmd>close<CR>", { desc = "Close  "})
 
-keymap.set("n", "<leader>qa", "<cmd>qa<CR>", { desc = "󰩈 Exit"})
+keymap.set("n", "<leader>qa", "<cmd>qa!<CR>", { desc = "󰩈 Exit"})
+keymap.set("n", "<leader>qs", "<cmd>suspend<CR>", { desc = "󰤄 Suspend"})
