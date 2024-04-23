@@ -36,4 +36,7 @@ keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize  "})
 keymap.set("n", "<leader>sc", "<cmd>close<CR>", { desc = "Close  "})
 
 keymap.set("n", "<leader>qa", "<cmd>qa!<CR>", { desc = "󰩈 Exit"})
+keymap.set("n", "<leader>qw", "<cmd>q<CR>", { desc = " Close Window"})
 keymap.set("n", "<leader>qs", "<cmd>suspend<CR>", { desc = "󰤄 Suspend"})
+
+keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = " Save"})
