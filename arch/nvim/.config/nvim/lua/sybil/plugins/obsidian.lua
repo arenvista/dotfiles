@@ -30,6 +30,10 @@ return {
                 name = "Typescript",
                 path = "/home/meep/Documents/Learning/CSNotes/Typescript/Notes",
             },
+            {
+                name = "CSNotes",
+                path = "/home/meep/Documents/Learning/CSNotes/",
+            },
         },
 
         -- see below for full list of options 👇
