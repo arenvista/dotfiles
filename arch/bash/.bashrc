@@ -16,6 +16,6 @@ alias tns="tmux new-session"
 alias tks="tmux kill-server"
 alias dwm='startx dwm'
 export EDITOR='nvim'
-neofetch --kitty ~/JunjiIto.png
+neofetch --kitty ~/wallpapers/favorites/nier_2x.png
 PS1='[\u@\h \W]\$ '
 bind -s '"\016": "nvim\n"'
