@@ -19,3 +19,5 @@ export EDITOR='nvim'
 neofetch --kitty ~/wallpapers/favorites/nier_2x.png
 PS1='[\u@\h \W]\$ '
 bind -s '"\016": "nvim\n"'
+alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)"
+
