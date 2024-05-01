@@ -120,6 +120,7 @@ bindkey -s '^f' "tmux-sessionizer\n"
 bindkey -s '^r' "source ~/.zshrc\n"
 bindkey -s '^n' "nvim\n"
 bindkey -s '^[w' "exit\n"
+alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
