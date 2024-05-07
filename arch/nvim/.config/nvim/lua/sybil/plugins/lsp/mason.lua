@@ -35,7 +35,6 @@ return {
         "graphql",
         "emmet_ls",
         "prismals",
-        "jedi-language-server",
       },
     })
 
