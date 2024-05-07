@@ -42,6 +42,7 @@ return {
                 "query",
                 "vimdoc",
                 "c",
+                "cpp",
             },
             ignore_install = { 'org' },
             incremental_selection = {
