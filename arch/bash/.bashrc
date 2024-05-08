@@ -5,19 +5,19 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='lsd'
+#alias ls='lsd'
 alias grep='grep --color=auto'
 alias ah='nvim'
 alias ..="cd .."
 alias t="tmux"
-alias ta="tmux attach"
 alias tnw="tmux new-window"
 alias tns="tmux new-session"
 alias tks="tmux kill-server"
 alias dwm='startx dwm'
 export EDITOR='nvim'
-neofetch --kitty ~/wallpapers/favorites/nier_2x.png
+neofetch --kitty ~/wallpapers/favorites/happy_dino.png
 PS1='[\u@\h \W]\$ '
 bind -s '"\016": "nvim\n"'
-alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)"
+alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)" 
+kill -SIGUSR1 $(pidof kitty) # Reload kitty colorscheme
 
