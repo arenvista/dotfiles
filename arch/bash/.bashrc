@@ -8,6 +8,7 @@
 #alias ls='lsd'
 alias grep='grep --color=auto'
 alias ah='nvim'
+alias ta="tmux-attacher"
 alias ..="cd .."
 alias ls="lsd"
 alias t="tmux"
