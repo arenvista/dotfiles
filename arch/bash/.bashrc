@@ -9,6 +9,7 @@
 alias grep='grep --color=auto'
 alias ah='nvim'
 alias ..="cd .."
+alias ls="lsd"
 alias t="tmux"
 alias tnw="tmux new-window"
 alias tns="tmux new-session"
