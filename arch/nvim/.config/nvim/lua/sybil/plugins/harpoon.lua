@@ -24,4 +24,5 @@ return {
         vim.keymap.set("n", "<C-S-l>", function() harpoon:list():prev() end)
         vim.keymap.set("n", "<C-S-h>", function() harpoon:list():next() end)
     end,
+
 }
