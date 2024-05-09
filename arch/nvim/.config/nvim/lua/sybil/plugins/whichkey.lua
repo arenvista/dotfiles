@@ -66,7 +66,7 @@ return {
             -- ...
             ["<C-g>"] = {
                 c = { "<cmd>GpChatNew<cr>", "New Chat" },
-                t = { "<cmd>GpChatToggle<cr>", "Toggle Chat" },
+                t = { "<cmd>GpChatToggle popup<cr>", "Toggle Chat" },
                 f = { "<cmd>GpChatFinder<cr>", "Chat Finder" },
 
                 ["<C-x>"] = { "<cmd>GpChatNew split<cr>", "New Chat split" },
