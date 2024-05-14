@@ -94,12 +94,12 @@ return{
             -- directory for storing chat files 
             chat_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/gp/chats", 
             -- chat user prompt prefix 
-            chat_user_prefix = "🗨:", 
+            chat_user_prefix = "󰭹 :", 
             -- chat assistant prompt prefix (static string or a table {static, template}) 
             -- first string has to be static, second string can contain template {{agent}} 
             -- just a static string is legacy and the [{{agent}}] element is added automatically 
             -- if you really want just a static string, make it a table with one element { "🤖:" } 
-            chat_assistant_prefix = { "🤖:", "[{{agent}}]" }, 
+            chat_assistant_prefix = { "󰟍 :", "[{{agent}}]" }, 
             -- chat topic generation prompt 
             chat_topic_gen_prompt = "Summarize the topic of our conversation above" 
                 .. " in two or three words. Respond only with those words.", 
