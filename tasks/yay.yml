@@ -1,8 +1,0 @@
-- name: Clone yay
-  ansible.builtin.git:
-    repo: https://aur.archlinux.org/yay.git
-    dest: /home/ansible/yay
-
-- name: Install yay
-  shell: cd /home/ansible/yay && makepkg -si --noconfirm
-
