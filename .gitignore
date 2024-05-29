@@ -1,6 +1,6 @@
 *.mp4
-arch/wallpapers/wallpapers/imgs/
-arch/wallpapers/wallpapers/favorites/
-arch/wallpapers/wallpapers/scripts/wallpaper_state
-arch/tmux/.tmux
+wallpapers/wallpapers/wallpapers/imgs/
+wallpapers/wallpapers/wallpapers/favorites/
+wallpapers/wallpapers/wallpapers/scripts/wallpaper_state
+wallpapers/tmux/.tmux
 
