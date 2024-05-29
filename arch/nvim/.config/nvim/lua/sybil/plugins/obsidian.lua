@@ -22,6 +22,10 @@ return {
                 name = "CSNotes",
                 path = "/home/meep/Documents/Learning/CSNotes/",
             },
+            {
+                name = "CSNotesOld",
+                path = "/home/meep/Documents/Learning/CSNotesOld/",
+            },
         },
 
         -- see below for full list of options 👇

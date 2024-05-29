@@ -178,7 +178,7 @@ return{
             -- you can disable silence trimming by setting this a very high number (like 1000.0) 
             whisper_silence = "1.75", 
             -- whisper max recording time (mm:ss) 
-            whisper_max_time = "05:00", 
+            whisper_rec_cmd = "05:00", 
             -- whisper tempo (1.0 is normal speed) 
             whisper_tempo = "1.75", 
             -- The language of the input audio, in ISO-639-1 format. 

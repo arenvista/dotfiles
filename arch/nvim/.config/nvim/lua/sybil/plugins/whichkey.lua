@@ -35,18 +35,18 @@ return {
                 s = { "<cmd>GpStop<cr>", "GpStop" },
                 x = { ":<C-u>'<,'>GpContext<cr>", "Visual GpContext" },
 
-                w = {
-                    name = "Whisper",
-                    w = { ":<C-u>'<,'>GpWhisper<cr>", "Whisper" },
-                    r = { ":<C-u>'<,'>GpWhisperRewrite<cr>", "Whisper Rewrite" },
-                    a = { ":<C-u>'<,'>GpWhisperAppend<cr>", "Whisper Append (after)" },
-                    b = { ":<C-u>'<,'>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
-                    p = { ":<C-u>'<,'>GpWhisperPopup<cr>", "Whisper Popup" },
-                    e = { ":<C-u>'<,'>GpWhisperEnew<cr>", "Whisper Enew" },
-                    n = { ":<C-u>'<,'>GpWhisperNew<cr>", "Whisper New" },
-                    v = { ":<C-u>'<,'>GpWhisperVnew<cr>", "Whisper Vnew" },
-                    t = { ":<C-u>'<,'>GpWhisperTabnew<cr>", "Whisper Tabnew" },
-                },
+              --  w = {
+              --      name = "Whisper",
+              --      w = { ":<C-u>'<,'>GpWhisper<cr>", "Whisper" },
+              --      r = { ":<C-u>'<,'>GpWhisperRewrite<cr>", "Whisper Rewrite" },
+              --      a = { ":<C-u>'<,'>GpWhisperAppend<cr>", "Whisper Append (after)" },
+              --      b = { ":<C-u>'<,'>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
+              --      p = { ":<C-u>'<,'>GpWhisperPopup<cr>", "Whisper Popup" },
+              --      e = { ":<C-u>'<,'>GpWhisperEnew<cr>", "Whisper Enew" },
+              --      n = { ":<C-u>'<,'>GpWhisperNew<cr>", "Whisper New" },
+              --      v = { ":<C-u>'<,'>GpWhisperVnew<cr>", "Whisper Vnew" },
+              --      t = { ":<C-u>'<,'>GpWhisperTabnew<cr>", "Whisper Tabnew" },
+              --  },
             },
 
 
@@ -65,7 +65,7 @@ return {
         require("which-key").register({
             -- ...
             ["<C-g>"] = {
-                c = { "<cmd>GpChatNew<cr>", "New Chat" },
+                c = { "<cmd>GpChatNew popup<cr>", "New Chat" },
                 t = { "<cmd>GpChatToggle popup<cr>", "Toggle Chat" },
                 f = { "<cmd>GpChatFinder<cr>", "Chat Finder" },
 
@@ -90,18 +90,18 @@ return {
                 s = { "<cmd>GpStop<cr>", "GpStop" },
                 x = { "<cmd>GpContext<cr>", "Toggle GpContext" },
 
-                w = {
-                    name = "Whisper",
-                    w = { "<cmd>GpWhisper<cr>", "Whisper" },
-                    r = { "<cmd>GpWhisperRewrite<cr>", "Whisper Inline Rewrite" },
-                    a = { "<cmd>GpWhisperAppend<cr>", "Whisper Append (after)" },
-                    b = { "<cmd>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
-                    p = { "<cmd>GpWhisperPopup<cr>", "Whisper Popup" },
-                    e = { "<cmd>GpWhisperEnew<cr>", "Whisper Enew" },
-                    n = { "<cmd>GpWhisperNew<cr>", "Whisper New" },
-                    v = { "<cmd>GpWhisperVnew<cr>", "Whisper Vnew" },
-                    t = { "<cmd>GpWhisperTabnew<cr>", "Whisper Tabnew" },
-                },
+                -- w = {
+                --     name = "Whisper",
+                --     w = { "<cmd>GpWhisper<cr>", "Whisper" },
+                --     r = { "<cmd>GpWhisperRewrite<cr>", "Whisper Inline Rewrite" },
+                --     a = { "<cmd>GpWhisperAppend<cr>", "Whisper Append (after)" },
+                --     b = { "<cmd>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
+                --     p = { "<cmd>GpWhisperPopup<cr>", "Whisper Popup" },
+                --     e = { "<cmd>GpWhisperEnew<cr>", "Whisper Enew" },
+                --     n = { "<cmd>GpWhisperNew<cr>", "Whisper New" },
+                --     v = { "<cmd>GpWhisperVnew<cr>", "Whisper Vnew" },
+                --     t = { "<cmd>GpWhisperTabnew<cr>", "Whisper Tabnew" },
+                -- },
             },
             -- ...
         }, {
@@ -142,18 +142,17 @@ return {
                 s = { "<cmd>GpStop<cr>", "GpStop" },
                 n = { "<cmd>GpNextAgent<cr>", "Next Agent" },
 
-                w = {
-                    name = "Whisper",
-                    w = { "<cmd>GpWhisper<cr>", "Whisper" },
-                    r = { "<cmd>GpWhisperRewrite<cr>", "Whisper Inline Rewrite" },
-                    a = { "<cmd>GpWhisperAppend<cr>", "Whisper Append (after)" },
-                    b = { "<cmd>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
-                    p = { "<cmd>GpWhisperPopup<cr>", "Whisper Popup" },
-                    e = { "<cmd>GpWhisperEnew<cr>", "Whisper Enew" },
-                    n = { "<cmd>GpWhisperNew<cr>", "Whisper New" },
-                    v = { "<cmd>GpWhisperVnew<cr>", "Whisper Vnew" },
-                    t = { "<cmd>GpWhisperTabnew<cr>", "Whisper Tabnew" },
-                },
+                -- w = {
+                --     name = "Whisper",
+                --     w = { "<cmd>GpWhisper<cr>", "Whisper" },
+                --     r = { "<cmd>GpWhisperRewrite<cr>", "Whisper Inline Rewrite" },
+                --     a = { "<cmd>GpWhisperAppend<cr>", "Whisper Append (after)" },
+                --     b = { "<cmd>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
+                --     p = { "<cmd>GpWhisperPopup<cr>", "Whisper Popup" },
+                --     e = { "<cmd>GpWhisperEnew<cr>", "Whisper Enew" },
+                --     n = { "<cmd>GpWhisperNew<cr>", "Whisper New" },
+                --     v = { "<cmd>GpWhisperVnew<cr>", "Whisper Vnew" },
+                
             },
             -- ...
         }, {
