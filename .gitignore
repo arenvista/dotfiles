@@ -1,6 +1,6 @@
 *.mp4
-wallpapers/wallpapers/wallpapers/imgs/
-wallpapers/wallpapers/wallpapers/favorites/
-wallpapers/wallpapers/wallpapers/scripts/wallpaper_state
-wallpapers/tmux/.tmux
+wallpapers/wallpapers/imgs/
+wallpapers/wallpapers/favorites/
+wallpapers/wallpapers/scripts/wallpaper_state
+tmux/.tmux
 
