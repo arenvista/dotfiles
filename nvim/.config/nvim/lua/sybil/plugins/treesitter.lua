@@ -15,7 +15,7 @@ return {
                 enable = true,
             },
             -- enable indentation
-            indent = { enable = true },
+            -- indent = { enable = true },
             -- enable autotagging (w/ nvim-ts-autotag plugin)
             autotag = {
                 enable = true,
@@ -28,6 +28,7 @@ return {
                 "javascript",
                 "typescript",
                 "tsx",
+                "gdscript",
                 "yaml",
                 "html",
                 "css",
