@@ -1,4 +1,3 @@
-
 # See https://wiki.hyprland.org/Configuring/Monitors/
 monitor=,preferred,auto,auto
 
@@ -8,9 +7,11 @@ monitor=,preferred,auto,auto
 
 # exec-once = mpvpaper -o "no-audio loop" DP-3 ~/wallpapers/wlop1.mp4 
  exec-once = waybar #start status bar
- exec-once = swww init #initalize daemon
- exec-once = swww img --resize fit ~/wallpapers/8bit/demon.gif --fill-color 551b7f
+ exec-once = swww-daemon #start daemon
+ #exec-once = swww img ~/wallpapers/favorites/uw_eyes.jpeg --transition-type center --resize fit --fill-color d2d0c4
  exec-once = copyq --start-server
+ exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
 #
 # SOURCE FILES --------
 # Source a file (multi-file configs)
@@ -20,7 +21,7 @@ monitor=,preferred,auto,auto
 
 # Set programs that you use
 $terminal = kitty -o allow_remote_control=yes --single-instance --listen-on unix:@mykitty
-$fileManager = dolphin
+$fileManager = kitty -e ranger
 $menu = wofi --show drun
 
 #ENVIORMENT VARIABLES ---------------
@@ -46,7 +47,7 @@ input {
     follow_mouse = 1
 
     touchpad {
-        natural_scroll = false
+        natural_scroll = true
     }
 
     sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
@@ -55,16 +56,22 @@ input {
 general {
     # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
-    gaps_in = 5
+    gaps_in = 3
     gaps_out = 20
-    border_size = 4
-    col.active_border = rgba(f173faee)
-    col.inactive_border = rgba(595959aa)
+    border_size = 3
+    col.active_border = rgba(dce0e899)
+    col.inactive_border = rgba(23263455)
 
     layout = dwindle
 
     # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
     allow_tearing = false
+}
+
+dwindle {
+    pseudotile=0
+    preserve_split=1
+    force_split=2
 }
 
 decoration {
@@ -103,23 +110,22 @@ animations {
 
 dwindle {
     # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-    pseudotile = true # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+    pseudotile = true # master switch for pseudotiling. Enabling is bound to mainMod + P in the keyinds section below
     preserve_split = true # you probably want this
 }
 
 master {
     # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
-    new_is_master = true
 }
 
 gestures {
     # See https://wiki.hyprland.org/Configuring/Variables/ for more
-    workspace_swipe = false
+    workspace_swipe = true
 }
 
 misc {
     # See https://wiki.hyprland.org/Configuring/Variables/ for more
-    force_default_wallpaper = -1 # Set to 0 or 1 to disable the anime mascot wallpapers
+    force_default_wallpaper = 0 # Set to 0 or 1 to disable the anime mascot wallpapers
 }
 
 # Example per-device config
@@ -131,23 +137,40 @@ device {
 
 windowrulev2 = suppressevent maximize, class:.* # You'll probably like this.
 
-
 # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 $mainMod = SUPER
 
 # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
+bind = $mainMod, U, exec, $terminal -e ncspot
 bind = $mainMod, Q, exec, $terminal
-bind = $mainMod, C, killactive,
-bind = $mainMod, M, exit,
+bind = $mainMod SHIFT, C, killactive,
 bind = $mainMod, E, exec, $fileManager
 bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, $menu
-bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod CTRL, Q, togglesplit, # dwindle
 bind = $mainMod, N, exec, grim -g "$(slurp -d)" - | wl-copy
+bind = $mainMod SHIFT CTRL ALT, z, exec, hyprctl dispatch exit
+bind = $mainMod SHIFT CTRL ALT, s, exec, systemctl suspend
+bind = $mainMod SHIFT CTRL ALT, l, exec, swaylock
 
 #refresh status bar for updates
-bind = $mainMod , b, exec, ~/.dotfiles/waybar/launch_waybar.sh 
+bind = $mainMod , b, exec, ~/.config/waybar/launch_waybar.sh 
+
+#These binds set the expected behavior for regular keyboard media volume keys, including when the screen is locked:
+#bindel=, XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+#bindel=, XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+#bindl=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+binde=, XF86AudioRaiseVolume, exec, amixer set Master 5%+
+binde=, XF86AudioLowerVolume, exec, amixer set Master 5%-
+bindl=, XF86AudioMute, exec, amixer set Master toggle
+
+bindl=, XF86AudioNext, exec, playerctl next
+bindl=, XF86AudioPrev, exec, playerctl previous
+bindl=, XF86AudioPlay, exec, playerctl play-pause
+
+binde=, XF86MonBrightnessUp, exec, brightnessctl s +50
+binde=, XF86MonBrightnessDown, exec, brightnessctl s 50-
 
 # Move focus with mainMod + arrow keys
 bind = $mainMod, h, movefocus, l
@@ -155,17 +178,21 @@ bind = $mainMod, l, movefocus, r
 bind = $mainMod, k, movefocus, u
 bind = $mainMod, j, movefocus, d
 
-#move free pane 
-bind = $mainMod SHIFT, l, moveactive, 50 0
-bind = $mainMod SHIFT, h, moveactive, -50 0 
-bind = $mainMod SHIFT, k, moveactive, 0 -50
-bind = $mainMod SHIFT, j, moveactive, 0 50
+binde = $mainMod ALT, h, swapwindow, l
+binde = $mainMod ALT, l, swapwindow, r
+binde = $mainMod ALT, k, swapwindow, u
+binde = $mainMod ALT, j, swapwindow, d
 
-#resize free pane
-bind = $mainMod ALT, l, resizeactive, 50 0
-bind = $mainMod ALT, h, resizeactive, -50 0
-bind = $mainMod ALT, k, resizeactive, 0 -50
-bind = $mainMod ALT, j, resizeactive, 0 50
+#move free pane 
+binde = $mainMod SHIFT, l, moveactive, 50 0
+binde = $mainMod SHIFT, h, moveactive, -50 0 
+binde = $mainMod SHIFT, k, moveactive, 0 -50
+binde = $mainMod SHIFT, j, moveactive, 0 50
+
+binde = $mainMod CTRL, l, resizeactive, 100 0
+binde = $mainMod CTRL, h, resizeactive, -100 0 
+binde = $mainMod CTRL, k, resizeactive, 0 -100
+binde = $mainMod CTRL, j, resizeactive, 0 100
 
 # open start menu w/ rofi 
 bind = $mainMod, SPACE, exec, rofi -show drun 
@@ -195,9 +222,11 @@ bind = $mainMod SHIFT, 9, movetoworkspace, 9
 bind = $mainMod SHIFT, 0, movetoworkspace, 10
 
 # Example special workspace (scratchpad)
-bind = $mainMod, S, togglespecialworkspace, magic
-bind = $mainMod SHIFT, S, movetoworkspace, special:magic
+bind = $mainMod, Backspace, togglespecialworkspace, magic
+bind = $mainMod SHIFT, Backspace, movetoworkspace, special:magic
 
+bind = $mainMod, Delete, togglespecialworkspace, magic-second
+bind = $mainMod SHIFT, Delete, movetoworkspace, special:magic-second
 # Scroll through existing workspaces with mainMod + scroll
 
 bind = $mainMod, mouse_down, workspace, e+1
@@ -206,3 +235,10 @@ bind = $mainMod, mouse_up, workspace, e-1
 # Move/resize windows with mainMod + LMB/RMB and dragging
 bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
+
+workspace = 1, persistent:true
+workspace = 2, persistent:true
+workspace = 3, persistent:true
+workspace = 4, persistent:true
+workspace = 5, persistent:true
+workspace = 6, persistent:true

@@ -1,0 +1,13 @@
+#!/bin/bash
+session=$(tmux list-sessions | awk '{print $1}')
+echo "Session is $session"
+if [ -z "${session}" ]; then
+    echo "No tmux session found, creating new session"
+    tmux 
+else
+    echo "Select tmux session to attach"
+    tmux attach-session -t $(echo "$session" | fzf)
+fi
+
+
+
