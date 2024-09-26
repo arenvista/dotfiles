@@ -24,6 +24,7 @@ wal -i ~/wallpapers/favorites/${selected_image} # Generate colorscheme
 sed -i "s/favorites.*/favorites\/${selected_image}/g" ~/.bashrc
 kill -SIGUSR1 $(pidof kitty) # Reload kitty colorscheme
 
+echo "${selected_image}"
 
 echo "*********** Wallpaper changed to ${selected_image} | Wallpaper state: ${wallpaper_state} ***********"
 

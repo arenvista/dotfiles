@@ -13,10 +13,9 @@ return{
             -- openai_api_key = { "bw", "get", "password", "OPENAI_API_KEY" }, 
             -- openai_api_key: "sk-...", 
             -- openai_api_key = os.getenv("env_name.."), 
-            openai_api_key = {"cat", "/home/meep/.secret_keys/openai.env"},
+            openai_api_key = {"cat", "/home/sybil/.secret_keys/openai.env"},
 
             -- api endpoint (you can change this to azure endpoint) 
-            openai_api_endpoint = "https://api.openai.com/v1/chat/completions", 
             -- openai_api_endpoint = "https://$URL.openai.azure.com/openai/deployments/{{model}}/chat/completions?api-version=2023-03-15-preview", 
             -- prefix for all commands 
             cmd_prefix = "Gp", 
@@ -170,31 +169,40 @@ return{
             -- by eliminating silence and speeding up the tempo of the recording 
             -- we can reduce the cost by 50% or more and get the results faster 
             -- directory for storing whisper files 
-            whisper_dir = (os.getenv("TMPDIR") or os.getenv("TEMP") or "/tmp") .. "/gp_whisper", 
+    
+            -- whisper_dir = (os.getenv("TMPDIR") or os.getenv("TEMP") or "/tmp") .. "/gp_whisper", 
+
             -- multiplier of RMS level dB for threshold used by sox to detect silence vs speech 
             -- decibels are negative, the recording is normalized to -3dB => 
             -- increase this number to pick up more (weaker) sounds as possible speech 
             -- decrease this number to pick up only louder sounds as possible speech 
             -- you can disable silence trimming by setting this a very high number (like 1000.0) 
-            whisper_silence = "1.75", 
+    
+            -- whisper_silence = "1.75", 
+
             -- whisper max recording time (mm:ss) 
-            whisper_rec_cmd = "05:00", 
+    
+            -- whisper_rec_cmd = "05:00", 
+
             -- whisper tempo (1.0 is normal speed) 
-            whisper_tempo = "1.75", 
+    
+            -- whisper_tempo = "1.75", 
+
             -- The language of the input audio, in ISO-639-1 format. 
-            whisper_language = "en", 
+    
+            -- whisper_language = "en", 
 
             -- image generation settings 
             -- image prompt prefix for asking user for input (supports {{agent}} template variable) 
-            image_prompt_prefix_template = "🖌️ {{agent}} ~ ", 
+            image = " {{agent}} ~ ", 
             -- image prompt prefix for asking location to save the image 
-            image_prompt_save = "🖌️💾 ~ ", 
+            image = "Save  ", 
             -- default folder for saving images 
-            image_dir = (os.getenv("TMPDIR") or os.getenv("TEMP") or "/tmp") .. "/gp_images", 
+            image = (os.getenv("TMPDIR") or os.getenv("TEMP") or "/tmp") .. "/gp_images", 
             -- default image agents (model + settings) 
             -- to remove some default agent completely set it just with the name like: 
             -- image_agents = {  { name = "DALL-E-3-1024x1792-vivid" }, ... }, 
-            image_agents = { 
+            image = { 
                 { 
                     name = "DALL-E-3-1024x1024-vivid", 
                     model = "dall-e-3", 
@@ -359,3 +367,24 @@ return{
         -- shortcuts might be setup here (see Usage > Shortcuts in Readme)
     end,
 }
+-- - `image_prompt_prefix_template`
+-- Please use `image = { prompt_prefix_template = ... }`
+--
+-- - `image_prompt_save`
+-- Please use `image = { prompt_save = ... }`
+--
+-- - `whisper_dir`
+-- Please use `whisper = { store_dir = ... }`
+--
+-- - `whisper_language`
+-- Please use `whisper = { language = ... }`
+--
+-- - `whisper_rec_cmd`
+-- Please use `whisper = { rec_cmd = ... }`
+--
+-- - `whisper_silence`
+-- Please use `whisper = { silence = ... }`
+--
+-- - `whisper_tempo`
+-- Please use `whisper = { tempo = ... }`
+--

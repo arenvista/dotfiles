@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+session=$(find ~ ~/dotfiles ~/.config  ~/Documents  ~/Documents/Projects ~/Documents/Learning/CSNotes/rust_intro_projects ~/Documents/Learning/CSNotes ~/Documents/Learning . -mindepth 1 -maxdepth 1 -type d | fzf)
+session_name=$(basename "$session" | tr . _ )
+
+echo "Starting tmux session: $session_name"
+
+if ! tmux has-session -t "$session_name" 2> /dev/null; then # If session does not exist
+    tmux new-session -s "$session_name" -c "$session" -d # Create new session
+fi
+
+tmux switch-client -t "$session_name" # Switch to session
