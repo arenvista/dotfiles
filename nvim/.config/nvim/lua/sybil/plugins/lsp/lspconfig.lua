@@ -111,13 +111,13 @@ return {
                             analysis = {
                                 autoSearchPaths = true,
                                 diagnosticMode = "workspace",
-                                useLibraryCodeForTypes = true,
-                                typeCheckingMode = "off",
+                                -- useLibraryCodeForTypes = true,
+                                typeCheckingMode = "basic",
 
-                                -- disableLanguageServices = false,
-                                -- disableOrganizeImports = false,
-                                -- autoImportCompletions = false,
-                                -- useLibraryCodeForTypes = false
+                                disableLanguageServices = false,
+                                disableOrganizeImports = false,
+                                autoImportCompletions = true,
+                                useLibraryCodeForTypes = false
                             },
                         },
                     }
