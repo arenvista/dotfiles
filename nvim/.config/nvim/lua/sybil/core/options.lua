@@ -2,8 +2,7 @@ vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
 
-vim.opt.guicursor = ""
-
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
