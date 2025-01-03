@@ -86,7 +86,7 @@
     // The code following below is given in the great documentation for Waybar status bar under Useful Utilities in Hyprland wiki
     "hyprland/workspaces": {
         "active-only": false,
-        "all-outputs": false,
+        "all-outputs": true,
         "format": "{icon}",
         "on-click": "activate",
         "format-icons": {
