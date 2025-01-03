@@ -19,7 +19,7 @@ echo "$wallpaper_state" > ~/wallpapers/scripts/wallpaper_state
 # Set the wallpaper based on the new value
 swww img ~/wallpapers/favorites/${selected_image} --transition-type center --resize fit --fill-color 080808
 
-wal -i ~/wallpapers/favorites/${selected_image} # Generate colorscheme
+# wal -i ~/wallpapers/favorites/${selected_image} # Generate colorscheme
 
 sed -i "s/favorites.*/favorites\/${selected_image}/g" ~/.bashrc
 kill -SIGUSR1 $(pidof kitty) # Reload kitty colorscheme

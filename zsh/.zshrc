@@ -100,7 +100,6 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-<<<<<<< Updated upstream
 alias ah="nvim"
 alias ..="cd .."
 alias t="tmux"
@@ -123,7 +122,5 @@ alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 eval "$(fzf --zsh)"
-=======
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
->>>>>>> Stashed changes
