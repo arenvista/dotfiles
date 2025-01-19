@@ -1,6 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
-    vim.diagnostic.config({ virtual_text = false }),
+    vim.diagnostic.config({ virtual_text = true }), -- inline diagnostics
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
@@ -70,10 +70,9 @@ return {
 
         -- used to enable autocompletion (assign to every lsp server config)
         local capabilities = cmp_nvim_lsp.default_capabilities()
-        require('lspconfig').gdscript.setup(capabilities)
+        -- require('lspconfig').gdscript.setup(capabilities)
 
         -- Change the Diagnostic symbols in the sign column (gutter)
-        -- (not in youtube nvim video)
         local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
         for type, icon in pairs(signs) do
             local hl = "DiagnosticSign" .. type
@@ -101,6 +100,23 @@ return {
                         })
                     end,
                 })
+            end,
+
+            ["clangd"] = function()
+                lspconfig["clangd"].setup{
+                    on_attach = function(client, bufnr)
+                        print("Clangd LSP Attached")
+                        end,
+                    -- root_dir = lspconfig.util.root_pattern('compile_commands.json', 'compile_flags.txt', '.git') or lspconfig.util.path.dirname,
+                    offsetEncoding = { "utf-8", "utf-16" },
+                    capabilities = {
+                        textDocument = {
+                            completion = {
+                                editsNearCursor = true
+                            }
+                        }
+                    }
+                }
             end,
             ["pyright"] = function()
                 -- configure graphql language server

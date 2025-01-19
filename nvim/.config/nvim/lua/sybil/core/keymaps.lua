@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 vim.g.localleader = "\\"
 vim.keymap.set("n", "<leader>ex", vim.cmd.Ex, { desc = "󰭇 Explorer"})
 vim.keymap.set("n", "<leader>ee", vim.cmd.Neotree, { desc = " Neotree"})
-vim.keymap.set("n", "<leader>g", vim.cmd.Git, { desc = "  Fugitive" })
+vim.keymap.set("n", "<leader>g", vim.cmd.Git, { desc = " Fugitive" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

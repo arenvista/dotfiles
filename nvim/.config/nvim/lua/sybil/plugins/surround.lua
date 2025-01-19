@@ -5,6 +5,97 @@ return {
     config = function()
         require("nvim-surround").setup({
             -- Configuration here, or leave empty to use defaults
-        })
+            -- surrounds = {
+            --     ["("] = {
+            --         add = { "(", " )" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a(" })
+            --         end,
+            --         delete = "^(. ?)().-( ?.)()$",
+            --     },
+            --     [")"] = {
+            --         add = { "(", ")" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a)" })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ["{"] = {
+            --         add = { "{ ", " }" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a{" })
+            --         end,
+            --         delete = "^(. ?)().-( ?.)()$",
+            --     },
+            --     ["}"] = {
+            --         add = { "{", "}" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a}" })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ["<"] = {
+            --         add = { "< ", " >" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a<" })
+            --         end,
+            --         delete = "^(. ?)().-( ?.)()$",
+            --     },
+            --     [">"] = {
+            --         add = { "<", ">" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a>" })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ["["] = {
+            --         add = { "[ ", " ]" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a[" })
+            --         end,
+            --         delete = "^(. ?)().-( ?.)()$",
+            --     },
+            --     ["]"] = {
+            --         add = { "[", "]" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a]" })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ["'"] = {
+            --         add = { "'", "'" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a'" })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ['"'] = {
+            --         add = { '"', '"' },
+            --         find = function()
+            --             return M.get_selection({ motion = 'a"' })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ["`"] = {
+            --         add = { "`", "`" },
+            --         find = function()
+            --             return M.get_selection({ motion = "a`" })
+            --         end,
+            --         delete = "^(.)().-(.)()$",
+            --     },
+            --     ["i"] = { -- TODO: Add find/delete/change functions
+            --         add = function()
+            --             local left_delimiter = M.get_input("Enter the left delimiter: ")
+            --             local right_delimiter = left_delimiter and M.get_input("Enter the right delimiter: ")
+            --             if right_delimiter then
+            --                 return { { left_delimiter }, { right_delimiter } }
+            --             end
+            --         end,
+            --         find = function() end,
+            --         delete = function() end,
+            --     },
+            --     --end of config
+            --     }
+            })
     end
 }
