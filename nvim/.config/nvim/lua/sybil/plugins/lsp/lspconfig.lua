@@ -1,6 +1,5 @@
 return {
     "neovim/nvim-lspconfig",
-    vim.diagnostic.config({ virtual_text = true }), -- inline diagnostics
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
@@ -8,6 +7,7 @@ return {
         { "folke/neodev.nvim", opts = {} },
     },
     config = function()
+
         -- import lspconfig plugin
         local lspconfig = require("lspconfig")
 
@@ -22,6 +22,7 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
+
                 -- Buffer local mappings.
                 -- See `:help vim.lsp.*` for documentation on any of the below functions
                 local opts = { buffer = ev.buf, silent = true }
@@ -33,7 +34,7 @@ return {
                 opts.desc = "Go to declaration"
                 keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
-                opts.desc = "Show LSP definitiojs"
+                opts.desc = "Show LSP definitions"
                 keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
                 opts.desc = "Show LSP implementations"
@@ -70,6 +71,7 @@ return {
 
         -- used to enable autocompletion (assign to every lsp server config)
         local capabilities = cmp_nvim_lsp.default_capabilities()
+
         -- require('lspconfig').gdscript.setup(capabilities)
 
         -- Change the Diagnostic symbols in the sign column (gutter)
@@ -105,7 +107,14 @@ return {
             ["clangd"] = function()
                 lspconfig["clangd"].setup{
                     on_attach = function(client, bufnr)
+                        vim.diagnostic.config({
+                            virtual_text = true,
+                            update_in_insert = true, -- Update diagnostics in insert mode
+                            -- other configs
+                        })
                         print("Clangd LSP Attached")
+                        -- Keybinding to switch source/header with <leader>gs
+                        vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>ClangdSwitchSourceHeader<CR>', { noremap = true, silent = true })
                         end,
                     -- root_dir = lspconfig.util.root_pattern('compile_commands.json', 'compile_flags.txt', '.git') or lspconfig.util.path.dirname,
                     offsetEncoding = { "utf-8", "utf-16" },
