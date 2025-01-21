@@ -109,7 +109,7 @@ return {
                     on_attach = function(client, bufnr)
                         vim.diagnostic.config({
                             virtual_text = true,
-                            update_in_insert = true, -- Update diagnostics in insert mode
+                            update_in_insert = false, -- Update diagnostics after exiting insert mode
                             -- other configs
                         })
                         print("Clangd LSP Attached")
