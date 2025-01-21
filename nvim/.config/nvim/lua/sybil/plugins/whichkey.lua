@@ -174,6 +174,18 @@ return {
                 v = { "<cmd>Telescope grep_string<cr>", "Grep Word Under Cursor  " },
                 t = { "<cmd>TodoTelescope<cr>", "Todos  " },
             },
+            ["<leader>b"] = {
+                name = "Buffers",
+                b = { "<cmd>Telescope buffers<cr>", "List Buffers" },
+            },
+            ["<leader>l"] = {
+                name = "LeetCode  ",
+                r = { "<cmd> Leet run<CR>", "Run Code 󰜎 " },
+                c = { "<cmd>Leet console<CR>", "Open Console 󰞷 " },
+                e = { "<cmd>Leet<CR>", "Leet  " },
+                i = { "<cmd>Leet list<CR>", "Show problem list  " },
+                t = { "<cmd>Leet tabs<CR>", "Show tabs list  " },
+            },
                 mode = "n", -- NORMAL mode
                 prefix = "",
                 buffer = nil,
@@ -181,6 +193,8 @@ return {
                 noremap = true,
                 nowait = true,
             })
+
+
 
 
     end,
