@@ -1,4 +1,5 @@
 return {
+
     "kawre/leetcode.nvim",
     build = ":TSUpdate html",
     dependencies = {
@@ -12,6 +13,9 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     opts = {
+
+        vim.api.nvim_set_keymap('n', '<leader>lr', '<cmd>Leet run<CR>', { noremap = true, silent = false }),
+        vim.api.nvim_set_keymap('n', '<leader>lc', '<cmd>Leet console<CR>', { noremap = true, silent = false }),
         -- configuration goes here
         {
             ---@type string
