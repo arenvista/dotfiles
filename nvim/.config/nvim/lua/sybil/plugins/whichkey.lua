@@ -171,6 +171,7 @@ return {
                 f = { "<cmd>Telescope find_files<cr>", "Find File  " },
                 g = { "<cmd>Telescope git_files<cr>", "Git Files  " },
                 s = { "<cmd>Telescope live_grep<cr>", "Grep  " },
+                v = { "<cmd>Telescope grep_string<cr>", "Grep Word Under Cursor  " },
                 t = { "<cmd>TodoTelescope<cr>", "Todos  " },
             },
                 mode = "n", -- NORMAL mode
