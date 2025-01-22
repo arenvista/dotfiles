@@ -54,4 +54,4 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.opt.updatetime = 50
-vim.api.nvim_set_keymap('n', 'ah', '<Esc>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', 'A', '<Esc>', {noremap = true, silent = true})
