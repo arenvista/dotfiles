@@ -5,7 +5,7 @@
 	"margin-top": 10,
 	"modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray", "custom/wallpaper"],
 	"modules-center": ["hyprland/workspaces"],
-	"modules-right": ["backlight","pulseaudio","clock", "battery", "custom/power"],
+	"modules-right": ["network", "backlight","pulseaudio","clock", "battery", "custom/power"],
 
     "custom/wallpaper": {
     "format": "󰸉 ",

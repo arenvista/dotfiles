@@ -1,198 +1,71 @@
 return {
-  "folke/which-key.nvim",
-  event = "VeryLazy",
-  init = function()
-    vim.o.timeout = true
-    vim.o.timeoutlen = 300
-        -- VISUAL mode mappings
-        -- s, x, v modes are handled the same way by which_key
-        require("which-key").register({
-            -- ...
-            ["<C-g>"] = {
-                c = { ":<C-u>'<,'>GpChatNew<cr>", "Visual Chat New" },
-                p = { ":<C-u>'<,'>GpChatPaste<cr>", "Visual Chat Paste" },
-                t = { ":<C-u>'<,'>GpChatToggle<cr>", "Visual Toggle Chat" },
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+        local wk = require("which-key")
 
-                ["<C-x>"] = { ":<C-u>'<,'>GpChatNew split<cr>", "Visual Chat New split" },
-                ["<C-v>"] = { ":<C-u>'<,'>GpChatNew vsplit<cr>", "Visual Chat New vsplit" },
-                ["<C-t>"] = { ":<C-u>'<,'>GpChatNew tabnew<cr>", "Visual Chat New tabnew" },
+        wk.add({
+            -- Enter 'g' namespace mappings.
+            { "<C-g>c", "<cmd>GpChatNew vsplit<cr>", desc = "New Chat", mode = "n" },
+            { "<C-g>t", "<cmd>GpChatToggle popup<cr>", desc = "Toggle Chat", mode = "n" },
+            { "<C-g>f", "<cmd>GpChatFinder<cr>", desc = "Chat Finder", mode = "n" },
+            { "<C-g><C-x>", "<cmd>GpChatNew split<cr>", desc = "New Chat split", mode = "n" },
+            { "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", desc = "New Chat vsplit", mode = "n" },
+            { "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", desc = "New Chat tabnew", mode = "n" },
+            { "<C-g>r", "<cmd>GpRewrite<cr>", desc = "Inline Rewrite", mode = "n" },
+            { "<C-g>a", "<cmd>GpAppend<cr>", desc = "Append (after)", mode = "n" },
+            { "<C-g>b", "<cmd>GpPrepend<cr>", desc = "Prepend (before)", mode = "n" },
+            { "<C-g>n", "<cmd>GpNextAgent<cr>", desc = "Next Agent", mode = "n" },
+            { "<C-g>s", "<cmd>GpStop<cr>", desc = "GpStop", mode = "n" },
+            { "<C-g>x", "<cmd>GpContext<cr>", desc = "Toggle GpContext", mode = "n" },
 
-                r = { ":<C-u>'<,'>GpRewrite<cr>", "Visual Rewrite" },
-                a = { ":<C-u>'<,'>GpAppend<cr>", "Visual Append (after)" },
-                b = { ":<C-u>'<,'>GpPrepend<cr>", "Visual Prepend (before)" },
-                i = { ":<C-u>'<,'>GpImplement<cr>", "Implement selection" },
+            { "<C-g>c", "<cmd>GpChatNew vsplit<cr>", desc = "New Chat", mode = "v" },
+            { "<C-g>t", "<cmd>GpChatToggle popup<cr>", desc = "Toggle Chat", mode = "v" },
+            { "<C-g>f", "<cmd>GpChatFinder<cr>", desc = "Chat Finder", mode = "v" },
+            { "<C-g><C-x>", "<cmd>GpChatNew split<cr>", desc = "New Chat split", mode = "v" },
+            { "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", desc = "New Chat vsplit", mode = "v" },
+            { "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", desc = "New Chat tabnew", mode = "v" },
+            { "<C-g>r", "<cmd>GpRewrite<cr>", desc = "Inline Rewrite", mode = "v" },
+            { "<C-g>a", "<cmd>GpAppend<cr>", desc = "Append (after)", mode = "v" },
+            { "<C-g>b", "<cmd>GpPrepend<cr>", desc = "Prepend (before)", mode = "v" },
+            { "<C-g>n", "<cmd>GpNextAgent<cr>", desc = "Next Agent", mode = "v" },
+            { "<C-g>s", "<cmd>GpStop<cr>", desc = "GpStop", mode = "v" },
+            { "<C-g>x", "<cmd>GpContext<cr>", desc = "Toggle GpContext", mode = "v" },
 
-                g = {
-                    name = "generate into new ..",
-                    p = { ":<C-u>'<,'>GpPopup<cr>", "Visual Popup" },
-                    e = { ":<C-u>'<,'>GpEnew<cr>", "Visual GpEnew" },
-                    n = { ":<C-u>'<,'>GpNew<cr>", "Visual GpNew" },
-                    v = { ":<C-u>'<,'>GpVnew<cr>", "Visual GpVnew" },
-                    t = { ":<C-u>'<,'>GpTabnew<cr>", "Visual GpTabnew" },
-                },
+            {"<C-g>c", ":<C-u>'<,'>GpChatNew<cr>", desc = "Visual Chat New", mode = "v" },
+            {"<C-g>p", ":<C-u>'<,'>GpChatPaste<cr>", desc = "Visual Chat Paste", mode = "v" },
+            {"<C-g>t", ":<C-u>'<,'>GpChatToggle<cr>", desc = "Visual Toggle Chat", mode = "v" },
+            {"<C-g>r", ":<C-u>'<,'>GpRewrite<cr>", desc = "Visual Rewrite", mode = "v" },
+            {"<C-g>a", ":<C-u>'<,'>GpAppend<cr>", desc = "Visual Append (after)", mode = "v" },
+            {"<C-g>b", ":<C-u>'<,'>GpPrepend<cr>", desc = "Visual Prepend (before)", mode = "v" },
+            {"<C-g>i", ":<C-u>'<,'>GpImplement<cr>", desc = "Implement selection", mode = "v" },
 
-                n = { "<cmd>GpNextAgent<cr>", "Next Agent" },
-                s = { "<cmd>GpStop<cr>", "GpStop" },
-                x = { ":<C-u>'<,'>GpContext<cr>", "Visual GpContext" },
+            {"<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File  " },
+            {"<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Git Files  " },
+            {"<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Grep  " },
+            {"<leader>fv", "<cmd>Telescope grep_string<cr>", desc = "Grep Word Under Cursor  " },
+            {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Todos  " },
+            {"<leader>fb", "<cmd>Telescope buffers<cr>", desc = "List Buffers" },
+            {"<leader>lr", "<cmd> Leet run<CR>", desc = "Run Code 󰜎 " },
+            {"<leader>lc", "<cmd>Leet console<CR>", desc = "Open Console 󰞷 " },
+            {"<leader>le", "<cmd>Leet<CR>", desc = "Leet  " },
+            {"<leader>li", "<cmd>Leet list<CR>", desc = "Show problem list  " },
+            {"<leader>lt", "<cmd>Leet tabs<CR>", desc = "Show tabs list  " },
 
-              --  w = {
-              --      name = "Whisper",
-              --      w = { ":<C-u>'<,'>GpWhisper<cr>", "Whisper" },
-              --      r = { ":<C-u>'<,'>GpWhisperRewrite<cr>", "Whisper Rewrite" },
-              --      a = { ":<C-u>'<,'>GpWhisperAppend<cr>", "Whisper Append (after)" },
-              --      b = { ":<C-u>'<,'>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
-              --      p = { ":<C-u>'<,'>GpWhisperPopup<cr>", "Whisper Popup" },
-              --      e = { ":<C-u>'<,'>GpWhisperEnew<cr>", "Whisper Enew" },
-              --      n = { ":<C-u>'<,'>GpWhisperNew<cr>", "Whisper New" },
-              --      v = { ":<C-u>'<,'>GpWhisperVnew<cr>", "Whisper Vnew" },
-              --      t = { ":<C-u>'<,'>GpWhisperTabnew<cr>", "Whisper Tabnew" },
-              --  },
-            },
+            -- Enter 'g' subgroup mappings.
+            -- {
+            --     group = "<C-g>g",
+            --     mode = "n",
+            --     { "p", "<cmd>GpPopup<cr>", desc = "Popup" },
+            --     { "e", "<cmd>GpEnew<cr>", desc = "GpEnew" },
+            --     { "n", "<cmd>GpNew<cr>", desc = "GpNew" },
+            --     { "v", "<cmd>GpVnew<cr>", desc = "GpVnew" },
+            --     { "t", "<cmd>GpTabnew<cr>", desc = "GpTabnew" },
+            -- },
 
+            -- You would continue here with other <C-g> related keymaps for normal mode
+        })
 
-
-            -- ...
-        }, {
-                mode = "v", -- VISUAL mode
-                prefix = "",
-                buffer = nil,
-                silent = true,
-                noremap = true,
-                nowait = true,
-            })
-
-        -- NORMAL mode mappings
-        require("which-key").register({
-            -- ...
-            ["<C-g>"] = {
-                c = { "<cmd>GpChatNew popup<cr>", "New Chat" },
-                t = { "<cmd>GpChatToggle popup<cr>", "Toggle Chat" },
-                f = { "<cmd>GpChatFinder<cr>", "Chat Finder" },
-
-                ["<C-x>"] = { "<cmd>GpChatNew split<cr>", "New Chat split" },
-                ["<C-v>"] = { "<cmd>GpChatNew vsplit<cr>", "New Chat vsplit" },
-                ["<C-t>"] = { "<cmd>GpChatNew tabnew<cr>", "New Chat tabnew" },
-
-                r = { "<cmd>GpRewrite<cr>", "Inline Rewrite" },
-                a = { "<cmd>GpAppend<cr>", "Append (after)" },
-                b = { "<cmd>GpPrepend<cr>", "Prepend (before)" },
-
-                g = {
-                    name = "generate into new ..",
-                    p = { "<cmd>GpPopup<cr>", "Popup" },
-                    e = { "<cmd>GpEnew<cr>", "GpEnew" },
-                    n = { "<cmd>GpNew<cr>", "GpNew" },
-                    v = { "<cmd>GpVnew<cr>", "GpVnew" },
-                    t = { "<cmd>GpTabnew<cr>", "GpTabnew" },
-                },
-
-                n = { "<cmd>GpNextAgent<cr>", "Next Agent" },
-                s = { "<cmd>GpStop<cr>", "GpStop" },
-                x = { "<cmd>GpContext<cr>", "Toggle GpContext" },
-
-                -- w = {
-                --     name = "Whisper",
-                --     w = { "<cmd>GpWhisper<cr>", "Whisper" },
-                --     r = { "<cmd>GpWhisperRewrite<cr>", "Whisper Inline Rewrite" },
-                --     a = { "<cmd>GpWhisperAppend<cr>", "Whisper Append (after)" },
-                --     b = { "<cmd>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
-                --     p = { "<cmd>GpWhisperPopup<cr>", "Whisper Popup" },
-                --     e = { "<cmd>GpWhisperEnew<cr>", "Whisper Enew" },
-                --     n = { "<cmd>GpWhisperNew<cr>", "Whisper New" },
-                --     v = { "<cmd>GpWhisperVnew<cr>", "Whisper Vnew" },
-                --     t = { "<cmd>GpWhisperTabnew<cr>", "Whisper Tabnew" },
-                -- },
-            },
-            -- ...
-        }, {
-                mode = "n", -- NORMAL mode
-                prefix = "",
-                buffer = nil,
-                silent = true,
-                noremap = true,
-                nowait = true,
-            })
-
-        -- INSERT mode mappings
-        require("which-key").register({
-            -- ...
-            ["<C-g>"] = {
-                c = { "<cmd>GpChatNew<cr>", "New Chat" },
-                t = { "<cmd>GpChatToggle<cr>", "Toggle Chat" },
-                f = { "<cmd>GpChatFinder<cr>", "Chat Finder" },
-
-                ["<C-x>"] = { "<cmd>GpChatNew split<cr>", "New Chat split" },
-                ["<C-v>"] = { "<cmd>GpChatNew vsplit<cr>", "New Chat vsplit" },
-                ["<C-t>"] = { "<cmd>GpChatNew tabnew<cr>", "New Chat tabnew" },
-
-                r = { "<cmd>GpRewrite<cr>", "Inline Rewrite" },
-                a = { "<cmd>GpAppend<cr>", "Append (after)" },
-                b = { "<cmd>GpPrepend<cr>", "Prepend (before)" },
-
-                g = {
-                    name = "generate into new ..",
-                    p = { "<cmd>GpPopup<cr>", "Popup" },
-                    e = { "<cmd>GpEnew<cr>", "GpEnew" },
-                    n = { "<cmd>GpNew<cr>", "GpNew" },
-                    v = { "<cmd>GpVnew<cr>", "GpVnew" },
-                    t = { "<cmd>GpTabnew<cr>", "GpTabnew" },
-                },
-
-                x = { "<cmd>GpContext<cr>", "Toggle GpContext" },
-                s = { "<cmd>GpStop<cr>", "GpStop" },
-                n = { "<cmd>GpNextAgent<cr>", "Next Agent" },
-
-                -- w = {
-                --     name = "Whisper",
-                --     w = { "<cmd>GpWhisper<cr>", "Whisper" },
-                --     r = { "<cmd>GpWhisperRewrite<cr>", "Whisper Inline Rewrite" },
-                --     a = { "<cmd>GpWhisperAppend<cr>", "Whisper Append (after)" },
-                --     b = { "<cmd>GpWhisperPrepend<cr>", "Whisper Prepend (before)" },
-                --     p = { "<cmd>GpWhisperPopup<cr>", "Whisper Popup" },
-                --     e = { "<cmd>GpWhisperEnew<cr>", "Whisper Enew" },
-                --     n = { "<cmd>GpWhisperNew<cr>", "Whisper New" },
-                --     v = { "<cmd>GpWhisperVnew<cr>", "Whisper Vnew" },
-                
-            },
-            -- ...
-        }, {
-                mode = "i", -- INSERT mode
-                prefix = "",
-                buffer = nil,
-                silent = true,
-                noremap = true,
-                nowait = true,
-            })
-
-        -- NORMAL mode mappings
-        require("which-key").register({
-            ["<leader>f"] = {
-                name = "Telescope  ",
-                f = { "<cmd>Telescope find_files<cr>", "Find File  " },
-                g = { "<cmd>Telescope git_files<cr>", "Git Files  " },
-                s = { "<cmd>Telescope live_grep<cr>", "Grep  " },
-                v = { "<cmd>Telescope grep_string<cr>", "Grep Word Under Cursor  " },
-                t = { "<cmd>TodoTelescope<cr>", "Todos  " },
-            },
-            ["<leader>b"] = {
-                name = "Buffers",
-                b = { "<cmd>Telescope buffers<cr>", "List Buffers" },
-            },
-            ["<leader>l"] = {
-                name = "LeetCode  ",
-                r = { "<cmd> Leet run<CR>", "Run Code 󰜎 " },
-                c = { "<cmd>Leet console<CR>", "Open Console 󰞷 " },
-                e = { "<cmd>Leet<CR>", "Leet  " },
-                i = { "<cmd>Leet list<CR>", "Show problem list  " },
-                t = { "<cmd>Leet tabs<CR>", "Show tabs list  " },
-            },
-                mode = "n", -- NORMAL mode
-                prefix = "",
-                buffer = nil,
-                silent = true,
-                noremap = true,
-                nowait = true,
-            })
 
 
 
