@@ -1,10 +1,10 @@
 return {
     "mfussenegger/nvim-dap",
-
     dependencies = {
 
         -- fancy UI for the debugger
         {
+
             "rcarriga/nvim-dap-ui",
             dependencies = { "nvim-neotest/nvim-nio" },
             -- stylua: ignore
@@ -14,6 +14,16 @@ return {
             },
             opts = {},
             config = function(_, opts)
+                require("dap")
+
+
+                local sign = vim.fn.sign_define
+
+                sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = ""})
+                sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = ""})
+                sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = ""})
+                sign('DapStopped', { text='➤ ', texthl='DapStopped', linehl='DapStopped', numhl= 'DapStopped' })
+
                 local dap = require("dap")
                 local dapui = require("dapui")
                 dapui.setup(opts)
@@ -70,24 +80,27 @@ return {
     },
 
     -- stylua: ignore
+            -- {"<leader>lt", "<cmd>Leet tabs<CR>", desc = "Show tabs list  " },
     keys = {
-        { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-        { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
-        { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
-        { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-        { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
-        { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
-        { "<leader>dj", function() require("dap").down() end, desc = "Down" },
-        { "<leader>dk", function() require("dap").up() end, desc = "Up" },
-        { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
-        { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
-        { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
-        { "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
-        { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
-        { "<leader>ds", function() require("dap").session() end, desc = "Session" },
-        { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
-        { "<leader>da", function() require("dap.ext.vscode").load_launchjs(nil, {cppdbg = {'c', 'h', 'cpp'}}) end, desc = "Launch JSON"},
-        { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+        { "<leader><BS>B", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+        { "<leader><BS>b", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+        { "<leader><BS>c", function() require("dap").continue() end, desc = "Continue" },
+        { "<leader><BS>C", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+        { "<leader><BS>g", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
+        { "<leader><BS>i", function() require("dap").step_into() end, desc = "Step Into" },
+        { "<leader><BS>o", function() require("dap").step_out() end, desc = "Step Out" },
+        { "<leader><BS>v", function() require("dap").step_over() end, desc = "Step Over" },
+        { "<leader><BS>u", function() require("dap").step_back() end, desc = "Step Back" },
+        { "<leader><BS>j", function() require("dap").down() end, desc = "Down" },
+        { "<leader><BS>k", function() require("dap").up() end, desc = "Up" },
+        { "<leader><BS>l", function() require("dap").run_last() end, desc = "Run Last" },
+        { "<leader><BS>p", function() require("dap").pause() end, desc = "Pause" },
+        { "<leader><BS>r", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+        { "<leader><BS>s", function() require("dap").session() end, desc = "Session" },
+        { "<leader><BS>t", function() require("dap").terminate() end, desc = "Terminate" },
+        { "<leader><BS>a", function() require("dap.ext.vscode").load_launchjs(nil, {cppdbg = {'c', 'h', 'cpp'}}) end, desc = "Launch JSON"},
+        { "<leader><BS>w", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
     }
+
 }
 

@@ -1,8 +1,15 @@
 vim.cmd("let g:netrw_liststyle = 3")
+vim.o.timeoutlen = 1000
+vim.o.ttimeoutlen = 10
 
 local opt = vim.opt
+local sign = vim.fn.sign_define
+sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = ""})
+sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = ""})
+sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = ""})
+sign('DapStopped', { text='➥ ', texthl='DapStopped', linehl='DapStopped', numhl= 'DapStopped' })
 
-vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
@@ -54,3 +61,4 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.opt.updatetime = 50
+vim.g.markdown_fenced_languages = { "javascript", "typescript", "bash", "lua", "go", "rust", "c", "cpp", "python"}

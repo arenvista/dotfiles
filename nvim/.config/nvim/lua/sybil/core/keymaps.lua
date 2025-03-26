@@ -39,4 +39,4 @@ keymap.set("n", "<leader>qw", "<cmd>q<CR>", { desc = " Close Window"})
 keymap.set("n", "<leader>qs", "<cmd>suspend<CR>", { desc = "󰤄 Suspend"})
 
 keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = " Save"})
-keymap.set("n", "<leader>wa", "<cmd>wa<CR>", { desc = " Save all buffers"})
+-- keymap.set("n", "<leader>wa", "<cmd>bw<CR>", { desc = " Save all buffers"})
