@@ -44,6 +44,7 @@ wallpaper_selection=$(find ~/wallpapers/favorites -maxdepth 1 -type f \( -name "
 
 # crop selection 
 magick convert $wallpaper_selection -gravity center -crop 1400x1600+0+0 +repage ~/wallpapers/imgs/temp.png
+magick convert $wallpaper_selection -gravity center -crop 2400x1600+0+0 +repage ~/wallpapers/imgs/temp_sddm.png
 
 sed -i "s|export WALLPAPER=\".*\"|export WALLPAPER=\"$wallpaper_selection\"|" ~/wallpapers/scripts/wallpaper_state.env
 sed -i "s|path   = \".*\"|path   = \"$wallpaper_selection\"|" ~/.config/catnap/config.toml
