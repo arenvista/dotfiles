@@ -20,7 +20,7 @@ packages  = {icon = " ", name = "packages", color = "(BE)"}  # WARNING: Resou
 # weather   = {icon = " ", name = "weather", color = "(GN)"} # Requires curl and an emoji font. | WARNING: Resource Intensive
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 cpu       = {icon = " ", name = "cpu", color = "(GN)"}
-battery   = {icon = " ", name = "battery", color = "(MA)"}
+# battery   = {icon = " ", name = "battery", color = "(MA)"}
 memory    = {icon = " ", name = "memory", color = "(CN)"}
 # The following stats do not work on MacOS and the BSDs.
 disk_0    = {icon = " ", name = "disk", color = "(RD)"}
@@ -44,7 +44,7 @@ margin = [0, 0, 0,]
 
 [misc.imageMode] # Requires Viu.
 enable = true
-path   = "/home/sybil/wallpapers/favorites/nLCnVum.jpeg" # Please only use absolute paths.
+path   = "/home/sybil/wallpapers/favorites/mev8a2u8mbpe1.jpeg" # Please only use absolute paths.
 scale  = 38
 margin = [-9, 3, 4,]
 
