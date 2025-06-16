@@ -1,3 +1,6 @@
+GTK_THEME=Adwaita:dark
+GTK2_RC_FILES=/usr/share/themes/Adwaita-dark/gtk-2.0/gtkrc
+QT_STYLE_OVERRIDE=Adwaita-Dark
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 #SOURCE ---
@@ -31,14 +34,14 @@ kill -SIGUSR1 $(pidof kitty) # Reload kitty colorscheme
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/usr/etc/profile.d/conda.sh" ]; then
-        . "/usr/etc/profile.d/conda.sh"
+    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/usr/bin:$PATH"
+        export PATH="/opt/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -46,3 +49,4 @@ unset __conda_setup
 
 # EXPORTS
 export QT_QPA_PLATFORM=xcb
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh

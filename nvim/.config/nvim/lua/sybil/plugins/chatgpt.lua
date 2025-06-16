@@ -31,64 +31,212 @@ return{
             -- to use agent for chat set chat = true, for command set command = true 
             -- to remove some default agent completely set it just with the name like: 
             -- agents = {  { name = "ChatGPT4" }, ... }, 
-            agents = { 
-                { 
-                    name = "ChatGPT4", 
-                    chat = true, 
-                    command = false, 
-                    -- string with model name or table with model name and parameters 
-                    model = { model = "gpt-4-1106-preview", temperature = 1.1, top_p = 1 }, 
-                    -- system prompt (use this to specify the persona/role of the AI) 
-                    system_prompt = "You are a general AI assistant.\n\n" 
-                        .. "The user provided the additional info about how they would like you to respond:\n\n" 
-                        .. "- If you're unsure don't guess and say you don't know instead.\n" 
-                        .. "- Ask question if you need clarification to provide better answer.\n" 
-                        .. "- Think deeply and carefully from first principles step by step.\n" 
-                        .. "- Zoom out first to see the big picture and then zoom in to details.\n" 
-                        .. "- Use Socratic method to improve your thinking and coding skills.\n" 
-                        .. "- Don't elide any code from your output if the answer requires coding.\n" 
-                        .. "- Take a deep breath; You've got this!\n", 
-                }, 
-                { 
-                    name = "ChatGPT3-5", 
-                    chat = true, 
-                    command = false, 
-                    -- string with model name or table with model name and parameters 
-                    model = { model = "gpt-3.5-turbo-1106", temperature = 1.1, top_p = 1 }, 
-                    -- system prompt (use this to specify the persona/role of the AI) 
-                    system_prompt = "You are a general AI assistant.\n\n" 
-                        .. "The user provided the additional info about how they would like you to respond:\n\n" 
-                        .. "- If you're unsure don't guess and say you don't know instead.\n" 
-                        .. "- Ask question if you need clarification to provide better answer.\n" 
-                        .. "- Think deeply and carefully from first principles step by step.\n" 
-                        .. "- Zoom out first to see the big picture and then zoom in to details.\n" 
-                        .. "- Use Socratic method to improve your thinking and coding skills.\n" 
-                        .. "- Don't elide any code from your output if the answer requires coding.\n" 
-                        .. "- Take a deep breath; You've got this!\n", 
-                }, 
-                { 
-                    name = "CodeGPT4", 
-                    chat = false, 
-                    command = true, 
-                    -- string with model name or table with model name and parameters 
-                    model = { model = "gpt-4-1106-preview", temperature = 0.8, top_p = 1 }, 
-                    -- system prompt (use this to specify the persona/role of the AI) 
-                    system_prompt = "You are an AI working as a code editor.\n\n" 
-                        .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n" 
-                        .. "START AND END YOUR ANSWER WITH:\n\n```", 
-                }, 
-                { 
-                    name = "CodeGPT3-5", 
-                    chat = false, 
-                    command = true, 
-                    -- string with model name or table with model name and parameters 
-                    model = { model = "gpt-3.5-turbo-1106", temperature = 0.8, top_p = 1 }, 
-                    -- system prompt (use this to specify the persona/role of the AI) 
-                    system_prompt = "You are an AI working as a code editor.\n\n" 
-                        .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n" 
-                        .. "START AND END YOUR ANSWER WITH:\n\n```", 
-                }, 
-            }, 
+            agents = {
+                {
+                    name = "ExampleDisabledAgent",
+                    disable = true,
+                },
+                {
+                    name = "ChatGPT4o",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "openai",
+                    name = "ChatGPT4o-mini",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gpt-4o-mini", temperature = 1.1, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "openai",
+                    name = "ChatGPT-o3-mini",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "o3-mini", temperature = 1.1, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "copilot",
+                    name = "ChatCopilot",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "googleai",
+                    name = "ChatGemini",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gemini-pro", temperature = 1.1, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "pplx",
+                    name = "ChatPerplexityLlama3.1-8B",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "llama-3.1-sonar-small-128k-chat", temperature = 1.1, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "anthropic",
+                    name = "ChatClaude-3-7-Sonnet",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "claude-3-7-sonnet-latest", temperature = 0.8, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "anthropic",
+                    name = "ChatClaude-3-5-Haiku",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "claude-3-5-haiku-latest", temperature = 0.8, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").chat_system_prompt,
+                },
+                {
+                    provider = "ollama",
+                    name = "ChatOllamaLlama3.1-8B",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = {
+                        model = "llama3.1",
+                        temperature = 0.6,
+                        top_p = 1,
+                        min_p = 0.05,
+                    },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = "You are a general AI assistant.",
+                },
+                {
+                    provider = "lmstudio",
+                    name = "ChatLMStudio",
+                    chat = true,
+                    command = false,
+                    -- string with model name or table with model name and parameters
+                    model = {
+                        model = "dummy",
+                        temperature = 0.97,
+                        top_p = 1,
+                        num_ctx = 8192,
+                    },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = "You are a general AI assistant.",
+                },
+                {
+                    provider = "openai",
+                    name = "CodeGPT4o",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gpt-4o", temperature = 0.8, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "openai",
+                    name = "CodeGPT-o3-mini",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "o3-mini", temperature = 0.8, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "openai",
+                    name = "CodeGPT4o-mini",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gpt-4o-mini", temperature = 0.7, top_p = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = "Please return ONLY code snippets.\nSTART AND END YOUR ANSWER WITH:\n\n```",
+                },
+                {
+                    provider = "copilot",
+                    name = "CodeCopilot",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gpt-4o", temperature = 0.8, top_p = 1, n = 1 },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "googleai",
+                    name = "CodeGemini",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "gemini-pro", temperature = 0.8, top_p = 1 },
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "pplx",
+                    name = "CodePerplexityLlama3.1-8B",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "llama-3.1-sonar-small-128k-chat", temperature = 0.8, top_p = 1 },
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "anthropic",
+                    name = "CodeClaude-3-7-Sonnet",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "claude-3-7-sonnet-latest", temperature = 0.8, top_p = 1 },
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "anthropic",
+                    name = "CodeClaude-3-5-Haiku",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = { model = "claude-3-5-haiku-latest", temperature = 0.8, top_p = 1 },
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+                {
+                    provider = "ollama",
+                    name = "CodeOllamaLlama3.1-8B",
+                    chat = false,
+                    command = true,
+                    -- string with model name or table with model name and parameters
+                    model = {
+                        model = "llama3.1",
+                        temperature = 0.4,
+                        top_p = 1,
+                        min_p = 0.05,
+                    },
+                    -- system prompt (use this to specify the persona/role of the AI)
+                    system_prompt = require("gp.defaults").code_system_prompt,
+                },
+            },
 
             -- directory for storing chat files 
             chat_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/gp/chats", 

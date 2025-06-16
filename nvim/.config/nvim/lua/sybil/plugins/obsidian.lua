@@ -19,12 +19,20 @@ return {
     opts = {
         workspaces = {
             {
-                name = "NeuralNets",
-                path = "/home/sybil/Documents/NeuralNets/neural_networks",
+                name = "LinAlg",
+                path = "~/Documents/lin_alg",
             },
             {
-                name = "multivar_calc",
-                path = "/home/sybil/Documents/School-SE1/MATH_251/multivar_calc",
+                name = "VecCalc",
+                path = "~/Documents/calc_vec",
+            },
+            {
+                name = "SNN",
+                path = "~/Documents/snn",
+            },
+            {
+                name = "TutoringChemistry",
+                path = "~/Documents/Tutoring/Chemistry",
             },
         },
 

@@ -44,7 +44,7 @@ margin = [0, 0, 0,]
 
 [misc.imageMode] # Requires Viu.
 enable = true
-path   = "/home/sybil/wallpapers/favorites/mev8a2u8mbpe1.jpeg" # Please only use absolute paths.
+path   = "/home/sybil/wallpapers/favorites/eyes.jpeg" # Please only use absolute paths.
 scale  = 38
 margin = [-9, 3, 4,]
 
