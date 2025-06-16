@@ -1,5 +1,5 @@
-background_opacity 0.9
-font_size        10.0
+background_opacity 0.95
+font_size        16.0
 # bold_font        auto
 # italic_font      auto
 # bold_italic_font auto
@@ -34,13 +34,13 @@ font_size        10.0
   symbol_map U+f101-U+f208 nonicon
 
 # BEGIN_KITTY_THEME
-# Catppuccin-Frappe
+# 1984 Dark
 include current-theme.conf
 # END_KITTY_THEME
 
 
 # BEGIN_KITTY_FONTS
-font_family      family="JetBrainsMono Nerd Font"
+font_family      family="FreeMono"
 bold_font        auto
 italic_font      auto
 bold_italic_font auto

@@ -40,3 +40,62 @@ keymap.set("n", "<leader>qs", "<cmd>suspend<CR>", { desc = "󰤄 Suspend"})
 
 keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = " Save"})
 -- keymap.set("n", "<leader>wa", "<cmd>bw<CR>", { desc = " Save all buffers"})
+
+function visual_replace_global()
+  -- To get the visually selected text, we can programmatically yank it.
+  -- 'gvy' yanks the last visual selection without moving the cursor.
+  -- 'noau' prevents autocommands from firing during this operation.
+  vim.cmd("noautocmd normal! gvy")
+  local word_to_replace = vim.fn.getreg('"xy')
+  print(vim.fn.getreg('"by'))
+
+  -- Trim leading/trailing whitespace which might be selected accidentally.
+  word_to_replace = vim.fn.trim(word_to_replace)
+
+  -- Exit if the selection was empty.
+  if not word_to_replace or word_to_replace == "" then
+    vim.notify("No text selected or selection is empty.", vim.log.levels.WARN, { title = "Replace Canceled" })
+    return
+  end
+
+  -- Prompt the user for the replacement text.
+  local new_word = vim.fn.input("Replace all '" .. word_to_replace .. "' with: ")
+
+  -- If the user cancels the input (e.g., by pressing Esc or entering nothing), abort.
+  if not new_word or new_word == "" then
+    vim.notify("Replacement canceled.", vim.log.levels.INFO, { title = "Replace Canceled" })
+    return
+  end
+
+  -- Escape special characters in both the search pattern and the replacement string
+  -- to prevent them from being interpreted as parts of the regex command.
+  -- For the search term, we escape common regex symbols.
+  local search_pattern = vim.fn.escape(word_to_replace, [[\/.*$^]])
+  -- For the replacement term, we mainly need to escape the backslash '\' and ampersand '&'.
+  local replacement_string = vim.fn.escape(new_word, [[\&]])
+
+  -- Construct the final substitution command string.
+  -- Note: Backslashes for word boundaries (<, >) must be escaped for the string format.
+  local command = string.format("%%s/\\<%s\\>/%s/g", search_pattern, replacement_string)
+
+  -- Execute the command using the Neovim API.
+  vim.api.nvim_command(command)
+
+  -- Provide feedback to the user.
+  vim.notify(
+    string.format("Ran command: %s", command),
+    vim.log.levels.INFO,
+    { title = "Replace Complete" }
+  )
+end
+
+-- This creates a keymap for visual mode.
+-- When you press '<leader>s' while text is selected, it will call the function.
+keymap.set("n", "<leader>rr", function()
+    visual_replace_global()
+end, {
+    noremap = true,
+    silent = true,
+    desc = "Replace selected word globally in file"
+})
+
