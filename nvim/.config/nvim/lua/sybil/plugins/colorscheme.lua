@@ -37,21 +37,56 @@ return {
             custom_highlights = {},
             default_integrations = true,
             integrations = {
+                aerial = true,
+                alpha = true,
                 cmp = true,
+                dashboard = true,
+                flash = true,
+                fzf = true,
+                grug_far = true,
                 gitsigns = true,
-                nvimtree = true,
-                treesitter = true,
-                notify = true,
-                mini = {
+                headlines = true,
+                illuminate = true,
+                indent_blankline = { enabled = true },
+                leap = true,
+                lsp_trouble = true,
+                mason = true,
+                markdown = true,
+                mini = true,
+                native_lsp = {
                     enabled = true,
-                    indentscope_color = "",
+                    underlines = {
+                        errors = { "undercurl" },
+                        hints = { "undercurl" },
+                        warnings = { "undercurl" },
+                        information = { "undercurl" },
+                    },
                 },
-                -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-            },
+                navic = { enabled = true, custom_bg = "lualine" },
+                neotest = true,
+                neotree = true,
+                noice = true,
+                notify = true,
+                semantic_tokens = true,
+                snacks = true,
+                telescope = true,
+                treesitter = true,
+                treesitter_context = true,
+                which_key = true,
+            }
         })
         vim.cmd.colorscheme("catppuccin")
-        vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
-        vim.api.nvim_set_hl(0, "Comment", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
+        -- vim.api.nvim_set_hl(0, "Comment", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "NotifyTRACEBorder", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "WinBar", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "Cursor", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "lCursor", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "CursorIM", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "@string.special.url", { fg = "#8c8fa1"})
+        -- vim.api.nvim_set_hl(0, "NotifyTRACETitle", { fg = "#8c8fa1"})
+        -- @string.special.url xxx cterm=underline,italic gui=underline,italic guifg=#f4dbd7
 
     end,
 }
