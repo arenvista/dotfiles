@@ -8,6 +8,7 @@ return{
             -- Defaults change over time to improve things, options might get deprecated. 
             -- It's better to change only things where the default doesn't fit your needs. 
 
+
             -- required openai api key (string or table with command and arguments) 
             -- openai_api_key = { "cat", "path_to/openai_api_key" }, 
             -- openai_api_key = { "bw", "get", "password", "OPENAI_API_KEY" }, 

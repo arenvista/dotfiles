@@ -24,10 +24,8 @@ vim.keymap.set("i", "<Del>", "<Esc>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
 
-vim.keymap.set("n", "<leader>z", ":set foldmethod=indent")
-
-vim.keymap.set('n', '<Leader>h', ':set hlsearch!<CR>', { noremap = true, silent = true })
--- vim.keymap.set('n', '<leader>t', ':! date +\\%Y-\\%m-\\%d<CR>')
+-- Keymap to execute terminal commands
+vim.keymap.set('n', '<leader>t', ':!<Space> date +%Y-%m-%d | wl-copy ')
 
 -- Insta chmod
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })

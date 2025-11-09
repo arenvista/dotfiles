@@ -19,23 +19,11 @@ return {
     opts = {
         workspaces = {
             {
-                name = "LinAlg",
-                path = "~/Documents/lin_alg",
+                name = "DiffyQ",
+                path = "/home/sybil/Documents/School-SE1/Fall_2025/MATH225/diffyq_notes",
             },
-            {
-                name = "VecCalc",
-                path = "~/Documents/calc_vec",
-            },
-            {
-                name = "SNN",
-                path = "~/Documents/snn",
-            },
-            {
-                name = "TutoringChemistry",
-                path = "~/Documents/Tutoring/Chemistry",
-            },
-        },
 
+        },
         -- see below for full list of options 👇
     },
     keys = {

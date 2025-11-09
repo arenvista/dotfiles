@@ -50,3 +50,4 @@ unset __conda_setup
 # EXPORTS
 export QT_QPA_PLATFORM=xcb
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+
