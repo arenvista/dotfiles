@@ -1,7 +1,7 @@
 vim.cmd("let g:netrw_liststyle = 3")
 vim.o.timeoutlen = 1000
 vim.o.ttimeoutlen = 10
-vim.opt.spelllang = "en"
+
 local opt = vim.opt
 local sign = vim.fn.sign_define
 sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = ""})

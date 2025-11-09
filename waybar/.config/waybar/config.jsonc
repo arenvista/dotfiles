@@ -3,15 +3,19 @@
 	// Using margin-bottom with a negative value in order to reduce the space between Hyprland window and waybar
 	"margin-bottom": -10,
 	"margin-top": 10,
-	"modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray", "custom/wallpaper"],
+	"modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray", "custom/wallpaper", "custom/cava"],
 	"modules-center": ["hyprland/workspaces"],
 	"modules-right": ["network", "backlight","pulseaudio","clock", "battery", "custom/power"],
 
     "custom/wallpaper": {
-    "format": "󰸉 ",
+    "format": " 󰸉   ",
     "tooltip": false,
     "on-click": "~/wallpapers/scripts/change_wallpaper.sh",
+    },
 
+    "custom/cava": {
+    "exec": "/home/sybil/dotfiles/waybar/.config/waybar/cava.sh",
+    "tooltip": false,
     },
 	"pulseaudio": {
 		"tooltip": false,
