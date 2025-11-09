@@ -50,6 +50,9 @@ return {
 			local opts = { buffer = ev.buf, silent = true }
 
 			-- set keybinds
+			opts.desc = "Find Function"
+			keymap.set("n", "fc", ":lua require('telescope.builtin').lsp_document_symbols({ symbols={'function', 'method'} })<CR>", opts) -- show definition, references
+
 			opts.desc = "Show LSP references"
 			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
