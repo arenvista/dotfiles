@@ -62,6 +62,7 @@
   "oil.nvim": { "branch": "master", "commit": "07f80ad645895af849a597d1cac897059d89b686" },
   "org-bullets.nvim": { "branch": "main", "commit": "21437cfa99c70f2c18977bffd423f912a7b832ea" },
   "orgmode": { "branch": "master", "commit": "4775d1a523a321b68b926f3a65a83357722a42c7" },
+  "ouroboros": { "branch": "master", "commit": "f528c0baf0b872b37036c166a144abcfc4752ec9" },
   "overseer.nvim": { "branch": "master", "commit": "6271cab7ccc4ca840faa93f54440ffae3a3918bd" },
   "pastify.nvim": { "branch": "main", "commit": "4a1d1e03c3ae725ee4af796deca8c7c169ef626e" },
   "playground": { "branch": "master", "commit": "ba48c6a62a280eefb7c85725b0915e021a1a0749" },
