@@ -2,6 +2,7 @@
     "diagnostics.globals": [
         "vim",
         "event",
-        "local"
+        "local",
+        "file_previewer"
     ]
 }
