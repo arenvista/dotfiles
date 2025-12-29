@@ -13,6 +13,10 @@ vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
+vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='#85c1dc', bold=true })
+vim.api.nvim_set_hl(0, 'LineNr', { fg='white', bold=true }) -- Must set in colorscheme.lua
+vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='#e78284', bold=true })
+
 
 --tabs and indentations
 vim.opt.tabstop = 4
