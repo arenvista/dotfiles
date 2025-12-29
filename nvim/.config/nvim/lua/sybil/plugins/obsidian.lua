@@ -7,6 +7,7 @@ return {
         "nvim-lua/plenary.nvim",
     },
     opts = {
+        preferred_link_style = "markdown",
         workspaces = {
             {
                 name = "DiffyQ",
@@ -17,54 +18,6 @@ return {
                 path = "/home/sybil/Documents/MATH301/Notes/",
             },
         },
-
-        note_id_func = function(title)
-            local suffix = ""
-            if title ~= nil then
-                suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-            else
-                for _ = 1, 4 do
-                    suffix = suffix .. string.char(math.random(65, 90))
-                end
-            end
-            return tostring(os.time()) .. "-" .. suffix
-        end,
-
-        note_path_func = function(spec)
-            local path = spec.dir / tostring(spec.id)
-            return path:with_suffix(".md")
-        end,
-
-        disable_frontmatter = false,
-
-        note_frontmatter_func = function(note)
-            if note.title then
-                note:add_alias(note.title)
-            end
-
-            -- NEW: Convert numeric string aliases to actual numbers
-            -- This prevents YAML from wrapping them in quotes (e.g. "2025" -> 2025)
-            local clean_aliases = {}
-            for _, alias in ipairs(note.aliases) do
-                local as_num = tonumber(alias)
-                if as_num then
-                    table.insert(clean_aliases, as_num)
-                else
-                    table.insert(clean_aliases, alias)
-                end
-            end
-
-            local out = { id = note.id, aliases = clean_aliases, tags = note.tags }
-
-            if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-                for k, v in pairs(note.metadata) do
-                    out[k] = v
-                end
-            end
-
-            return out
-        end,
-
         templates = {
             folder = "./.templates",
             date_format = "%Y-%m-%d",
@@ -72,49 +25,6 @@ return {
             substitutions = {},
         },
     },
-    config = function(_, opts)
-        require("obsidian").setup(opts)
-
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            pattern = "*.md",
-            callback = function()
-                local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-                local new_lines = {}
-                local in_frontmatter = false
-                local changed = false
-
-                for i, line in ipairs(lines) do
-                    if i == 1 and line == "---" then
-                        in_frontmatter = true
-                    elseif in_frontmatter and line == "---" then
-                        in_frontmatter = false
-                    end
-
-                    if in_frontmatter then
-                        local original_line = line
-
-                        -- 1. Fix Indentation: Convert 2 spaces to 4 spaces
-                        -- Targets lines starting with "  - " or "  key:"
-                        line = line:gsub("^  (%S)", "    %1")
-
-                        -- 2. Fix Quotes: Remove quotes from numbers/versions in lists
-                        -- Turns '    - "2.1.5"' into '    - 2.1.5'
-                        -- Matches: whitespace, dash, whitespace, quote, (digits/dots), quote
-                        line = line:gsub('(%s*-%s*)"([%d%.]+)"', "%1%2")
-
-                        if line ~= original_line then
-                            changed = true
-                        end
-                    end
-                    table.insert(new_lines, line)
-                end
-
-                if changed then
-                    vim.api.nvim_buf_set_lines(0, 0, -1, false, new_lines)
-                end
-            end,
-        })
-    end,
     keys = {
         { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "New Obsidian note", mode = "n" },
         { "<leader>oo", "<cmd>ObsidianOpen<cr>", desc = "Opens In Obsidian", mode = "n" },
@@ -123,5 +33,93 @@ return {
         { "<leader>op", "<cmd>ObsidianPasteImg<cr>", desc = "Paste image from clipboard", mode = "n" },
         { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "Follows Link Under Cursor", mode = "n" },
         { "<leader>ol", "<cmd>ObsidianLinkNew<cr>", desc = "Create New Link", mode = "v" },
+        { "<leader>or", "<cmd>ObsidianAliases<cr>", desc = "Search by Aliases", mode = "n" }, -- Moved keymap here for consistency
     },
+    config = function(_, opts)
+        -- 1. Initialize obsidian.nvim
+        require("obsidian").setup(opts)
+
+        -- 2. Define the Custom Telescope Function
+        local pickers = require("telescope.pickers")
+        local finders = require("telescope.finders")
+        local conf = require("telescope.config").values
+        local actions = require("telescope.actions")
+        local action_state = require("telescope.actions.state")
+        -- NEW: Import previewers module
+        local previewers = require("telescope.previewers")
+
+        local function search_aliases()
+            local results = {}
+            -- Use ripgrep to quickly find files containing "aliases:"
+            local p = io.popen("rg -l 'aliases:'")
+            local file_list = p:read("*a")
+            p:close()
+
+            for filename in file_list:gmatch("[^\r\n]+") do
+                local file = io.open(filename, "r")
+                if file then
+                    local in_alias_block = false
+                    local line_num = 0
+
+                    for line in file:lines() do
+                        line_num = line_num + 1
+
+                        if line:match("^%s*aliases:") then
+                            in_alias_block = true
+                            goto continue
+                        end
+
+                        if in_alias_block and line:match("^%s*tags:") then
+                            break
+                        end
+
+                        if in_alias_block then
+                            local alias_text = line:match("^%s*-%s*(.*)") or line:match("^%s*[%[\"'](.*)[%[\"']%s*$")
+
+                            if alias_text then
+                                alias_text = alias_text:gsub("^['\"]", ""):gsub("['\"]$", "")
+
+                                table.insert(results, {
+                                    alias = alias_text,
+                                    path = filename,
+                                    lnum = line_num
+                                })
+                            end
+                        end
+                        ::continue::
+                    end
+                    file:close()
+                end
+            end
+
+            pickers.new({}, {
+                prompt_title = "Search Obsidian Aliases",
+                finder = finders.new_table {
+                    results = results,
+                    entry_maker = function(entry)
+                        return {
+                            value = entry,
+                            display = entry.alias .. " \t (" .. entry.path .. ")",
+                            ordinal = entry.alias,
+                            path = entry.path,
+                            lnum = entry.lnum,
+                        }
+                    end,
+                },
+                sorter = conf.generic_sorter({}),
+                -- CHANGED: Use vim_buffer_cat to show the full file content nicely
+                previewer = previewers.vim_buffer_cat.new({}),
+                attach_mappings = function(prompt_bufnr, map)
+                    actions.select_default:replace(function()
+                        actions.close(prompt_bufnr)
+                        local selection = action_state.get_selected_entry()
+                        vim.cmd("edit " .. selection.path)
+                    end)
+                    return true
+                end,
+            }):find()
+        end
+
+        vim.api.nvim_create_user_command("ObsidianAliases", search_aliases, {})
+    end
 }
