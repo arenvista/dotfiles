@@ -76,17 +76,5 @@ return {
             }
         })
         vim.cmd.colorscheme("catppuccin")
-        -- vim.api.nvim_set_hl(0, 'LineNr', { fg = "white"})
-        -- vim.api.nvim_set_hl(0, "Comment", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "NotifyTRACEBorder", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "WinBar", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "Cursor", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "lCursor", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "CursorIM", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "@string.special.url", { fg = "#8c8fa1"})
-        -- vim.api.nvim_set_hl(0, "NotifyTRACETitle", { fg = "#8c8fa1"})
-        -- @string.special.url xxx cterm=underline,italic gui=underline,italic guifg=#f4dbd7
-
     end,
 }
