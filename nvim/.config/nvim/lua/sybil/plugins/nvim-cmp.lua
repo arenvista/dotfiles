@@ -20,9 +20,7 @@ return {
         local compare = cmp.config.compare
 
         local cmp = require("cmp")
-
         local luasnip = require("luasnip")
-
         local lspkind = require("lspkind")
 
         -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
@@ -63,6 +61,7 @@ return {
                 { name = "path" }, -- file system paths
                 { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
                 { name = "nvim_lsp", priority = 100 },
+                { name = "orgmode"},
             }),
 
             -- configure lspkind for vs-code like pictograms in completion menu
