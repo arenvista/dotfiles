@@ -52,7 +52,7 @@ return {
             --         border = "rounded",
             --     })
             -- end,
-            win_full_mode = function(name)
+            win_split_mode = function(name)
                 -- Create the buffer
                 local bufnr = vim.api.nvim_create_buf(true, false)
                 vim.api.nvim_buf_set_name(bufnr, name)
@@ -72,6 +72,7 @@ return {
             },
             org_agenda_use_time_grid = true,
             org_tags_column = -80,
+            org_agenda_todo_ignore_deadlines = 'far', -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
 
             org_agenda_custom_commands = {
                 -- "c" is the shortcut that will be used in the prompt
@@ -87,7 +88,7 @@ return {
                         {
                             type = 'agenda',
                             org_agenda_overriding_header = 'My daily agenda',
-                            org_agenda_span = 'day' -- can be any value as org_agenda_span
+                            org_agenda_span = 'day', -- can be any value as org_agenda_span
                         },
                         {
                             type = 'tags',
@@ -97,6 +98,7 @@ return {
                         },
                         {
                             type = 'agenda',
+                            org_agenda_todo_ignore_deadlines = 'near', -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
                             org_agenda_overriding_header = 'Whole week overview',
                             org_agenda_span = 'week', -- 'week' is default, so it's not necessary here, just an example
                             org_agenda_start_on_weekday = 1, -- Start on Monday
@@ -133,13 +135,12 @@ return {
                             type = 'agenda',
                             org_agenda_overriding_header = 'Whole week overview',
                             org_agenda_span = 14, -- 'week' is default, so it's not necessary here, just an example
-                            org_agenda_start_on_weekday = 1, -- Start on Monday
-                            org_agenda_remove_tags = true -- Do not show tags only for this view
+                            org_agenda_start_on_weekday = false, -- Start on Monday
+                            org_agenda_remove_tags = false -- Do not show tags only for this view
                         },
                     }
                 }
-            }
-
+            },
         })
 
         require('org-bullets').setup({
@@ -160,21 +161,6 @@ return {
                 vim.api.nvim_set_hl(0, '@org.checkbox.halfchecked',  { link = '@constructor' })
             }
         })
-
-        -- require('blink.cmp').setup({
-        --     sources = {
-        --         per_filetype = {
-        --             org = {'orgmode'}
-        --         },
-        --         providers = {
-        --             orgmode = {
-        --                 name = 'Orgmode',
-        --                 module = 'orgmode.org.autocompletion.blink',
-        --                 fallbacks = { 'buffer' },
-        --             },
-        --         },
-        --     },
-        -- })
 
         require('telescope').setup()
         require('telescope').load_extension('orgmode')
@@ -203,6 +189,7 @@ return {
                 },
             },
         })
+
 
         require('org-super-agenda').setup({
             -- Where to look for .org files
@@ -305,5 +292,4 @@ return {
         -- vim.api.nvim_set_hl(0, '@org.priority.default',  { bg = '#ef9f76', fg = '#292c3c', bold = false })
         vim.api.nvim_set_hl(0, '@org.priority.lowest',  { bg = '#f9e2af', fg = '#292c3c'})
     end,
-
 }
