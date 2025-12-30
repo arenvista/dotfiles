@@ -52,6 +52,7 @@ return {
                 lsp_trouble = true,
                 mason = true,
                 markdown = true,
+                blink = true,
                 mini = true,
                 native_lsp = {
                     enabled = true,
