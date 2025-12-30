@@ -17,6 +17,10 @@ return {
                 name = "RealAnalysis",
                 path = "/home/sybil/Documents/MATH301/Notes/",
             },
+            {
+                name = "OperatingSystems",
+                path = "/home/sybil/Documents/OS/Notes/",
+            },
         },
         templates = {
             folder = "./.templates",

@@ -18,39 +18,50 @@ return {
             org_default_notes_file = '~/orgfiles/refile.org',
             org_todo_keywords = {
                 'TODO', '|',
-                'PROGRESS', '|',
-                'WAITING', '|',
+                'PROG', '|',
+                'WAIT', '|',
                 'DONE',
             },
             org_todo_keyword_faces = {
                 -- specific keyword  =  properties string
                 TODO  = ':foreground #FF5555 :weight bold :slant italic',
-                WAITING  = ':foreground #BD93F9 :weight bold :slant italic',
-                PROGRESS = ':foreground #FFAA00  :weight bold',
-                DONE     = ':foreground #50FA7B :weight bold', 
+                WAIT  = ':foreground #BD93F9 :weight bold :slant italic',
+                PROG  = ':foreground #FFAA00  :weight bold',
+                DONE  = ':foreground #50FA7B :weight bold', 
             },
             -- win_split_mode = {"float", 0.9},
-            win_split_mode = function(name)
-                -- Make sure it's not a scratch buffer by passing false as 2nd argument
+            -- win_split_mode = function(name)
+            --     -- Make sure it's not a scratch buffer by passing false as 2nd argument
+            --     local bufnr = vim.api.nvim_create_buf(true, false)
+            --     --- Setting buffer name is required
+            --     vim.api.nvim_buf_set_name(bufnr, name)
+            --
+            --     local fill = 0.8
+            --     local width = math.floor((vim.o.columns * (fill*0.8)))
+            --     local height = math.floor((vim.o.lines * fill))
+            --     local row = math.floor((((vim.o.lines - height) / 2) - 1))
+            --     local col = math.floor(((vim.o.columns - width) / 2))
+            --
+            --     vim.api.nvim_open_win(bufnr, true, {
+            --         relative = "editor",
+            --         width = width,
+            --         height = height,
+            --         row = row,
+            --         col = col,
+            --         style = "minimal",
+            --         border = "rounded",
+            --     })
+            -- end,
+            win_full_mode = function(name)
+                -- Create the buffer
                 local bufnr = vim.api.nvim_create_buf(true, false)
-                --- Setting buffer name is required
                 vim.api.nvim_buf_set_name(bufnr, name)
 
-                local fill = 0.8
-                local width = math.floor((vim.o.columns * (fill*0.8)))
-                local height = math.floor((vim.o.lines * fill))
-                local row = math.floor((((vim.o.lines - height) / 2) - 1))
-                local col = math.floor(((vim.o.columns - width) / 2))
+                -- Create a new tab and switch to it
+                vim.cmd('tabnew') 
 
-                vim.api.nvim_open_win(bufnr, true, {
-                    relative = "editor",
-                    width = width,
-                    height = height,
-                    row = row,
-                    col = col,
-                    style = "minimal",
-                    border = "rounded"
-                })
+                -- Set the buffer of this new tab to your created buffer
+                vim.api.nvim_set_current_buf(bufnr)
             end,
             win_border = "rounded",
             org_agenda_time = {
@@ -61,6 +72,74 @@ return {
             },
             org_agenda_use_time_grid = true,
             org_tags_column = -80,
+
+            org_agenda_custom_commands = {
+                -- "c" is the shortcut that will be used in the prompt
+                c = {
+                    description = 'Combined view', -- Description shown in the prompt for the shortcut
+                    types = {
+                        {
+                            type = 'tags_todo', -- Type can be agenda | tags | tags_todo
+                            match = '+PRIORITY="A"', --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
+                            org_agenda_overriding_header = 'High priority todos',
+                            org_agenda_todo_ignore_deadlines = 'far', -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
+                        },
+                        {
+                            type = 'agenda',
+                            org_agenda_overriding_header = 'My daily agenda',
+                            org_agenda_span = 'day' -- can be any value as org_agenda_span
+                        },
+                        {
+                            type = 'tags',
+                            match = 'WORK', --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
+                            org_agenda_overriding_header = 'My work todos',
+                            org_agenda_todo_ignore_scheduled = 'all', -- Ignore all headlines that are scheduled. Possible values: past | future | all
+                        },
+                        {
+                            type = 'agenda',
+                            org_agenda_overriding_header = 'Whole week overview',
+                            org_agenda_span = 'week', -- 'week' is default, so it's not necessary here, just an example
+                            org_agenda_start_on_weekday = 1, -- Start on Monday
+                            org_agenda_remove_tags = true -- Do not show tags only for this view
+                        },
+                    }
+                },
+                p = {
+                    description = 'Personal agenda',
+                    types = {
+                        {
+                            type = 'tags_todo',
+                            org_agenda_overriding_header = 'My personal todos',
+                            org_agenda_category_filter_preset = 'todos', -- Show only headlines from `todos` category. Same value providad as when pressing `/` in the Agenda view
+                            org_agenda_sorting_strategy = {'todo-state-up', 'priority-down'} -- See all options available on org_agenda_sorting_strategy
+                        },
+                        {
+                            type = 'agenda',
+                            org_agenda_overriding_header = 'Personal projects agenda',
+                            org_agenda_files = {'~/my-projects/**/*'}, -- Can define files outside of the default org_agenda_files
+                        },
+                        {
+                            type = 'tags',
+                            org_agenda_overriding_header = 'Personal projects notes',
+                            org_agenda_files = {'~/my-projects/**/*'},
+                            org_agenda_tag_filter_preset = 'NOTES-REFACTOR' -- Show only headlines with NOTES tag that does not have a REFACTOR tag. Same value providad as when pressing `/` in the Agenda view
+                        },
+                    }
+                },
+                f = {
+                    description = 'Two Week View',
+                    types = {
+                        {
+                            type = 'agenda',
+                            org_agenda_overriding_header = 'Whole week overview',
+                            org_agenda_span = 14, -- 'week' is default, so it's not necessary here, just an example
+                            org_agenda_start_on_weekday = 1, -- Start on Monday
+                            org_agenda_remove_tags = true -- Do not show tags only for this view
+                        },
+                    }
+                }
+            }
+
         })
 
         require('org-bullets').setup({
