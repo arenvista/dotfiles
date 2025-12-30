@@ -1,6 +1,8 @@
 local keymap = vim.keymap
 vim.g.mapleader = " "
 vim.g.localleader = "\\"
+
+vim.keymap.set("n", "<leader>so", "source /home/sybil/dotfiles/nvim/.config/nvim/init.lua <CR>", { desc = "Source Current File" })
 vim.keymap.set("n", "<leader>ex", vim.cmd.Ex, { desc = "󰭇 Explorer"})
 vim.keymap.set("n", "<leader>ee", vim.cmd.Neotree, { desc = " Neotree"})
 vim.keymap.set("n", "<leader>g", vim.cmd.Git, { desc = " Fugitive" })
@@ -52,51 +54,51 @@ keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = " Save"})
 -- keymap.set("n", "<leader>wa", "<cmd>bw<CR>", { desc = " Save all buffers"})
 
 function visual_replace_global()
-  -- To get the visually selected text, we can programmatically yank it.
-  -- 'gvy' yanks the last visual selection without moving the cursor.
-  -- 'noau' prevents autocommands from firing during this operation.
-  vim.cmd("noautocmd normal! gvy")
-  local word_to_replace = vim.fn.getreg('"xy')
-  print(vim.fn.getreg('"by'))
+    -- To get the visually selected text, we can programmatically yank it.
+    -- 'gvy' yanks the last visual selection without moving the cursor.
+    -- 'noau' prevents autocommands from firing during this operation.
+    vim.cmd("noautocmd normal! gvy")
+    local word_to_replace = vim.fn.getreg('"xy')
+    print(vim.fn.getreg('"by'))
 
-  -- Trim leading/trailing whitespace which might be selected accidentally.
-  word_to_replace = vim.fn.trim(word_to_replace)
+    -- Trim leading/trailing whitespace which might be selected accidentally.
+    word_to_replace = vim.fn.trim(word_to_replace)
 
-  -- Exit if the selection was empty.
-  if not word_to_replace or word_to_replace == "" then
-    vim.notify("No text selected or selection is empty.", vim.log.levels.WARN, { title = "Replace Canceled" })
-    return
-  end
+    -- Exit if the selection was empty.
+    if not word_to_replace or word_to_replace == "" then
+        vim.notify("No text selected or selection is empty.", vim.log.levels.WARN, { title = "Replace Canceled" })
+        return
+    end
 
-  -- Prompt the user for the replacement text.
-  local new_word = vim.fn.input("Replace all '" .. word_to_replace .. "' with: ")
+    -- Prompt the user for the replacement text.
+    local new_word = vim.fn.input("Replace all '" .. word_to_replace .. "' with: ")
 
-  -- If the user cancels the input (e.g., by pressing Esc or entering nothing), abort.
-  if not new_word or new_word == "" then
-    vim.notify("Replacement canceled.", vim.log.levels.INFO, { title = "Replace Canceled" })
-    return
-  end
+    -- If the user cancels the input (e.g., by pressing Esc or entering nothing), abort.
+    if not new_word or new_word == "" then
+        vim.notify("Replacement canceled.", vim.log.levels.INFO, { title = "Replace Canceled" })
+        return
+    end
 
-  -- Escape special characters in both the search pattern and the replacement string
-  -- to prevent them from being interpreted as parts of the regex command.
-  -- For the search term, we escape common regex symbols.
-  local search_pattern = vim.fn.escape(word_to_replace, [[\/.*$^]])
-  -- For the replacement term, we mainly need to escape the backslash '\' and ampersand '&'.
-  local replacement_string = vim.fn.escape(new_word, [[\&]])
+    -- Escape special characters in both the search pattern and the replacement string
+    -- to prevent them from being interpreted as parts of the regex command.
+    -- For the search term, we escape common regex symbols.
+    local search_pattern = vim.fn.escape(word_to_replace, [[\/.*$^]])
+    -- For the replacement term, we mainly need to escape the backslash '\' and ampersand '&'.
+    local replacement_string = vim.fn.escape(new_word, [[\&]])
 
-  -- Construct the final substitution command string.
-  -- Note: Backslashes for word boundaries (<, >) must be escaped for the string format.
-  local command = string.format("%%s/\\<%s\\>/%s/g", search_pattern, replacement_string)
+    -- Construct the final substitution command string.
+    -- Note: Backslashes for word boundaries (<, >) must be escaped for the string format.
+    local command = string.format("%%s/\\<%s\\>/%s/g", search_pattern, replacement_string)
 
-  -- Execute the command using the Neovim API.
-  vim.api.nvim_command(command)
+    -- Execute the command using the Neovim API.
+    vim.api.nvim_command(command)
 
-  -- Provide feedback to the user.
-  vim.notify(
-    string.format("Ran command: %s", command),
-    vim.log.levels.INFO,
-    { title = "Replace Complete" }
-  )
+    -- Provide feedback to the user.
+    vim.notify(
+        string.format("Ran command: %s", command),
+        vim.log.levels.INFO,
+        { title = "Replace Complete" }
+    )
 end
 
 -- This creates a keymap for visual mode.
@@ -104,7 +106,78 @@ end
 keymap.set("n", "<leader>rr", function()
     visual_replace_global()
 end, {
-    noremap = true,
-    silent = true,
-    desc = "Replace selected word globally in file"
-})
+        noremap = true,
+        silent = true,
+        desc = "Replace selected word globally in file"
+    })
+
+vim.api.nvim_create_user_command('DockH', function()
+    local win_id = 0 -- Current window
+    local buf_id = vim.api.nvim_win_get_buf(win_id)
+
+    -- 1. Check if it is a float
+    local config = vim.api.nvim_win_get_config(win_id)
+    if config.relative == "" then
+        print("Not a floating window")
+        return
+    end
+
+    -- 2. CRITICAL FIX: Force the buffer to hide (background) instead of wipe (delete)
+    -- This overrides whatever cleanup logic orgmode set on the buffer
+    vim.api.nvim_buf_set_option(buf_id, 'bufhidden', 'hide')
+
+    -- 3. Now it is safe to close the window; the buffer remains in memory
+    vim.api.nvim_win_close(win_id, false)
+
+    -- 4. Create the split and attach the preserved buffer
+    vim.cmd('split')
+    vim.api.nvim_win_set_buf(0, buf_id)
+
+    -- Optional: Reset bufhidden to wipe if you want it to delete after you close the split later
+    -- vim.api.nvim_buf_set_option(buf_id, 'bufhidden', 'wipe')
+end, {})
+
+vim.api.nvim_create_user_command('DockV', function()
+  local win_id = 0 -- Current window
+  local buf_id = vim.api.nvim_win_get_buf(win_id)
+
+  -- 1. Check if it is a float
+  local config = vim.api.nvim_win_get_config(win_id)
+  if config.relative == "" then
+    print("Not a floating window")
+    return
+  end
+
+  -- 2. Preserve the buffer (Prevents "invalid buffer id" error)
+  vim.api.nvim_buf_set_option(buf_id, 'bufhidden', 'hide')
+
+  -- 3. Close the floating window
+  vim.api.nvim_win_close(win_id, false)
+
+  -- 4. Create VERTICAL split and attach buffer
+  vim.cmd('vsplit') -- Changed from 'split' to 'vsplit'
+  vim.api.nvim_win_set_buf(0, buf_id)
+end, {})
+
+vim.api.nvim_create_user_command('DockF', function()
+  local win_id = 0 -- Current floating window
+  local buf_id = vim.api.nvim_win_get_buf(win_id)
+
+  -- 1. Check if it is a float
+  local config = vim.api.nvim_win_get_config(win_id)
+  if config.relative == "" then
+    print("Not a floating window")
+    return
+  end
+
+  -- 2. Preserve the buffer (Critical step!)
+  vim.api.nvim_buf_set_option(buf_id, 'bufhidden', 'hide')
+
+  -- 3. Close the floating window
+  vim.api.nvim_win_close(win_id, false)
+
+  -- 4. Open in a new tab (Full Screen)
+  -- 'tab sb' = tab split buffer
+  vim.cmd('tab sb ' .. buf_id)
+end, {})
+

@@ -13,8 +13,54 @@ return {
     event = 'VeryLazy',
     config = function()
         require('orgmode').setup({
+            -- See => https://github.com/nvim-orgmode/orgmode/blob/master/docs/configuration.org 
             org_agenda_files = '~/orgfiles/**/*',
             org_default_notes_file = '~/orgfiles/refile.org',
+            org_todo_keywords = {
+                'TODO', '|',
+                'PROGRESS', '|',
+                'WAITING', '|',
+                'DONE',
+            },
+            org_todo_keyword_faces = {
+                -- specific keyword  =  properties string
+                TODO  = ':foreground #FF5555 :weight bold :slant italic',
+                WAITING  = ':foreground #BD93F9 :weight bold :slant italic',
+                PROGRESS = ':foreground #FFAA00  :weight bold',
+                DONE     = ':foreground #50FA7B :weight bold', 
+            },
+            -- win_split_mode = {"float", 0.9},
+            win_split_mode = function(name)
+                -- Make sure it's not a scratch buffer by passing false as 2nd argument
+                local bufnr = vim.api.nvim_create_buf(true, false)
+                --- Setting buffer name is required
+                vim.api.nvim_buf_set_name(bufnr, name)
+
+                local fill = 0.8
+                local width = math.floor((vim.o.columns * (fill*0.8)))
+                local height = math.floor((vim.o.lines * fill))
+                local row = math.floor((((vim.o.lines - height) / 2) - 1))
+                local col = math.floor(((vim.o.columns - width) / 2))
+
+                vim.api.nvim_open_win(bufnr, true, {
+                    relative = "editor",
+                    width = width,
+                    height = height,
+                    row = row,
+                    col = col,
+                    style = "minimal",
+                    border = "rounded"
+                })
+            end,
+            win_border = "rounded",
+            org_agenda_time = {
+                type = { 'daily', 'today', 'require-timed' },
+                times = { 800, 1000, 1200, 1400, 1600, 1800, 2000 },
+                time_separator = '┄┄┄┄┄',
+                time_label = '┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄'
+            },
+            org_agenda_use_time_grid = true,
+            org_tags_column = -80,
         })
 
         require('org-bullets').setup({
