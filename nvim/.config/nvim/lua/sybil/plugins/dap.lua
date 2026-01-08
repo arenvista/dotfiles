@@ -46,14 +46,14 @@ return {
         },
 
         -- which key integration
-        {
-            "folke/which-key.nvim",
-            opts = {
-                defaults = {
-                    ["<leader>d"] = { name = "+debug" },
-                },
-            },
-        },
+        -- {
+        --     "folke/which-key.nvim",
+        --     opts = {
+        --         defaults = {
+        --             ["<leader>d"] = { name = "+debug" },
+        --         },
+        --     },
+        -- },
 
         -- mason.nvim integration
         {

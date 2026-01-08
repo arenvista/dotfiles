@@ -114,6 +114,7 @@ alias ls="lsd"
 bindkey -s '^f' "tmux-sessionizer\n"
 bindkey -s '^r' "source ~/.zshrc\n"
 bindkey -s '^n' "nvim\n"
+bindkey -s '^e' "yazi\n"
 bindkey -s '^[w' "exit\n"
 alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)"
 

@@ -17,17 +17,14 @@ return {
             org_agenda_files = '~/orgfiles/**/*',
             org_default_notes_file = '~/orgfiles/refile.org',
             org_todo_keywords = {
-                'TODO', '|',
-                'PROG', '|',
-                'WAIT', '|',
-                'DONE',
+                'TODO', 'PROG', 'WAIT',     '|',         'DONE',
             },
             org_todo_keyword_faces = {
                 -- specific keyword  =  properties string
                 TODO  = ':foreground #FF5555 :weight bold :slant italic',
                 WAIT  = ':foreground #BD93F9 :weight bold :slant italic',
                 PROG  = ':foreground #FFAA00  :weight bold',
-                DONE  = ':foreground #50FA7B :weight bold', 
+                DONE  = ':foreground #50FA7B :weight bold',
             },
             -- win_split_mode = {"float", 0.9},
             -- win_split_mode = function(name)
@@ -58,21 +55,22 @@ return {
                 vim.api.nvim_buf_set_name(bufnr, name)
 
                 -- Create a new tab and switch to it
-                vim.cmd('tabnew') 
+                vim.cmd('tabnew')
 
                 -- Set the buffer of this new tab to your created buffer
                 vim.api.nvim_set_current_buf(bufnr)
             end,
             win_border = "rounded",
-            org_agenda_time = {
+            org_agenda_use_time_grid = true,
+            org_agenda_time_grid = {
                 type = { 'daily', 'today', 'require-timed' },
                 times = { 800, 1000, 1200, 1400, 1600, 1800, 2000 },
-                time_separator = '┄┄┄┄┄',
-                time_label = '┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄'
+                time_separator = '―――――',
+                time_label = '―――――――――――――――'
             },
-            org_agenda_use_time_grid = true,
-            org_tags_column = -80,
-            org_agenda_todo_ignore_deadlines = 'far', -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
+            org_deadline_warning_days = 0,
+            org_agenda_current_time_string = "↞―― CURRENT ―――",
+            vim.api.nvim_set_hl(0, '@org.agenda.time_grid', { fg = '#5c5f77', bold = true }),
 
             org_agenda_custom_commands = {
                 -- "c" is the shortcut that will be used in the prompt
@@ -91,14 +89,7 @@ return {
                             org_agenda_span = 'day', -- can be any value as org_agenda_span
                         },
                         {
-                            type = 'tags',
-                            match = 'WORK', --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-                            org_agenda_overriding_header = 'My work todos',
-                            org_agenda_todo_ignore_scheduled = 'all', -- Ignore all headlines that are scheduled. Possible values: past | future | all
-                        },
-                        {
                             type = 'agenda',
-                            org_agenda_todo_ignore_deadlines = 'near', -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
                             org_agenda_overriding_header = 'Whole week overview',
                             org_agenda_span = 'week', -- 'week' is default, so it's not necessary here, just an example
                             org_agenda_start_on_weekday = 1, -- Start on Monday
@@ -106,35 +97,37 @@ return {
                         },
                     }
                 },
-                p = {
-                    description = 'Personal agenda',
+                d = {
+                    description = 'Clean Day',
                     types = {
                         {
-                            type = 'tags_todo',
-                            org_agenda_overriding_header = 'My personal todos',
-                            org_agenda_category_filter_preset = 'todos', -- Show only headlines from `todos` category. Same value providad as when pressing `/` in the Agenda view
-                            org_agenda_sorting_strategy = {'todo-state-up', 'priority-down'} -- See all options available on org_agenda_sorting_strategy
-                        },
-                        {
+                            org_agenda_overriding_header = 'xxx',
                             type = 'agenda',
-                            org_agenda_overriding_header = 'Personal projects agenda',
-                            org_agenda_files = {'~/my-projects/**/*'}, -- Can define files outside of the default org_agenda_files
-                        },
-                        {
-                            type = 'tags',
-                            org_agenda_overriding_header = 'Personal projects notes',
-                            org_agenda_files = {'~/my-projects/**/*'},
-                            org_agenda_tag_filter_preset = 'NOTES-REFACTOR' -- Show only headlines with NOTES tag that does not have a REFACTOR tag. Same value providad as when pressing `/` in the Agenda view
+                            org_agenda_span = 'day', -- can be any value as org_agenda_span
                         },
                     }
                 },
                 f = {
-                    description = 'Two Week View',
+                    description = '14-Day View',
                     types = {
                         {
                             type = 'agenda',
-                            org_agenda_overriding_header = 'Whole week overview',
+                            org_agenda_overriding_header = '14-Day View',
                             org_agenda_span = 14, -- 'week' is default, so it's not necessary here, just an example
+                            org_agenda_start_on_weekday = false, -- Start on Monday
+                            org_agenda_remove_tags = false, -- Do not show tags only for this view
+                            org_agenda_skip_scheduled_if_done = false,
+                            org_agenda_skip_deadline_if_done = false,
+                        },
+                    }
+                },
+                m = {
+                    description = '30-Day View',
+                    types = {
+                        {
+                            type = 'agenda',
+                            org_agenda_overriding_header = '30-Day View',
+                            org_agenda_span = 30, -- 'week' is default, so it's not necessary here, just an example
                             org_agenda_start_on_weekday = false, -- Start on Monday
                             org_agenda_remove_tags = false -- Do not show tags only for this view
                         },
@@ -191,105 +184,27 @@ return {
         })
 
 
-        require('org-super-agenda').setup({
-            -- Where to look for .org files
-            org_files           = {'~/orgfiles/*.org'},
-            org_directories     = {'~/orgfiles/'}, -- only the directory for *.org
-            exclude_files       = {},
-            exclude_directories = {},
-
-            -- TODO states + their quick filter keymaps and highlighting
-            -- Optional: add `shortcut` field to override the default key (first letter)
-            todo_states = {
-                { name='TODO',     keymap='ot', color='#FF5555', strike_through=false, fields={'filename','todo','headline','priority','date','tags'} },
-                { name='PROGRESS', keymap='op', color='#FFAA00', strike_through=false, fields={'filename','todo','headline','priority','date','tags'} },
-                { name='WAITING',  keymap='ow', color='#BD93F9', strike_through=false, fields={'filename','todo','headline','priority','date','tags'} },
-                { name='DONE',     keymap='od', color='#50FA7B', strike_through=true,  fields={'filename','todo','headline','priority','date','tags'} },
-            },
-
-            -- Agenda keymaps (inline comments explain each)
-            keymaps = {
-                filter_reset      = 'oa', -- reset all filters
-                toggle_other      = 'oo', -- toggle catch-all "Other" section
-                filter            = 'of', -- live filter (exact text)
-                filter_fuzzy      = 'oz', -- live filter (fuzzy)
-                filter_query      = 'oq', -- advanced query input
-                undo              = 'u',  -- undo last change
-                reschedule        = 'cs', -- set/change SCHEDULED
-                set_deadline      = 'cd', -- set/change DEADLINE
-                cycle_todo        = 't',  -- cycle TODO state
-                set_state         = 's',  -- set state directly (st, sd, etc.) or show menu
-                reload            = 'r',  -- refresh agenda
-                refile            = 'R',  -- refile via Telescope/org-telescope
-                hide_item         = 'x',  -- hide current item
-                preview           = 'K',  -- preview headline content
-                reset_hidden      = 'X',  -- clear hidden list
-                toggle_duplicates = 'D',  -- duplicate items may appear in multiple groups
-                cycle_view        = 'ov', -- switch view (classic/compact)
-            },
-
-            -- Window/appearance
-            window = {
-                width        = 0.8,
-                height       = 0.7,
-                border       = 'rounded',
-                title        = 'Org Super Agenda',
-                title_pos    = 'center',
-                margin_left  = 0,
-                margin_right = 0,
-                fullscreen_border = 'none', -- border style when using fullscreen
-            },
-
-            -- Group definitions (order matters; first match wins unless allow_duplicates=true)
-            groups = {
-                { name = ' Today',     matcher = function(i) return i.scheduled and i.scheduled:is_today() end, sort={ by='priority', order='desc' } },
-                { name = '⏩Tomorrow', matcher = function(i) return i.scheduled and i.scheduled:days_from_today() == 1 end },
-                { name = '⏳ Deadlines', matcher = function(i) return i.deadline and i.todo_state ~= 'DONE' and not i:has_tag('personal') end, sort={ by='deadline', order='asc' } },
-                { name = '⭐Important',  matcher = function(i) return i.priority == 'A' and (i.deadline or i.scheduled) end, sort={ by='date_nearest', order='asc' } },
-                { name = '❌Overdue',    matcher = function(i) return i.todo_state ~= 'DONE' and ((i.deadline and i.deadline:is_past()) or (i.scheduled and i.scheduled:is_past())) end, sort={ by='date_nearest', order='asc' } },
-                { name = ' Personal',   matcher = function(i) return i:has_tag('personal') end },
-                { name = '󰼭 Work',       matcher = function(i) return i:has_tag('work') end },
-                { name = '⏵Upcoming',   matcher = function(i)
-                    local days = require('org-super-agenda.config').get().upcoming_days or 10
-                    local d1 = i.deadline  and i.deadline:days_from_today()
-                    local d2 = i.scheduled and i.scheduled:days_from_today()
-                    return (d1 and d1 >= 0 and d1 <= days) or (d2 and d2 >= 0 and d2 <= days)
-                end,
-                    sort={ by='date_nearest', order='asc' }
-                },
-            },
-
-            -- Defaults & behavior
-            upcoming_days      = 10,
-            hide_empty_groups  = true,      -- drop blank sections
-            keep_order         = false,     -- keep original org order (rarely useful)
-            allow_duplicates   = false,     -- if true, an item can live in multiple groups
-            group_format       = '* %s',    -- group header format
-            other_group_name   = 'Other',
-            show_other_group   = false,     -- show catch-all section
-            show_tags          = true,      -- draw tags on the right
-            show_filename      = true,      -- include [filename]
-            heading_max_length = 70,
-            persist_hidden     = false,     -- keep hidden items across reopen
-            view_mode          = 'classic', -- 'classic' | 'compact'
-
-            classic = { heading_order={'filename','todo','priority','headline'}, short_date_labels=false, inline_dates=true },
-            compact = { filename_min_width=10, label_min_width=12 },
-
-            -- Global fallback sort for groups that omit `sort`
-            group_sort = { by='date_nearest', order='asc' },
-
-            -- Popup mode: run in a persistent tmux session for instant access
-            popup_mode = {
-                enabled      = false,
-                hide_command = nil, -- e.g., "tmux detach-client"
-            },
-
-            debug = false,
-        })
         vim.api.nvim_set_hl(0, '@org.priority.highest', { link = '@comment.error' })
         vim.api.nvim_set_hl(0, '@org.priority.default',  { bg = '#ef9f76', fg = '#292c3c'})
-        -- vim.api.nvim_set_hl(0, '@org.priority.default',  { bg = '#ef9f76', fg = '#292c3c', bold = false })
         vim.api.nvim_set_hl(0, '@org.priority.lowest',  { bg = '#f9e2af', fg = '#292c3c'})
+
+        local org_agenda_colors = vim.api.nvim_create_augroup('OrgAgendaCustomColors', { clear = true })
+
+        vim.api.nvim_create_autocmd('FileType', {
+            pattern = 'orgagenda',
+            group = org_agenda_colors,
+            callback = function()
+                -- 1. Define the specific look you want for the "CURRENT" line
+                vim.api.nvim_set_hl(0, 'OrgAgendaCurrentTime', { 
+                    fg = '#dce0e8',
+                    bg = 'NONE',
+                    bold = true
+                })
+
+                -- 2. Use matchadd to force this highlight on your specific string
+                -- Priority 100 is usually high enough to override Tree-sitter/TimeGrid
+                vim.fn.matchadd('OrgAgendaCurrentTime', '――――― ↞―― CURRENT ―――', 100)
+            end,
+        })
     end,
 }
