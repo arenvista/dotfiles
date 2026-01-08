@@ -14,12 +14,12 @@ return {
         "saadparwaiz1/cmp_luasnip", -- for autocompletion
         "rafamadriz/friendly-snippets", -- useful snippets
         "onsails/lspkind.nvim", -- vs-code like pictograms
+        "micangl/cmp-vimtex",
     },
     config = function()
         local cmp = require "cmp"
         local compare = cmp.config.compare
 
-        local cmp = require("cmp")
         local luasnip = require("luasnip")
         local lspkind = require("lspkind")
 
@@ -55,13 +55,23 @@ return {
             }),
             -- sources for autocompletion
             sources = cmp.config.sources({
-                { name = "nvim_lsp"},
                 { name = "luasnip" }, -- snippets
                 { name = "buffer" }, -- text within current buffer
+                { name = "bufname"},
+                { name = "buffer-lines"},
+                { name = "calc"},
+                { name = "dictionary"},
+                { name = "spell"},
+                { name = "omni"},
+                { name = "digraphs"},
                 { name = "path" }, -- file system paths
                 { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
                 { name = "nvim_lsp", priority = 100 },
                 { name = "orgmode"},
+                { name = "git"},
+                { name = "rg"},
+                { name = "cmdline"},
+                { name = "vimtex"},
             }),
 
             -- configure lspkind for vs-code like pictograms in completion menu
@@ -71,6 +81,22 @@ return {
                     ellipsis_char = "...",
                 }),
             },
+        })
+        cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+                { name = 'path' }    -- Autocomplete file paths
+            }, {
+                    { name = 'cmdline' } -- Autocomplete vim commands/functions
+                }),
+        })
+
+        -- 3. ENABLE SEARCH AUTOCOMPLETE (/)
+        cmp.setup.cmdline('/', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+                { name = 'buffer' },
+            }
         })
     end,
 }

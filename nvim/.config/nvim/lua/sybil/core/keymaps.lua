@@ -2,7 +2,7 @@ local keymap = vim.keymap
 vim.g.mapleader = " "
 vim.g.localleader = "\\"
 
-vim.keymap.set("n", "<leader>so", "source /home/sybil/dotfiles/nvim/.config/nvim/init.lua <CR>", { desc = "Source Current File" })
+vim.keymap.set("n", "<leader>st", "<cmd>set spell! spelllang=en <CR>", { desc = "Spellcheck Toggle" })
 vim.keymap.set("n", "<leader>ex", vim.cmd.Ex, { desc = "󰭇 Explorer"})
 vim.keymap.set("n", "<leader>ee", vim.cmd.Neotree, { desc = " Neotree"})
 vim.keymap.set("n", "<leader>g", vim.cmd.Git, { desc = " Fugitive" })
@@ -181,3 +181,59 @@ vim.api.nvim_create_user_command('DockF', function()
   vim.cmd('tab sb ' .. buf_id)
 end, {})
 
+
+-- =============================================================================
+-- Gp.nvim (AI) - Normal Mode
+-- =============================================================================
+keymap.set("n", "<C-g>c", "<cmd>GpChatNew vsplit<cr>", { desc = "New Chat", silent = true })
+keymap.set("n", "<C-g>t", "<cmd>GpChatToggle popup<cr>", { desc = "Toggle Chat", silent = true })
+keymap.set("n", "<C-g>f", "<cmd>GpChatFinder<cr>", { desc = "Chat Finder", silent = true })
+keymap.set("n", "<C-g><C-x>", "<cmd>GpChatNew split<cr>", { desc = "New Chat split", silent = true })
+keymap.set("n", "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", { desc = "New Chat vsplit", silent = true })
+keymap.set("n", "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", { desc = "New Chat tabnew", silent = true })
+keymap.set("n", "<C-g>r", "<cmd>GpRewrite<cr>", { desc = "Inline Rewrite", silent = true })
+keymap.set("n", "<C-g>a", "<cmd>GpAppend<cr>", { desc = "Append (after)", silent = true })
+keymap.set("n", "<C-g>b", "<cmd>GpPrepend<cr>", { desc = "Prepend (before)", silent = true })
+keymap.set("n", "<C-g>n", "<cmd>GpNextAgent<cr>", { desc = "Next Agent", silent = true })
+keymap.set("n", "<C-g>s", "<cmd>GpStop<cr>", { desc = "GpStop", silent = true })
+keymap.set("n", "<C-g>x", "<cmd>GpContext<cr>", { desc = "Toggle GpContext", silent = true })
+
+-- =============================================================================
+-- Gp.nvim (AI) - Visual Mode
+-- =============================================================================
+-- Shared commands (that don't act on specific selection range logic)
+keymap.set("v", "<C-g><C-x>", "<cmd>GpChatNew split<cr>", { desc = "New Chat split", silent = true })
+keymap.set("v", "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", { desc = "New Chat vsplit", silent = true })
+keymap.set("v", "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", { desc = "New Chat tabnew", silent = true })
+keymap.set("v", "<C-g>n", "<cmd>GpNextAgent<cr>", { desc = "Next Agent", silent = true })
+keymap.set("v", "<C-g>s", "<cmd>GpStop<cr>", { desc = "GpStop", silent = true })
+keymap.set("v", "<C-g>x", "<cmd>GpContext<cr>", { desc = "Toggle GpContext", silent = true })
+keymap.set("v", "<C-g>f", "<cmd>GpChatFinder<cr>", { desc = "Chat Finder", silent = true })
+
+-- Visual Selection Specific (Prioritized)
+keymap.set("v", "<C-g>c", ":<C-u>'<,'>GpChatNew<cr>", { desc = "Visual Chat New", silent = true })
+keymap.set("v", "<C-g>p", ":<C-u>'<,'>GpChatPaste<cr>", { desc = "Visual Chat Paste", silent = true })
+keymap.set("v", "<C-g>t", ":<C-u>'<,'>GpChatToggle<cr>", { desc = "Visual Toggle Chat", silent = true })
+keymap.set("v", "<C-g>r", ":<C-u>'<,'>GpRewrite<cr>", { desc = "Visual Rewrite", silent = true })
+keymap.set("v", "<C-g>a", ":<C-u>'<,'>GpAppend<cr>", { desc = "Visual Append (after)", silent = true })
+keymap.set("v", "<C-g>b", ":<C-u>'<,'>GpPrepend<cr>", { desc = "Visual Prepend (before)", silent = true })
+keymap.set("v", "<C-g>i", ":<C-u>'<,'>GpImplement<cr>", { desc = "Implement selection", silent = true })
+
+-- =============================================================================
+-- Telescope
+-- =============================================================================
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find File  ", silent = true })
+keymap.set("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Git Files  ", silent = true })
+keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Grep  ", silent = true })
+keymap.set("n", "<leader>fv", "<cmd>Telescope grep_string<cr>", { desc = "Grep Word Under Cursor  ", silent = true })
+keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Todos  ", silent = true })
+keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "List Buffers", silent = true })
+
+-- =============================================================================
+-- LeetCode
+-- =============================================================================
+keymap.set("n", "<leader>lr", "<cmd>Leet run<CR>", { desc = "Run Code 󰜎 ", silent = true })
+keymap.set("n", "<leader>lc", "<cmd>Leet console<CR>", { desc = "Open Console 󰞷 ", silent = true })
+keymap.set("n", "<leader>le", "<cmd>Leet<CR>", { desc = "Leet  ", silent = true })
+keymap.set("n", "<leader>li", "<cmd>Leet list<CR>", { desc = "Show problem list  ", silent = true })
+keymap.set("n", "<leader>lt", "<cmd>Leet tabs<CR>", { desc = "Show tabs list  ", silent = true })

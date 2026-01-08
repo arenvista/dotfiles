@@ -4,98 +4,19 @@ return {
     event = "VeryLazy",
     config = function()
         require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-            -- surrounds = {
-            --     ["("] = {
-            --         add = { "(", " )" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a(" })
-            --         end,
-            --         delete = "^(. ?)().-( ?.)()$",
-            --     },
-            --     [")"] = {
-            --         add = { "(", ")" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a)" })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ["{"] = {
-            --         add = { "{ ", " }" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a{" })
-            --         end,
-            --         delete = "^(. ?)().-( ?.)()$",
-            --     },
-            --     ["}"] = {
-            --         add = { "{", "}" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a}" })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ["<"] = {
-            --         add = { "< ", " >" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a<" })
-            --         end,
-            --         delete = "^(. ?)().-( ?.)()$",
-            --     },
-            --     [">"] = {
-            --         add = { "<", ">" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a>" })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ["["] = {
-            --         add = { "[ ", " ]" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a[" })
-            --         end,
-            --         delete = "^(. ?)().-( ?.)()$",
-            --     },
-            --     ["]"] = {
-            --         add = { "[", "]" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a]" })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ["'"] = {
-            --         add = { "'", "'" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a'" })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ['"'] = {
-            --         add = { '"', '"' },
-            --         find = function()
-            --             return M.get_selection({ motion = 'a"' })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ["`"] = {
-            --         add = { "`", "`" },
-            --         find = function()
-            --             return M.get_selection({ motion = "a`" })
-            --         end,
-            --         delete = "^(.)().-(.)()$",
-            --     },
-            --     ["i"] = { -- TODO: Add find/delete/change functions
-            --         add = function()
-            --             local left_delimiter = M.get_input("Enter the left delimiter: ")
-            --             local right_delimiter = left_delimiter and M.get_input("Enter the right delimiter: ")
-            --             if right_delimiter then
-            --                 return { { left_delimiter }, { right_delimiter } }
-            --             end
-            --         end,
-            --         find = function() end,
-            --         delete = function() end,
-            --     },
-            --     --end of config
-            --     }
+            keymaps = {
+                insert = "<C-g>s",
+                insert_line = "<C-g>S",
+                normal = "ys",
+                normal_cur = "yss",
+                normal_line = "yS",
+                normal_cur_line = "ySS",
+                visual = "S",
+                visual_line = "gS",
+                delete = "ds",
+                change = "cs",
+                change_line = "cS",
+            },
             })
     end
 }
