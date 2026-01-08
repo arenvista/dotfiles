@@ -10,18 +10,48 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup(
-    {
-        {import = "sybil.plugins" },
-        {import = "sybil.plugins.lsp" },
-        {import = "sybil.plugins.local" }
-    },
-    {
-        checker = {
-            enabled = true,
-            notify = false,
-        },
-        change_detection = {
-            notify = false,
-        },
+
+if vim.g.started_by_firenvim == true then
+    require("lazy").setup(
+        {
+            {import = "sybil.plugins.firenvim" },
+            {import = "sybil.plugins.mini" },
+            {import = "sybil.plugins.movement" },
+            {import = "sybil.plugins.ui.inline-render" },
+            {import = "sybil.plugins.ui.tree-viewers" },
+            {import = "sybil.plugins.ui.colorscheme" },
+        })
+    vim.api.nvim_create_autocmd({'BufEnter'}, {
+        pattern = "*.txt",
+        command = "set filetype=markdown"
     })
+  -- vim.o.laststatus = 0
+else
+    -- vim.o.laststatus = 2
+    require("lazy").setup(
+        {
+            {import = "sybil.plugins.firenvim" },
+            {import = "sybil.plugins.mini" },
+            {import = "sybil.plugins.movement" },
+            {import = "sybil.plugins.ui.inline-render" },
+            {import = "sybil.plugins.ui.lualine" },
+            {import = "sybil.plugins.ui.tree-viewers" },
+            {import = "sybil.plugins.ui.pretty" },
+            {import = "sybil.plugins.ui.colorscheme" },
+            {import = "sybil.plugins.ui.unsorted" },
+            {import = "sybil.plugins.treesitter" },
+            {import = "sybil.plugins.org" },
+            {import = "sybil.plugins.utils.compile" },
+            {import = "sybil.plugins.utils.extern" },
+            {import = "sybil.plugins.utils.qql" },
+        },
+        {
+            checker = {
+                enabled = true,
+                notify = false,
+            },
+            change_detection = {
+                notify = false,
+            },
+        })
+end
