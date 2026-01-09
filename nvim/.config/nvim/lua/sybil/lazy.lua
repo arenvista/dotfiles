@@ -47,6 +47,7 @@ else
             {import = "sybil.plugins.utils.compile" },
             {import = "sybil.plugins.utils.extern" },
             {import = "sybil.plugins.utils.qql" },
+            {import = "sybil.plugins.lsp" },
         },
         {
             checker = {
@@ -57,4 +58,6 @@ else
                 notify = false,
             },
         })
+    -- views can only be fully collapsed with the global statusline
+    vim.opt.laststatus = 3
 end
