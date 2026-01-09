@@ -25,7 +25,10 @@ if vim.g.started_by_firenvim == true then
         pattern = "*.txt",
         command = "set filetype=markdown"
     })
-  -- vim.o.laststatus = 0
+    vim.cmd("hi Normal guibg=#1e1e2e")
+    vim.opt.laststatus = 0 --remove footer
+    vim.opt.signcolumn = "no" -- Disable the column where git signs and LSP errors usually appear
+    vim.opt.foldcolumn = "0" -- Disable the column used for folding markers
 else
     -- vim.o.laststatus = 2
     require("lazy").setup(
