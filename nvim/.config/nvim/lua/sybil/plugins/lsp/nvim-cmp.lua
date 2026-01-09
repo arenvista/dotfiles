@@ -46,13 +46,35 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-                ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
+                ["<C-k>"] = cmp.mapping.select_prev_item(),
+                ["<C-j>"] = cmp.mapping.select_next_item(),
                 ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-                ["<C-Backspace>"] = cmp.mapping.abort(), -- close completion window
+                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-Backspace>"] = cmp.mapping.abort(),
                 ["<CR>"] = cmp.mapping.confirm({ select = false }),
+
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    -- Priority 1: Snippet Jump (i(1) -> i(2))
+                    if luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
+                        -- Priority 2: Completion Menu (if open)
+                    elseif cmp.visible() then
+                        cmp.select_next_item()
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+
+                ["<S-Tab>"] = cmp.mapping(function(fallback)
+                    if luasnip.jumpable(-1) then
+                        luasnip.jump(-1)
+                    elseif cmp.visible() then
+                        cmp.select_prev_item()
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
             }),
             -- sources for autocompletion
             sources = cmp.config.sources({
