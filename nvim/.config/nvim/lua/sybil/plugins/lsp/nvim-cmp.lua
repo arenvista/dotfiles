@@ -19,13 +19,15 @@ return {
     config = function()
         local cmp = require "cmp"
         local compare = cmp.config.compare
-
         local luasnip = require("luasnip")
         local lspkind = require("lspkind")
 
         -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
         require("luasnip.loaders.from_vscode").lazy_load()
-
+        require("luasnip.loaders.from_lua").load({ paths = "./lua/sybil/plugins/lsp/snip" })
+        luasnip.setup({
+            enable_autosnippets = true,
+        })
         cmp.setup({
             sorting = {
                 priority_weight = 1.0,
@@ -33,7 +35,6 @@ return {
                     compare.score,            -- Jupyter kernel completion shows prior to LSP
                     compare.recently_used,
                     compare.locality,
-                    -- ...
                 },
             },
             completion = {
@@ -65,7 +66,7 @@ return {
                 { name = "omni"},
                 { name = "digraphs"},
                 { name = "path" }, -- file system paths
-                { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
+                -- { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
                 { name = "nvim_lsp", priority = 100 },
                 { name = "orgmode"},
                 { name = "git"},
