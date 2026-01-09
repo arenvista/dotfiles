@@ -55,6 +55,9 @@ return {
     s({trig = "<->", snippetType="autosnippet"}, { t("\\iff ") }, { condition = in_mathzone }),
     s({trig = "land", snippetType="autosnippet"}, { t("\\land ") }, { condition = in_mathzone }),
     s({trig = "lor", snippetType="autosnippet"}, { t("\\lor ") }, { condition = in_mathzone }),
+    s({trig = ">=", snippetType="autosnippet"}, { t("\\geq ") }, { condition = in_mathzone }),
+    s({trig = "<=", snippetType="autosnippet"}, { t("\\leq ") }, { condition = in_mathzone }),
+    s({trig = "==", snippetType="autosnippet"}, { t("\\equiv ") }, { condition = in_mathzone }),
     -- ==========================================
     -- 1. GENERAL ENVIRONMENTS (Regular Triggers)
     -- ==========================================
@@ -70,6 +73,8 @@ return {
             rep(1),
         }
     )),
+
+    s({trig = "nl", snippetType="autosnippet"}, { t("\\\\") } ),
 
     s({trig = "set", snippetType="autosnippet"}, fmta(
         [[

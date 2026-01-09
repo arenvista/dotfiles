@@ -5,7 +5,7 @@ QT_STYLE_OVERRIDE=Adwaita-Dark
 [[ $- != *i* ]] && return
 #SOURCE ---
 source ~/wallpapers/scripts/wallpaper_state.env
-source ~/.secret_keys/openai2.env
+source ~/.secret_keys/openai.env
 #ALIASES ---
 alias sl='systemctl sleep && swaylock -i $WALLPAPER' 
 alias grep='grep --color=auto'
