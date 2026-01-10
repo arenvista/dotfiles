@@ -14,7 +14,7 @@ fi
 # 3. Select session with fzf (Prepend with numbers)
 # - awk '{print NR, $0}' adds the line number (1, 2, 3...)
 # - fzf allows you to filter by that number or the name
-selected_line=$(echo "$sessions" | awk '{print NR, $0}' | fzf --prompt="Select Tmux Session: " --height=40% --layout=reverse --border)
+selected_line=$(echo "$sessions" | awk '{print NR, $0}' | fzf --prompt=" Select Tmux Session: " --height=40% --layout=reverse --border)
 
 # 4. If the user selected something
 if [ -n "${selected_line}" ]; then
