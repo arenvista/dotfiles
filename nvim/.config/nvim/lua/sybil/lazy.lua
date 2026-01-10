@@ -51,6 +51,7 @@ else
             {import = "sybil.plugins.utils.qql" },
             {import = "sybil.plugins.lsp" },
             {import = "sybil.plugins.telescope" },
+            {import = "sybil.plugins.local" },
         },
         {
             checker = {
