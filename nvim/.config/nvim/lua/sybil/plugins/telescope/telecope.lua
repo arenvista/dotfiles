@@ -17,6 +17,5 @@ return {
         local telescope = require("telescope")
         telescope.setup(opts)
         telescope.load_extension("luasnip")
-        require("sybil.plugins.telescope.telescope-funcs.telescope-tmux").setup()
     end,
 }

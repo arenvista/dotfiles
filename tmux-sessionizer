@@ -1,12 +1,54 @@
 #!/usr/bin/env bash
 
-session=$(find ~ ~/dotfiles ~/.config  ~/Documents  ~/Documents/Projects ~/Documents/Learning/CSNotes/rust_intro_projects ~/Documents/Learning/CSNotes ~/Documents/Learning . -mindepth 1 -maxdepth 1 -type d | fzf)
-session_name=$(basename "$session" | tr . _ )
+# --- Configuration ---
+# Add or remove directories here. 
+# We use an array to keep the code clean.
+SEARCH_PATHS=(
+    "$HOME"
+    "$HOME/dotfiles"
+    "$HOME/.config"
+    "$HOME/Documents"
+    "$HOME/Documents/Projects"
+    "$HOME/Documents/Learning/CSNotes/rust_intro_projects"
+    "$HOME/Documents/Learning/CSNotes"
+    "$HOME/Documents/Learning"
+    "."
+)
 
-echo "Starting tmux session: $session_name"
+# --- The Selection Logic ---
+# 1. loop through paths and find directories (depth 1)
+# 2. pipe to fzf with a pretty styling and a preview window
+selected=$(find "${SEARCH_PATHS[@]}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | fzf \
+    --prompt=" Switch to Project: " \
+    --height=50% \
+    --layout=reverse \
+    --border=rounded \
+    --info=inline \
+    --preview 'ls --color=always -F {} | head -20' \
+    --preview-window='right:50%:wrap')
 
-if ! tmux has-session -t "$session_name" 2> /dev/null; then # If session does not exist
-    tmux new-session -s "$session_name" -c "$session" -d # Create new session
+# --- Exit Handling ---
+# If user cancels (Esc/Ctrl-C), exit cleanly
+if [ -z "$selected" ]; then
+    exit 0
 fi
 
-tmux switch-client -t "$session_name" # Switch to session
+# --- Session Setup ---
+# Clean up name: replace dots with underscores, remove path
+session_name=$(basename "$selected" | tr . _)
+
+# Check if session exists (suppress output)
+if ! tmux has-session -t="$session_name" 2> /dev/null; then
+    # Create the session detached (-d)
+    tmux new-session -s "$session_name" -c "$selected" -d
+fi
+
+# --- Switching Logic ---
+# Check if we are currently in tmux
+if [ -n "$TMUX" ]; then
+    # We are inside tmux: switch client
+    tmux switch-client -t "$session_name"
+else
+    # We are outside tmux: attach
+    tmux attach-session -t "$session_name"
+fi
