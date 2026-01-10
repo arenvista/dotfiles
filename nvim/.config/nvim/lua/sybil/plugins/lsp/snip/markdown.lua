@@ -1,4 +1,4 @@
-print("loading tex snips")
+print("loaded md snips")
 local ls = require("luasnip")
 local s = ls.snippet
 local sn = ls.snippet_node
@@ -12,16 +12,14 @@ local rep = require("luasnip.extras").rep
 local line_begin = require("luasnip.extras.expand_conditions").line_begin
 
 -- ----------------------------------------------------------------------------
--- HELPER FUNCTIONS (TREESITTER VERSION)
+-- HELPER FUNCTIONS (TREESITTER VERSION - UPDATED)
 -- ----------------------------------------------------------------------------
 
 local function in_mathzone()
-    -- Get the current node at the cursor
+    -- Get the node at the cursor
     local node = vim.treesitter.get_node()
-
-    -- Iterate up the tree to see if we are inside a math node
     while node do
-        if node:type() == 'math_environment' or node:type() == 'inline_formula' or node:type() == 'displayed_equation' then
+        if node:type() == 'inline' then
             return true
         end
         node = node:parent()

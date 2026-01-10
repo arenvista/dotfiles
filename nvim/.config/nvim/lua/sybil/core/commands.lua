@@ -19,7 +19,7 @@ vim.api.nvim_create_user_command("Run", function()
 
     if command then
         vim.cmd("write")
-        
+
         local file_name = vim.fn.expand("%")
         local run_cmd = command:gsub("%%", file_name)
 
@@ -45,7 +45,7 @@ vim.api.nvim_create_user_command("Run", function()
         vim.fn.termopen(run_cmd)
 
         -- 3. KEY MAPPINGS FOR THIS BUFFER
-        
+
         -- Map <Esc> to exit Terminal Mode and go to Normal Mode
         -- This lets you scroll up/down using standard Vim keys (k, j, C-u, C-d)
         vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = buf, silent = true })
@@ -68,10 +68,10 @@ vim.api.nvim_create_user_command("RunBackground", function()
 
     if command then
         vim.cmd("write")
-        
+
         local file_name = vim.fn.expand("%")
         local run_cmd = command:gsub("%%", file_name)
-        
+
         -- Notify start
         vim.notify("Background Job Started: " .. run_cmd, vim.log.levels.INFO)
 
@@ -118,4 +118,55 @@ end, {})
 
 -- Key mapping
 vim.keymap.set('n', '<leader>rb', '<cmd>RunBackground<CR>', { silent = true, desc = "Run File in Background" })
--- vim.keymap.set('n', '<leader>gd', '<cmd>!date +%Y-%m-%d | wl-copy<CR>', { silent = true, desc = "Run File in Background" })
+
+vim.keymap.set('n', '<leader>d', function()
+    -- Run the shell command silently without flashing the screen
+    vim.fn.system('date +%Y-%m-%d | wl-copy')
+    print("Date copied to wl-clipboard")
+end, { desc = "Copy Date to Clipboard" })
+
+vim.keymap.set('n', '<leader>sni', function()
+    local ft = vim.bo.filetype
+    local snips = require("luasnip").get_snippets(ft)
+    local global_snips = require("luasnip").get_snippets("all")
+    local output = {}
+
+    -- 1. Calculate the maximum trigger length for alignment
+    local max_width = 0
+    
+    local function update_max_width(list)
+        if not list then return end
+        for _, s in pairs(list) do
+            if #s.trigger > max_width then
+                max_width = #s.trigger
+            end
+        end
+    end
+
+    update_max_width(snips)
+    update_max_width(global_snips)
+    
+    -- Add a tiny buffer (e.g., 2 spaces) so it doesn't feel cramped
+    local fmt_str = "%-" .. (max_width + 2) .. "s -> %s"
+
+    -- 2. Generate Output Lines
+    table.insert(output, "--- Snippets for " .. ft .. " ---")
+    if snips then
+        for _, snip in pairs(snips) do
+            table.insert(output, string.format(fmt_str, snip.trigger, snip.name or "No Name"))
+        end
+    else
+        table.insert(output, "No snippets found.")
+    end
+
+    if global_snips and #global_snips > 0 then
+        table.insert(output, "\n--- Global Snippets ---")
+        for _, snip in pairs(global_snips) do
+            table.insert(output, string.format(fmt_str, snip.trigger, snip.name or "No Name"))
+        end
+    end
+
+    print(table.concat(output, "\n"))
+end, { desc = "Print available snippets" })
+
+

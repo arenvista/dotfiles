@@ -1,4 +1,3 @@
--- require('nvim-ts-autotag').setup()
 return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
@@ -9,45 +8,58 @@ return {
     config = function()
         -- import nvim-treesitter plugin
         local treesitter = require("nvim-treesitter.configs")
+
+        require('nvim-ts-autotag').setup({
+            opts = {
+                -- Defaults
+                enable_close = true,          -- Auto close tags
+                enable_rename = true,         -- Auto rename pairs of tags
+                enable_close_on_slash = false -- Auto close on trailing </
+            },
+            -- Per filetype overrides
+            per_filetype = {
+                ["html"] = {
+                    enable_close = false
+                }
+            },
+            -- Add aliases for custom filetypes
+            aliases = {
+                ["astro"] = "html", -- Example: treat astro files like html
+            }
+        })
         -- configure treesitter
-        require('nvim-ts-autotag').setup()
-        treesitter.setup({ -- enable syntax highlighting
+        treesitter.setup({
+            modules = {},
+            sync_install = false,
             highlight = {
                 enable = true,
             },
             -- enable indentation
             indent = { enable = true },
-            -- enable autotagging (w/ nvim-ts-autotag plugin)
-            autotag = {
-                enable = true,
-            },
-            -- ensure these language parsers are installed
             auto_install = true,
             ensure_installed = {
                 "json",
                 "rust",
                 "javascript",
                 "typescript",
+                "latex",
                 "tsx",
-                "gdscript",
                 "yaml",
                 "html",
                 "css",
                 "prisma",
                 "markdown",
                 "markdown_inline",
-                "svelte",
-                "graphql",
                 "bash",
                 "lua",
                 "vim",
-                "dockerfile",
                 "python",
                 "gitignore",
                 "query",
                 "vimdoc",
                 "c",
                 "cpp",
+                "asm",
             },
             ignore_install = { 'org' },
             incremental_selection = {
