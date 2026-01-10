@@ -116,8 +116,10 @@ bindkey -s '^f' "tmux-sessionizer\n"
 bindkey -s '^r' "source ~/.zshrc\n"
 bindkey -s '^n' "nvim\n"
 bindkey -s '^e' "yazi\n"
-bindkey -s '^[w' "exit\n"
-alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)"
+bindkey -s '^q' "cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)\n"
+alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf\n)"
+
+catnap
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -129,3 +131,4 @@ eval "$(fzf --zsh)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$HOME/.cargo/bin:$PATH"
