@@ -23,12 +23,12 @@ vim.keymap.set("n", "<leader>y", [["+Y]], { desc = " +"})
 keymap.set("n", "<leader>p", [["+p]], { desc = " +"})
 keymap.set({"n", "v"}, "<leader>p", [["+P]], { desc = " +"})
 
--- This is going to get me cancelled
 vim.keymap.set("n", "<Del>", "<Esc>")
 vim.keymap.set("v", "<Del>", "<Esc>")
 vim.keymap.set("i", "<Del>", "<Esc>")
 
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<leader>tns", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<leader>tna", "<cmd>silent !tmux-attacher<CR>")
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
 
 vim.keymap.set("n", "<leader>z", ":set foldmethod=indent")
@@ -43,10 +43,10 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split  |" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split   ―"})
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize  "})
-keymap.set("n", "<leader>sc", "<cmd>close<CR>", { desc = "Close  "})
 
+keymap.set("n", "<leader>sc", "<cmd>close<CR>", { desc = "󰩈 Exit"})
 keymap.set("n", "<leader>qa", "<cmd>qa!<CR>", { desc = "󰩈 Exit"})
-keymap.set("n", "<leader>qw", "<cmd>q<CR>", { desc = " Close Window"})
+keymap.set("n", "<leader>qw", "<cmd>q!<CR>", { desc = " Close Window"})
 keymap.set("n", "<leader>qs", "<cmd>suspend<CR>", { desc = "󰤄 Suspend"})
 
 keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = " Save"})
@@ -180,45 +180,6 @@ vim.api.nvim_create_user_command('DockF', function()
   -- 'tab sb' = tab split buffer
   vim.cmd('tab sb ' .. buf_id)
 end, {})
-
-
--- =============================================================================
--- Gp.nvim (AI) - Normal Mode
--- =============================================================================
-keymap.set("n", "<C-g>c", "<cmd>GpChatNew vsplit<cr>", { desc = "New Chat", silent = true })
-keymap.set("n", "<C-g>t", "<cmd>GpChatToggle popup<cr>", { desc = "Toggle Chat", silent = true })
-keymap.set("n", "<C-g>f", "<cmd>GpChatFinder<cr>", { desc = "Chat Finder", silent = true })
-keymap.set("n", "<C-g><C-x>", "<cmd>GpChatNew split<cr>", { desc = "New Chat split", silent = true })
-keymap.set("n", "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", { desc = "New Chat vsplit", silent = true })
-keymap.set("n", "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", { desc = "New Chat tabnew", silent = true })
-keymap.set("n", "<C-g>r", "<cmd>GpRewrite<cr>", { desc = "Inline Rewrite", silent = true })
-keymap.set("n", "<C-g>a", "<cmd>GpAppend<cr>", { desc = "Append (after)", silent = true })
-keymap.set("n", "<C-g>b", "<cmd>GpPrepend<cr>", { desc = "Prepend (before)", silent = true })
-keymap.set("n", "<C-g>n", "<cmd>GpNextAgent<cr>", { desc = "Next Agent", silent = true })
-keymap.set("n", "<C-g>s", "<cmd>GpStop<cr>", { desc = "GpStop", silent = true })
-keymap.set("n", "<C-g>x", "<cmd>GpContext<cr>", { desc = "Toggle GpContext", silent = true })
-
--- =============================================================================
--- Gp.nvim (AI) - Visual Mode
--- =============================================================================
--- Shared commands (that don't act on specific selection range logic)
-keymap.set("v", "<C-g><C-x>", "<cmd>GpChatNew split<cr>", { desc = "New Chat split", silent = true })
-keymap.set("v", "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", { desc = "New Chat vsplit", silent = true })
-keymap.set("v", "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", { desc = "New Chat tabnew", silent = true })
-keymap.set("v", "<C-g>n", "<cmd>GpNextAgent<cr>", { desc = "Next Agent", silent = true })
-keymap.set("v", "<C-g>s", "<cmd>GpStop<cr>", { desc = "GpStop", silent = true })
-keymap.set("v", "<C-g>x", "<cmd>GpContext<cr>", { desc = "Toggle GpContext", silent = true })
-keymap.set("v", "<C-g>f", "<cmd>GpChatFinder<cr>", { desc = "Chat Finder", silent = true })
-
--- Visual Selection Specific (Prioritized)
-keymap.set("v", "<C-g>c", ":<C-u>'<,'>GpChatNew<cr>", { desc = "Visual Chat New", silent = true })
-keymap.set("v", "<C-g>p", ":<C-u>'<,'>GpChatPaste<cr>", { desc = "Visual Chat Paste", silent = true })
-keymap.set("v", "<C-g>t", ":<C-u>'<,'>GpChatToggle<cr>", { desc = "Visual Toggle Chat", silent = true })
-keymap.set("v", "<C-g>r", ":<C-u>'<,'>GpRewrite<cr>", { desc = "Visual Rewrite", silent = true })
-keymap.set("v", "<C-g>a", ":<C-u>'<,'>GpAppend<cr>", { desc = "Visual Append (after)", silent = true })
-keymap.set("v", "<C-g>b", ":<C-u>'<,'>GpPrepend<cr>", { desc = "Visual Prepend (before)", silent = true })
-keymap.set("v", "<C-g>i", ":<C-u>'<,'>GpImplement<cr>", { desc = "Implement selection", silent = true })
-
 -- =============================================================================
 -- Telescope
 -- =============================================================================

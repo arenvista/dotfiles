@@ -5,8 +5,8 @@ return {
         vim.g.firenvim_config = {
             localSettings = {
                 ['.*'] = {
-                    -- 'never' prevents firenvim from automatically starting
-                    takeover = 'never',
+                    takeover = 'never', -- 'never' prevents firenvim from automatically starting
+                    filename = '{hostname}_{pathname}.md',
                 },
             }
         }

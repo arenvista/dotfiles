@@ -1,27 +1,39 @@
+local my_vaults = {
+  {
+    name = "DiffyQ",
+    path = "/home/sybil/Documents/School-SE1/Fall_2025/MATH225/diffyq_notes",
+  },
+  {
+    name = "RealAnalysis",
+    path = "/home/sybil/Documents/MATH301/Notes/",
+  },
+  {
+    name = "OperatingSystems",
+    path = "/home/sybil/Documents/OS/Notes/",
+  },
+}
 return {
     "epwalsh/obsidian.nvim",
     version = "*",
     lazy = true,
     ft = "markdown",
+    cond = function()
+        local cwd = vim.fn.getcwd()
+        for _, vault in ipairs(my_vaults) do
+            -- Check if cwd starts with the vault path (handles subdirectories too)
+            -- We use plain=true for string.find to avoid regex issues with path chars
+            if string.find(cwd, vault.path, 1, true) then
+                return true
+            end
+        end
+        return false
+    end,
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
     opts = {
         preferred_link_style = "markdown",
-        workspaces = {
-            {
-                name = "DiffyQ",
-                path = "/home/sybil/Documents/School-SE1/Fall_2025/MATH225/diffyq_notes",
-            },
-            {
-                name = "RealAnalysis",
-                path = "/home/sybil/Documents/MATH301/Notes/",
-            },
-            {
-                name = "OperatingSystems",
-                path = "/home/sybil/Documents/OS/Notes/",
-            },
-        },
+        workspaces = my_vaults,
         templates = {
             folder = "./.templates",
             date_format = "%Y-%m-%d",
@@ -32,7 +44,6 @@ return {
     keys = {
         { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "New Obsidian note", mode = "n" },
         { "<leader>oo", "<cmd>ObsidianOpen<cr>", desc = "Opens In Obsidian", mode = "n" },
-        -- { "<leader>os", "<cmd>ObsidianQuickSwitch<cr>", desc = "Quick Switch", mode = "n" },
         { "<leader>ob", "<cmd>ObsidianBacklinks<cr>", desc = "Show location list of backlinks", mode = "n" },
         { "<leader>op", "<cmd>ObsidianPasteImg<cr>", desc = "Paste image from clipboard", mode = "n" },
         { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "Follows Link Under Cursor", mode = "n" },

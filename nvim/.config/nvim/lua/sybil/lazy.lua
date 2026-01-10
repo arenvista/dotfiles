@@ -20,11 +20,13 @@ if vim.g.started_by_firenvim == true then
             {import = "sybil.plugins.ui.inline-render" },
             {import = "sybil.plugins.ui.tree-viewers" },
             {import = "sybil.plugins.ui.colorscheme" },
+            {import = "sybil.plugins.lsp" },
         })
-    vim.api.nvim_create_autocmd({'BufEnter'}, {
-        pattern = "*.txt",
-        command = "set filetype=markdown"
-    })
+    -- Configure the filename pattern
+    vim.g.firenvim_config.localSettings['*'] = {
+        -- {hostname} and {pathname} are variables replaced by Firenvim
+        filename = '{hostname}_{pathname}.md',
+    }
     vim.cmd("hi Normal guibg=#1e1e2e")
     vim.opt.laststatus = 0 --remove footer
     vim.opt.signcolumn = "no" -- Disable the column where git signs and LSP errors usually appear
@@ -48,6 +50,7 @@ else
             {import = "sybil.plugins.utils.extern" },
             {import = "sybil.plugins.utils.qql" },
             {import = "sybil.plugins.lsp" },
+            {import = "sybil.plugins.telescope" },
         },
         {
             checker = {
@@ -60,4 +63,5 @@ else
         })
     -- views can only be fully collapsed with the global statusline
     vim.opt.laststatus = 3
+
 end
