@@ -1,7 +1,7 @@
 return {
     {
         -- Point this to the absolute path of your plugin folder
-        dir = "~/Documents/ParseCpp",
+        dir = "~/dotfiles/nvim/.config/myplugs/ParseCpp",
         -- Optional: Only load this plugin when opening C++ files (improves startup time)
         ft = { "cpp", "c" },
         -- Set up the keymap inside the plugin spec
