@@ -1,22 +1,39 @@
-local my_vaults = {
-  {
-    name = "DiffyQ",
-    path = "/home/sybil/Documents/School-SE1/Fall_2025/MATH225/diffyq_notes",
-  },
-  {
-    name = "RealAnalysis",
-    path = "/home/sybil/Documents/MATH301/Notes/",
-  },
-  {
-    name = "OperatingSystems",
-    path = "/home/sybil/Documents/OS/Notes/",
-  },
+-- 1. Define all POTENTIAL vaults
+local defined_vaults = {
+    {
+        name = "DiffyQ",
+        path = "/home/sybil/Documents/School-SE1/Fall_2025/MATH225/diffyq_notes",
+    },
+    {
+        name = "RealAnalysis",
+        path = "/home/sybil/Documents/MATH301/Notes/",
+    },
+    {
+        name = "OperatingSystems",
+        path = "/home/sybil/Documents/OS/Notes/",
+    },
+    {
+        name = "OperatingSystems",
+        path = "/home/sybil/Documents/math301/Notes",
+    },
 }
+
+-- 2. Filter: Only add them to 'my_vaults' if the directory actually exists on this machine
+local my_vaults = {}
+for _, vault in ipairs(defined_vaults) do
+    -- vim.fn.isdirectory returns 1 if it exists, 0 if not
+    if vim.fn.isdirectory(vault.path) == 1 then
+        table.insert(my_vaults, vault)
+    end
+end
+
+-- 3. Return the plugin config
 return {
     "epwalsh/obsidian.nvim",
     version = "*",
     lazy = true,
     ft = "markdown",
+    -- The cond function uses the filtered 'my_vaults' list
     cond = function()
         local cwd = vim.fn.getcwd()
         for _, vault in ipairs(my_vaults) do
@@ -33,7 +50,7 @@ return {
     },
     opts = {
         preferred_link_style = "markdown",
-        workspaces = my_vaults,
+        workspaces = my_vaults, -- Pass the filtered list here
         templates = {
             folder = "./.templates",
             date_format = "%Y-%m-%d",
@@ -48,7 +65,7 @@ return {
         { "<leader>op", "<cmd>ObsidianPasteImg<cr>", desc = "Paste image from clipboard", mode = "n" },
         { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "Follows Link Under Cursor", mode = "n" },
         { "<leader>ol", "<cmd>ObsidianLinkNew<cr>", desc = "Create New Link", mode = "v" },
-        { "<leader>os", "<cmd>ObsidianAliases<cr>", desc = "Search by Aliases", mode = "n" }, -- Moved keymap here for consistency
+        { "<leader>os", "<cmd>ObsidianAliases<cr>", desc = "Search by Aliases", mode = "n" },
     },
     config = function(_, opts)
         -- 1. Initialize obsidian.nvim
@@ -60,7 +77,6 @@ return {
         local conf = require("telescope.config").values
         local actions = require("telescope.actions")
         local action_state = require("telescope.actions.state")
-        -- NEW: Import previewers module
         local previewers = require("telescope.previewers")
 
         local function search_aliases()
@@ -122,7 +138,6 @@ return {
                     end,
                 },
                 sorter = conf.generic_sorter({}),
-                -- CHANGED: Use vim_buffer_cat to show the full file content nicely
                 previewer = previewers.vim_buffer_cat.new({}),
                 attach_mappings = function(prompt_bufnr, map)
                     actions.select_default:replace(function()
