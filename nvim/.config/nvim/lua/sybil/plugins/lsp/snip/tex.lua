@@ -34,6 +34,11 @@ end
 -- ----------------------------------------------------------------------------
 
 return {
+    s({trig = "exi", snippetType="autosnippet"}, { t("\\exists ~") }, { condition = in_mathzone }),
+    s({trig = "for", snippetType="autosnippet"}, { t("\\forall ~") }, { condition = in_mathzone }),
+    s({trig = "!!", snippetType="autosnippet"}, { t("\\not") }, { condition = in_mathzone }),
+    s({trig = "eset", snippetType="autosnippet"}, { t("\\emptyset") }, { condition = in_mathzone }),
+    s({trig = "_set", snippetType="autosnippet"}, { t("\\subset") }, { condition = in_mathzone }),
     -- ==========================================
     -- 4. MATH SETS (Auto-Snippets)
     -- ==========================================
@@ -44,6 +49,7 @@ return {
     s({trig = "CC", snippetType="autosnippet"}, { t("\\mathbb{C}") }, { condition = in_mathzone }),
     s({trig = "FF", snippetType="autosnippet"}, { t("\\mathbb{F}") }, { condition = in_mathzone }),
     s({trig = "PP", snippetType="autosnippet"}, { t("\\mathbb{P}") }, { condition = in_mathzone }),
+    s({trig = "eset", snippetType="autosnippet"}, { t("\\emptyset") }, { condition = in_mathzone }),
     -- ==========================================
     -- 4. CONDITIONAL LOGIC
     -- ==========================================

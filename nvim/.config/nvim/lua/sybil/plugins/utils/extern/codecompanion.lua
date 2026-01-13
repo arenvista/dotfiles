@@ -3,30 +3,37 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
-        "ravitemer/mcphub.nvim",
+        "ravitemer/mcphub.nvim", 
         {
             "MeanderingProgrammer/render-markdown.nvim",
-            ft = { "markdown", "codecompanion" },
+            ft = { "markdown", "codecompanion" }, 
         },
     },
     -- 1. Add this keys section
     keys = {
-        -- Open the Action Palette (The main interface for prompts like "Explain", "Fix", etc.)
         { "<leader>cca", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, desc = "AI Actions Palette" },
-        -- Toggle the Chat Buffer (Sidebar)
         { "<leader>ccc", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "AI Toggle Chat" },
-        -- Inline Generation (Replaces or adds code directly in buffer)
         { "<leader>cci", "<cmd>CodeCompanion<cr>", mode = { "n", "v" }, desc = "AI Inline Prompt" },
     },
     config = function()
         require("codecompanion").setup({
+            adapters = {
+                openai = function()
+                    return require("codecompanion.adapters").extend("openai", {
+                        env = {
+                            -- Ensure your env var matches what is in your shell (e.g., OPENAI_API_KEY)
+                            api_key = "cmd:echo $OPEN_AI_KEY",
+                        },
+                    })
+                end,
+            },
             strategies = {
                 chat = { adapter = "openai" },
                 inline = { adapter = "openai" },
                 agent = { adapter = "openai" },
             },
             opts = {
-                log_level = "DEBUG",
+                log_level = "DEBUG", 
             },
         })
     end,
