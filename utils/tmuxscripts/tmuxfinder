@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Define your list of directories here
+SEARCH_DIRS=(
+    "$HOME/Documents/"
+    "$HOME/dotfiles"
+)
+
+MARKER1=".tm1"
+MARKER2=".tm2"
+OUTFILE="$HOME/dotfiles/utils/tmuxscripts/tmux-paths.md"
+
+# Clear the output file before starting (or create if empty)
+# This ensures we don't append to old runs, but also don't overwrite during the loop
+> "$OUTFILE"
+
+# Loop through each directory in the array
+for CURRENT_DIR in "${SEARCH_DIRS[@]}"; do
+
+    # Verify the specific directory exists
+    if [ ! -d "$CURRENT_DIR" ]; then
+        echo "Warning: Directory '$CURRENT_DIR' does not exist. Skipping." >&2
+        continue
+    fi
+
+    # --- MARKER 1 Logic ---
+    # Find files named 'tm1', print their parent directory, append to outfile
+    find "$CURRENT_DIR" -name "$MARKER1" -type f -exec dirname {} \; >> "$OUTFILE"
+
+    # --- MARKER 2 Logic ---
+    # Find files named 'tm2'
+    # Pipe results to a loop to process the directory finding logic
+    find "$CURRENT_DIR" -name "$MARKER2" -type f | while read -r marker_file; do
+        # Get the directory where the marker file sits
+        parent_path=$(dirname "$marker_file")
+        
+        # Search inside that directory for subdirectories (depth 1 only)
+        # -mindepth 1 ensures we don't print the parent path itself again
+        # -maxdepth 1 ensures we don't go deeper into the tree
+        find "$parent_path" -mindepth 1 -maxdepth 1 -type d >> "$OUTFILE"
+    done
+
+done
+
+# Adding Parent Paths (Append to the list)
+for CURRENT_DIR in "${SEARCH_DIRS[@]}"; do
+    echo "$CURRENT_DIR" >> "$OUTFILE"
+done
+
+# Optional: Sort and remove duplicates from the final file
+# sort -u "$OUTFILE" -o "$OUTFILE"
