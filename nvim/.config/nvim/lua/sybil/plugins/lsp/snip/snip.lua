@@ -1,4 +1,3 @@
-print("loading snippets")
 local ls = require("luasnip")
 -- Shorten generic functions for readability
 local s = ls.snippet

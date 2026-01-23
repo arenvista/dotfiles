@@ -22,9 +22,6 @@ return {
         local luasnip = require("luasnip")
         local lspkind = require("lspkind")
 
-        -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-        require("luasnip.loaders.from_vscode").lazy_load()
-        require("luasnip.loaders.from_lua").load({ paths = "./lua/sybil/plugins/lsp/snip" })
         luasnip.setup({
             enable_autosnippets = true,
         })
