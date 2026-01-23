@@ -3,4 +3,5 @@ wallpapers/wallpapers/imgs/*
 wallpapers/wallpapers/favorites/*
 wallpapers/wallpapers/scripts/wallpaper_state.env
 tmux/.tmux
+utils/tmuxscripts/tmux-paths.md
 vaults.md
