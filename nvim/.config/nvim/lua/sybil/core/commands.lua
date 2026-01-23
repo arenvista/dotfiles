@@ -9,7 +9,7 @@ local filetype_commands = {
     c = "gcc % -o %< && ./%<",
     cpp = "g++ % -o %< && ./%<",
     lua = "lua %",
-    tex = "pdflatex %"
+    tex = "pdflatex %",
 }
 
 -- 2. Create the User Command
@@ -38,7 +38,7 @@ vim.api.nvim_create_user_command("Run", function()
             col = col,
             row = row,
             style = "minimal",
-            border = "rounded"
+            border = "rounded",
         })
 
         -- Run the command
@@ -48,10 +48,10 @@ vim.api.nvim_create_user_command("Run", function()
 
         -- Map <Esc> to exit Terminal Mode and go to Normal Mode
         -- This lets you scroll up/down using standard Vim keys (k, j, C-u, C-d)
-        vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = buf, silent = true })
+        vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { buffer = buf, silent = true })
 
         -- Map 'q' in Normal Mode to actually CLOSE the window
-        vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = buf, silent = true })
+        vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf, silent = true })
 
         -- Start in Insert mode
         vim.cmd("startinsert")
@@ -60,7 +60,7 @@ vim.api.nvim_create_user_command("Run", function()
     end
 end, {})
 
-vim.keymap.set('n', '<leader>rc', '<cmd>Run<CR>', { buffer = buf, silent = true, desc = "Run File" })
+vim.keymap.set("n", "<leader>rc", "<cmd>Run<CR>", { buffer = buf, silent = true, desc = "Run File" })
 
 vim.api.nvim_create_user_command("RunBackground", function()
     local ft = vim.bo.filetype
@@ -100,7 +100,7 @@ vim.api.nvim_create_user_command("RunBackground", function()
                     if exit_code == 0 then
                         vim.notify("Job Finished Successfully", vim.log.levels.INFO)
                         -- Optional: Uncomment below to see output even on success
-                        -- if #output > 0 then vim.print(output) end 
+                        -- if #output > 0 then vim.print(output) end
                     else
                         vim.notify("Job Failed (Code " .. exit_code .. ")", vim.log.levels.ERROR)
                         -- Print output to :messages on failure
@@ -117,15 +117,15 @@ vim.api.nvim_create_user_command("RunBackground", function()
 end, {})
 
 -- Key mapping
-vim.keymap.set('n', '<leader>rb', '<cmd>RunBackground<CR>', { silent = true, desc = "Run File in Background" })
+vim.keymap.set("n", "<leader>rb", "<cmd>RunBackground<CR>", { silent = true, desc = "Run File in Background" })
 
-vim.keymap.set('n', '<leader>d', function()
+vim.keymap.set("n", "<leader>d", function()
     -- Run the shell command silently without flashing the screen
-    vim.fn.system('date +%Y-%m-%d | wl-copy')
+    vim.fn.system("date +%Y-%m-%d | wl-copy")
     print("Date copied to wl-clipboard")
 end, { desc = "Copy Date to Clipboard" })
 
-vim.keymap.set('n', '<leader>sni', function()
+vim.keymap.set("n", "<leader>sni", function()
     local ft = vim.bo.filetype
     local snips = require("luasnip").get_snippets(ft)
     local global_snips = require("luasnip").get_snippets("all")
@@ -133,9 +133,11 @@ vim.keymap.set('n', '<leader>sni', function()
 
     -- 1. Calculate the maximum trigger length for alignment
     local max_width = 0
-    
+
     local function update_max_width(list)
-        if not list then return end
+        if not list then
+            return
+        end
         for _, s in pairs(list) do
             if #s.trigger > max_width then
                 max_width = #s.trigger
@@ -145,7 +147,7 @@ vim.keymap.set('n', '<leader>sni', function()
 
     update_max_width(snips)
     update_max_width(global_snips)
-    
+
     -- Add a tiny buffer (e.g., 2 spaces) so it doesn't feel cramped
     local fmt_str = "%-" .. (max_width + 2) .. "s -> %s"
 
@@ -168,5 +170,3 @@ vim.keymap.set('n', '<leader>sni', function()
 
     print(table.concat(output, "\n"))
 end, { desc = "Print available snippets" })
-
-
