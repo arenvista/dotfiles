@@ -1,7 +1,10 @@
 *.mp4
-wallpapers/wallpapers/imgs/*
-wallpapers/wallpapers/favorites/*
-wallpapers/wallpapers/scripts/wallpaper_state.env
-tmux/.tmux
+*.png
+*.webp
+*.jpg
+/utils/wallpapers/wallpapers/imgs/*
+/utils/wallpapers/wallpapers/favorites/*
+/utils/wallpapers/wallpapers/scripts/wallpaper_state.env
+/utils/tmux/.tmux
 utils/tmuxscripts/tmux-paths.md
 vaults.md

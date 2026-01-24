@@ -47,5 +47,10 @@ for CURRENT_DIR in "${SEARCH_DIRS[@]}"; do
     echo "$CURRENT_DIR" >> "$OUTFILE"
 done
 
-# Optional: Sort and remove duplicates from the final file
-# sort -u "$OUTFILE" -o "$OUTFILE"
+# Additional Paths
+ADDITIONAL_PATHS=(
+    "$HOME/orgfiles/"
+)
+for CURRENT_DIR in "${ADDITIONAL_PATHS[@]}"; do
+    echo "$CURRENT_DIR" >> "$OUTFILE"
+done
