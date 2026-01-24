@@ -56,7 +56,9 @@ return {
 				"cpp",
 				"asm",
 			},
-			ignore_install = { "org" },
+			ignore_install = {
+				"org",
+			},
 			incremental_selection = {
 				enable = true,
 				keymaps = {
