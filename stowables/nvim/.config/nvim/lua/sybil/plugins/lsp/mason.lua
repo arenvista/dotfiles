@@ -34,7 +34,6 @@ return {
                 "graphql",
                 "prismals",
                 "clangd",
-                "vale"
             },
         })
 
