@@ -2,9 +2,8 @@
 *.png
 *.webp
 *.jpg
-/utils/wallpapers/wallpapers/imgs/*
-/utils/wallpapers/wallpapers/favorites/*
-/utils/wallpapers/wallpapers/scripts/wallpaper_state.env
-/utils/tmux/.tmux
+stowables/wallpapers/wallpapers/imgs/*
+stowables/wallpapers/wallpapers/favorites/*
+stowables/wallpapers/wallpapers/scripts/wallpaper_state.env
 utils/tmuxscripts/tmux-paths.md
 vaults.md
