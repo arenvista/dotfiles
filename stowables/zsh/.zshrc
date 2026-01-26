@@ -132,3 +132,24 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Function to find dir and cd into it
+function fzf-cd-shallow() {
+    # 1. find: searches current dir (.)
+    # 2. mindepth 0/maxdepth 1: as requested
+    # 3. type d: directories only
+    # 4. fzf: opens the fuzzy finder
+    local dir=$(find . -mindepth 0 -maxdepth 1 -type d | fzf --height 40% --layout=reverse)
+
+    # If a directory was selected (enter was pressed), cd into it
+    if [[ -n "$dir" ]]; then
+        cd "$dir"
+        zle reset-prompt # Refreshes the prompt to show the new path
+    fi
+}
+
+# Register the function as a ZLE (Zsh Line Editor) widget
+zle -N fzf-cd-shallow
+
+# Bind the key. '^f' stands for Ctrl+F
+bindkey '^w' fzf-cd-shallow
