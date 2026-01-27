@@ -194,3 +194,46 @@ keymap.set("n", "<leader>lc", "<cmd>Leet console<CR>", { desc = "Open Console �
 keymap.set("n", "<leader>le", "<cmd>Leet<CR>", { desc = "Leet  ", silent = true })
 keymap.set("n", "<leader>li", "<cmd>Leet list<CR>", { desc = "Show problem list  ", silent = true })
 keymap.set("n", "<leader>lt", "<cmd>Leet tabs<CR>", { desc = "Show tabs list  ", silent = true })
+
+local function cd_picker()
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+
+	pickers
+		.new({}, {
+			prompt_title = "Change Directory",
+			-- 'fd' command to find directories only.
+			-- Remove '--hidden' if you don't want hidden folders.
+			finder = finders.new_oneshot_job({ "fd", "--type", "d", "--hidden", "--exclude", ".git" }),
+
+			-- Use the default sorter (which typically uses fzf-native if installed)
+			sorter = conf.generic_sorter({}),
+
+			-- Default previewer will try to 'cat' the file.
+			-- If you have 'bat' installed, it will list the directory contents.
+			previewer = conf.file_previewer({}),
+
+			attach_mappings = function(prompt_bufnr, map)
+				actions.select_default:replace(function()
+					actions.close(prompt_bufnr)
+					local selection = action_state.get_selected_entry()
+					if selection then
+						-- Change the directory
+						vim.cmd("cd " .. selection[1])
+						print("Changed directory to: " .. selection[1])
+					end
+				end)
+				return true
+			end,
+		})
+		:find()
+end
+
+-- Create the user command
+vim.api.nvim_create_user_command("Cd", cd_picker, {})
+
+-- Create the keybinding (e.g., Leader + cd)
+vim.keymap.set("n", "<leader>cd", ":Cd<CR>", { noremap = true, silent = true, desc = "Change Directory" })
