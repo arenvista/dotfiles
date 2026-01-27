@@ -139,7 +139,14 @@ function fzf-cd-shallow() {
     # 2. mindepth 0/maxdepth 1: as requested
     # 3. type d: directories only
     # 4. fzf: opens the fuzzy finder
-    local dir=$(find . -mindepth 0 -maxdepth 1 -type d | fzf --height 40% --layout=reverse)
+    local dir=$(find . -mindepth 0 -maxdepth 1 -type d | fzf \
+    --prompt=" Change Dir. " \
+    --height=50% \
+    --layout=reverse \
+    --border=rounded \
+    --info=inline \
+    --preview 'ls --color=always -F {} | head -20' \
+    --preview-window='right:50%:wrap')
 
     # If a directory was selected (enter was pressed), cd into it
     if [[ -n "$dir" ]]; then
