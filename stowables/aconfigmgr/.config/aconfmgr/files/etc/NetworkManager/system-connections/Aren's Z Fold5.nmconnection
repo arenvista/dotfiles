@@ -1,0 +1,23 @@
+[connection]
+id=Aren's Z Fold5
+uuid=1fac0385-851a-4f1d-aee0-0ab17741eddb
+type=wifi
+interface-name=wlan0
+
+[wifi]
+mode=infrastructure
+ssid=Aren's Z Fold5
+
+[wifi-security]
+auth-alg=open
+key-mgmt=wpa-psk
+psk=wgfv507&
+
+[ipv4]
+method=auto
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+
+[proxy]

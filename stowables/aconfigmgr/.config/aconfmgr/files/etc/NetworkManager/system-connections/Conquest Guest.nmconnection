@@ -1,0 +1,23 @@
+[connection]
+id=Conquest Guest
+uuid=6b2df0fe-2835-44a4-990c-93420723ccee
+type=wifi
+interface-name=wlan0
+
+[wifi]
+mode=infrastructure
+ssid=Conquest Guest
+
+[wifi-security]
+auth-alg=open
+key-mgmt=wpa-psk
+psk=Conquestis#1
+
+[ipv4]
+method=auto
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+
+[proxy]

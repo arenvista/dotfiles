@@ -1,0 +1,18 @@
+[connection]
+id=UMBC Visitor
+uuid=39500ca6-f53c-483a-b4ae-3391333bda1f
+type=wifi
+interface-name=wlan0
+
+[wifi]
+mode=infrastructure
+ssid=UMBC Visitor
+
+[ipv4]
+method=auto
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+
+[proxy]

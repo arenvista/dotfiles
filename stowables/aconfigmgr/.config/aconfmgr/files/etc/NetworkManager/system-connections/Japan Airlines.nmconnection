@@ -1,0 +1,18 @@
+[connection]
+id=Japan Airlines
+uuid=c8066169-c68b-4015-96af-794a7c070caf
+type=wifi
+interface-name=wlan0
+
+[wifi]
+mode=infrastructure
+ssid=Japan Airlines
+
+[ipv4]
+method=auto
+
+[ipv6]
+addr-gen-mode=default
+method=auto
+
+[proxy]
