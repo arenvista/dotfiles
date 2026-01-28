@@ -1,3 +1,4 @@
+IgnorePath '/etc/ssh/'
 IgnorePath '/etc/tmpfiles.d/mouseless-input.conf*'
 IgnorePath '/usr/*'
 IgnorePath '/etc/ssl/*'
