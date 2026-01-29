@@ -33,8 +33,8 @@ colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 [misc]
 borderstyle = "line"
 layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
-stats_margin_top = 0
 location = "" # Used for fetching weather; leave empty to use the location of your IP; check https://wttr.in/:help for supported location types
+stats_margin_top = 0
 
 [misc.figletLogos] # Requires Figlet.
 enable = false
@@ -44,7 +44,7 @@ margin = [0, 0, 0,]
 
 [misc.imageMode] # Requires Viu.
 enable = true
-path   = "/home/sybil/wallpapers/favorites/okp7noilr7fd1.jpeg" # Please only use absolute paths.
-scale  = 38
-margin = [-9, 3, 4,]
+path   = "/home/sybil/wallpapers/imgs/temp.png" # Please only use absolute paths.
+scale  = 20
+margin = [3, 2, 1,]
 
