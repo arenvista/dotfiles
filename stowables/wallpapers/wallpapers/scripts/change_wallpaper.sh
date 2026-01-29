@@ -27,9 +27,14 @@ case "${themeSelect}" in
 esac
 # Launch rofi menu
 wallpaper_selection=$(find ~/wallpapers/favorites -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.gif" -o -name "*.jpeg" \) -print0 | xargs -0 -I {} echo -en "$(basename '{}' .png)\x00icon\x1f{}\n"  | rofi -dmenu -theme-str "${r_scale}" -theme-str "${r_override}" -config "${rofiConf}")
-# Crop selection 
-magick convert $wallpaper_selection -gravity center -crop 1400x1600+0+0 +repage ~/wallpapers/imgs/temp.png
-magick convert $wallpaper_selection -gravity center -crop 2400x1600+0+0 +repage ~/wallpapers/imgs/temp_sddm.png
-sed -i "s|export WALLPAPER=\".*\"|export WALLPAPER=\"$wallpaper_selection\"|" ~/wallpapers/scripts/wallpaper_state.env
-sed -i "s|path   = \".*\"|path   = \"$wallpaper_selection\"|" ~/.config/catnap/config.toml
-swww img ${wallpaper_selection} --transition-type center --resize crop --fill-color 080808
+if [[ -n "$wallpaper_selection" ]]; then
+    # Create Cropped Images
+    magick convert $wallpaper_selection -gravity center -crop 1400x1600+0+0 +repage ~/wallpapers/imgs/temp.png
+    magick convert $wallpaper_selection -gravity center -crop 2400x1600+0+0 +repage ~/wallpapers/imgs/temp_sddm.png
+    # Set as enviorment variable
+    sed -i "s|export WALLPAPER=\".*\"|export WALLPAPER=\"$wallpaper_selection\"|" ~/wallpapers/scripts/wallpaper_state.env
+    # Define as image to be used in catnap 
+    # sed -i "s|path   = \".*\"|path   = \"$wallpaper_selection\"|" ~/.config/catnap/config.toml
+    # Set as image to be rendered for swww background
+    swww img ${wallpaper_selection} --transition-type center --resize crop --fill-color 080808
+fi
