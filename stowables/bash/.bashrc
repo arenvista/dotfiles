@@ -25,7 +25,7 @@ catnap
 # neofetch --kitty ~/wallpapers/favorites/carbeach.png
 
 # BINDS ----
-PS1='[\u@\h \W]\$ '
+# PS1='[\u@\h \W]\$ '
 bind '"\016": "nvim\n"'
 bind '"\006": "tmux-attacher\n"'
 alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)" 
