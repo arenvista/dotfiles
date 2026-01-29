@@ -2,6 +2,7 @@
 *.png
 *.webp
 *.jpg
+*.jpeg
 stowables/wallpapers/wallpapers/imgs/*
 stowables/wallpapers/wallpapers/favorites/*
 stowables/wallpapers/wallpapers/scripts/wallpaper_state.env

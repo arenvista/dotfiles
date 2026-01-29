@@ -3,15 +3,10 @@
 zathura = [
 	{ run = 'zathura "$@"', orphan = true, for = "unix" },
 ]
-edit = [
-	{ run = '"$EDITOR" "$@"', block = true, for = "unix" },
-]
-
 
 # 2. Set the Rule
 [open]
 rules = [
 	# Put this rule near the top of the list to ensure it takes precedence
 	{ url = "*.pdf", use = "zathura" },
-	{ url = "*", use = "edit" },
 ]
