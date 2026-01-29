@@ -5,6 +5,20 @@ local rep = require("luasnip.extras").rep
 local fmta = require("luasnip.extras.fmt").fmta
 
 return {
+    s({trig = "pff", snippetType="autosnippet"}, fmta(
+        [[
+      \begin{proof}
+          <>
+      \end{proof}
+    ]],
+        { i(0) }
+    )),
+    s({trig = "bb", snippetType="autosnippet"}, fmta(
+        [[ \textbf{<>} ]], {i(0)}
+    )),
+    s({trig = "ii", snippetType="autosnippet"}, fmta(
+        [[ \textit{<>} ]], {i(0)}
+    )),
     -- ==========================================
     -- 1. GENERAL ENVIRONMENTS (Regular Triggers)
     -- ==========================================
