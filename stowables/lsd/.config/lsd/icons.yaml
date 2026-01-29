@@ -3,7 +3,7 @@ name:
   .cargo: 
   .emacs.d: 
   a.out: 
-  desktop: 💻
+  desktop: 
 extension:
   go: 
   hs: 
@@ -13,8 +13,8 @@ extension:
   .cpp: 
   .html: 
 filetype:
-  dir: 📂
-  file: 📄
+  dir: 
+  file: 
   pipe: 󰟥
   socket: 󰆨
   executable: 

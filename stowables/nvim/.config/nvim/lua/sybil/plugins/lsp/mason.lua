@@ -28,18 +28,12 @@ return {
             ensure_installed = {
                 "clangd",
                 "css-lsp",
-                "emmet-ls",
-                "graphql-language-service-cli",
                 "html-lsp",
                 "lua-language-server",
-                "prisma-language-server",
                 "pyright",
                 "stylua",
-                "svelte-language-server",
-                "tailwindcss-language-server",
                 "taplo",
-                "texlab",
-                "typescript-language-server",
+                -- "texlab",
             },
         })
         mason_tool_installer.setup({
