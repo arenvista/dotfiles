@@ -3,12 +3,13 @@
 	// Using margin-bottom with a negative value in order to reduce the space between Hyprland window and waybar
 	"margin-bottom": -10,
 	"margin-top": 10,
-	"modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray", "custom/wallpaper", "custom/cava"],
+	// "modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray", "custom/wallpaper", "custom/cava"],
+	"modules-left": ["custom/wallpaper", "tray"],
 	"modules-center": ["hyprland/workspaces"],
-	"modules-right": ["network", "backlight","pulseaudio","clock", "battery", "custom/power"],
+	"modules-right": ["network", "backlight","pulseaudio", "clock", "battery", "custom/power"],
 
     "custom/wallpaper": {
-    "format": "󰸉   ",
+    "format": "󰸉",
     "tooltip": false,
     "on-click": "~/wallpapers/scripts/change_wallpaper.sh",
     },
@@ -34,7 +35,8 @@
 		"tooltip-format": "{essid} ({signalStrength}%)",
 		"format-linked": "{ifname} (No IP) ",
 		"format-disconnected": "⚠",
-		"format-alt": "{ifname}: {ipaddr}/{cidr}"
+		"format-alt": "{ifname}: {ipaddr}/{cidr}",
+		"on-click-right":"ip addr show | rg inet | awk '{print $2}' | awk 'NR == 3 {print}' | awk -v RS='/' '{print $0; exit}' | wl-copy",
 		},
 	"backlight": {
 		"tooltip": false,
@@ -62,7 +64,8 @@
     "clock": {
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+        "format-alt": "{:%Y-%m-%d}",
+        "on-click-right":"date +%Y-%m-%d | wl-copy"
     },
 
     "cpu": {
@@ -94,14 +97,15 @@
         "format": "{icon}",
         "on-click": "activate",
         "format-icons": {
-            "1": "󰍹",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "6": " ",
+            // "1": "⏺",
+            // // "2": "",
+            // "3": "",
+            // "4": "",
+            // "5": "",
+            // "6": " ",
             "urgent": "",
-            "default": ""
+            "default": "⃝",
+            "active":"⏺"
         },
         "sort-by-number": true
     }
