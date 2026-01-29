@@ -27,13 +27,9 @@ return {
             -- list of servers for mason to install
             ensure_installed = {
                 "clangd",
-                "css-lsp",
-                "html-lsp",
-                "lua-language-server",
                 "pyright",
                 "stylua",
                 "taplo",
-                -- "texlab",
             },
         })
         mason_tool_installer.setup({
@@ -45,6 +41,10 @@ return {
                 "pylint",
                 "eslint_d",
                 "latexindent",
+                "css-lsp",
+                "html-lsp",
+                "lua-language-server",
+                "texlab",
             },
         })
     end,
