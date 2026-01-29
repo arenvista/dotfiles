@@ -23,20 +23,25 @@ return {
                 },
             },
         })
-
         mason_lspconfig.setup({
             -- list of servers for mason to install
             ensure_installed = {
-                "html",
-                "cssls",
-                "tailwindcss",
-                "lua_ls",
-                "graphql",
-                "prismals",
                 "clangd",
+                "css-lsp",
+                "emmet-ls",
+                "graphql-language-service-cli",
+                "html-lsp",
+                "lua-language-server",
+                "prisma-language-server",
+                "pyright",
+                "stylua",
+                "svelte-language-server",
+                "tailwindcss-language-server",
+                "taplo",
+                "texlab",
+                "typescript-language-server",
             },
         })
-
         mason_tool_installer.setup({
             ensure_installed = {
                 "prettier", -- prettier formatter
@@ -45,6 +50,7 @@ return {
                 "black", -- python formatter
                 "pylint",
                 "eslint_d",
+                "latexindent",
             },
         })
     end,
