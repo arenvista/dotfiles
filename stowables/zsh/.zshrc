@@ -116,7 +116,6 @@ bindkey -s '^f' "tmux-sessionizer\n"
 bindkey -s '^r' "source ~/.zshrc\n"
 bindkey -s '^n' "nvim\n"
 bindkey -s '^e' "yazi\n"
-bindkey -s '^q' "cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf)\n"
 alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf\n)"
 
 catnap
