@@ -26,11 +26,13 @@ return {
 	-- ==========================================
 	-- 0. LOGIC & SYMBOLS
 	-- ==========================================
+	s({ trig = ";x", snippetType = "autosnippet" }, { t("\\times") }, { condition = in_mathzone }),
 	s({ trig = "exi", snippetType = "autosnippet" }, { t("\\exists ~") }, { condition = in_mathzone }),
 	s({ trig = "for", snippetType = "autosnippet" }, { t("\\forall ~") }, { condition = in_mathzone }),
 	s({ trig = "!!", snippetType = "autosnippet" }, { t("\\not") }, { condition = in_mathzone }),
 	s({ trig = "eset", snippetType = "autosnippet" }, { t("\\emptyset") }, { condition = in_mathzone }),
 	s({ trig = "_set", snippetType = "autosnippet" }, { t("\\subset") }, { condition = in_mathzone }),
+	s({ trig = "=set", snippetType = "autosnippet" }, { t("\\subseteq") }, { condition = in_mathzone }),
 
 	-- ==========================================
 	-- 1. MATH SETS (Auto-Snippets)
@@ -47,6 +49,7 @@ return {
 	-- 2. CONDITIONAL LOGIC
 	-- ==========================================
 	s({ trig = "imp", snippetType = "autosnippet" }, { t("\\implies ") }, { condition = in_mathzone }),
+	s({ trig = "rarr", snippetType = "autosnippet" }, { t("\\rightarrow ") }, { condition = in_mathzone }),
 	s({ trig = "->", snippetType = "autosnippet" }, { t("\\rightarrow ") }, { condition = in_mathzone }),
 	s({ trig = "<-", snippetType = "autosnippet" }, { t("\\leftarrow ") }, { condition = in_mathzone }),
 	s({ trig = "<->", snippetType = "autosnippet" }, { t("\\iff ") }, { condition = in_mathzone }),
