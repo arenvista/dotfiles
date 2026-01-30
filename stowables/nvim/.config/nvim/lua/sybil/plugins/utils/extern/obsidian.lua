@@ -12,7 +12,6 @@ if f then
 			-- 2. Extract the last part of that parent: /a/b/c -> c
 			local parent_path = vim.fn.fnamemodify(path, ":h")
 			local vault_name = vim.fn.fnamemodify(parent_path, ":t")
-
 			table.insert(my_vaults, {
 				name = vault_name,
 				path = path,

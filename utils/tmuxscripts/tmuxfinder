@@ -4,6 +4,7 @@
 SEARCH_DIRS=(
     "$HOME/Documents/"
     "$HOME/dotfiles"
+    "$HOME/.config"
 )
 
 MARKER1=".tm1"
