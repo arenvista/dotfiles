@@ -1,8 +1,9 @@
 #!/bin/bash
 echo "Removing old scripts..."
-rm  /bin/tmux-attacher  /bin/tmux-sessionizer  /bin/tmuxfinder
+rm  /bin/tmux-attacher  /bin/tmux-sessionizer  /bin/tmuxfinder /bin/tmux-killer
 echo "Copying new scripts..."
 cp tmux-attacher /bin/
 cp tmux-sessionizer /bin/
 cp tmuxfinder /bin/
+cp tmux-killer /bin/
 echo "Done!"
