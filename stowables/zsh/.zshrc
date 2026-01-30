@@ -102,17 +102,18 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 alias ah="nvim"
 alias ..="cd .."
+alias ls="lsd"
+
 alias t="tmux"
 alias tnw="tmux new-window -n"
 alias tns="tmux new-session -d -n "
 alias trw="tmux rename-window"
-alias ta="tmux attach"
-alias ts="tmux switch -t"
 alias trs="tmux rename-session"
-alias tks="tmux kill-session"
-alias ls="lsd"
+alias tks="pkill tmux"
 bindkey -s '^s' "tmux-attacher\n"
 bindkey -s '^f' "tmux-sessionizer\n"
+bindkey -s '^x' "tmux-killer\n"
+
 bindkey -s '^r' "source ~/.zshrc\n"
 bindkey -s '^n' "nvim\n"
 bindkey -s '^e' "yazi\n"
