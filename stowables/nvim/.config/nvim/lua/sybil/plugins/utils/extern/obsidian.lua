@@ -1,61 +1,31 @@
--- 1. Define all POTENTIAL vaults
-local defined_vaults = {
-	{
-		name = "DiffyQ",
-		path = "/home/sybil/Documents/School-SE1/Fall_2025/MATH225/diffyq_notes",
-	},
-	{
-		name = "RealAnalysis",
-		path = "/home/sybil/Documents/MATH301/Notes/",
-	},
-	{
-		name = "OperatingSystems",
-		path = "/home/sybil/Documents/OS/Notes/",
-	},
-	{
-		name = "OperatingSystems", -- Note: You have a duplicate name here (see observation below)
-		path = "/home/sybil/Documents/math301/Notes",
-	},
-}
-
--- 2. Filter: Only add them to 'my_vaults' if the directory actually exists
+local vault_list_path = "/home/sybil/dotfiles/utils/obsidianvaults/vaults.md"
 local my_vaults = {}
-local count = 0
+local f = io.open(vault_list_path, "r")
+if f then
+	for line in f:lines() do
+		-- Clean up the line (remove whitespace and trailing slashes)
+		local path = line:gsub("%s+", ""):gsub("/$", "")
 
-for _, vault in ipairs(defined_vaults) do
-	count = count + 1
-	-- vim.fn.isdirectory returns 1 if it exists, 0 if not
-	if vim.fn.isdirectory(vault.path) == 1 then
-		table.insert(my_vaults, vault)
-	else
+		if path ~= "" and vim.fn.isdirectory(path) == 1 then
+			-- Logic to get the folder above the final directory:
+			-- 1. Get the parent directory: /a/b/c/Vault -> /a/b/c
+			-- 2. Extract the last part of that parent: /a/b/c -> c
+			local parent_path = vim.fn.fnamemodify(path, ":h")
+			local vault_name = vim.fn.fnamemodify(parent_path, ":t")
+
+			table.insert(my_vaults, {
+				name = vault_name,
+				path = path,
+			})
+		end
 	end
+	f:close()
 end
-
--- Print everything at the end so Neovim doesn't overwrite the previous lines
--- Optional: If you want to see the final valid table structure:
--- print(vim.inspect(my_vaults))
-
--- 3. Return the plugin config
 return {
 	"epwalsh/obsidian.nvim",
 	version = "*",
 	lazy = true,
 	ft = "markdown",
-	-- The cond function uses the filtered 'my_vaults' list
-	-- cond = function()
-	--     local cwd = vim.fn.getcwd()
-	--     print("Attempting to load vaults from table:")
-	--     for _, vault in ipairs(my_vaults) do
-	--         print("\tCalling " .. vault.path)
-	--         -- Check if cwd starts with the vault path (handles subdirectories too)
-	--         -- We use plain=true for string.find to avoid regex issues with path chars
-	--         if string.find(cwd, vault.path, 1, true) then
-	--             print("Loaded vault.")
-	--             return true
-	--         end
-	--     end
-	--     return false
-	-- end,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
