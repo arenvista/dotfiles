@@ -57,7 +57,7 @@ return {
 				"asm",
 			},
 			ignore_install = {
-				"org",
+				-- "org",
 			},
 			incremental_selection = {
 				enable = true,

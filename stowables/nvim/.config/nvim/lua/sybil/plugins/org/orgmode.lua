@@ -125,7 +125,6 @@ return {
 			},
 		})
 
-		require("telescope").setup()
 		require("telescope").load_extension("orgmode")
 		vim.keymap.set("n", "<leader>r", require("telescope").extensions.orgmode.refile_heading)
 		vim.keymap.set("n", "<leader>fh", require("telescope").extensions.orgmode.search_headings)
