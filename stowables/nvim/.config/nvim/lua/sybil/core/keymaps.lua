@@ -29,7 +29,7 @@ vim.keymap.set("i", "<Del>", "<Esc>")
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<C-s>", "<cmd>silent !tmux neww tmux-attacher<CR>")
-vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format)
 
 vim.keymap.set("n", "<leader>z", ":set foldmethod=indent")
 
