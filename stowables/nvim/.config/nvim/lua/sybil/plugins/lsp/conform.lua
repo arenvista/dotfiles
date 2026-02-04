@@ -18,10 +18,9 @@ return {
 		vim.keymap.set({ "n", "v" }, "<Leader>lf", function()
 			conform.format({
 				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
+				-- async = false,
+				-- timeout_ms = 1000,
 			})
-			vim.cmd("w")
 			-- end
 		end, { desc = "Format file or range (in visual mode)" })
 	end,
