@@ -10,10 +10,70 @@ local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
 local line_begin = require("luasnip.extras.expand_conditions").line_begin
 
+local function in_mathzone()
+	local node = vim.treesitter.get_node({ ignore_injections = false })
+
+	while node do
+		local type = node:type()
+		-- Debug: Print types to see what the injected parser sees
+		-- print(type)
+
+		if type == "displayed_equation" or type == "inline_formula" or type == "math_environment" then
+			return true
+		end
+
+		node = node:parent()
+	end
+	return false
+end
+
 -- ----------------------------------------------------------------------------
 -- SNIPPETS
 -- ----------------------------------------------------------------------------
 
 return {
+-- ----------------------------------------------------------------------------
+-- LATEX
+-- ----------------------------------------------------------------------------
+    s({trig = "dm", snippetType="autosnippet"}, fmta(
+        [[
+      $$
+          <>
+      $$ <>
+    ]],
+        { i(1), i(0) }
+    )),
 	s({ trig = "il", snippetType = "autosnippet" }, fmta("$<>$<>", { i(1), i(0) })),
+    s({trig = "beg", snippetType="autosnippet"}, fmta(
+        [[
+      \begin{<>}
+          <>
+      \end{<>}
+		{ condition = in_mathzone }
+    ]],
+        { i(1), i(0), rep(1), }
+    ), { condition = in_mathzone }
+    ),
+
+    s({trig = "cas", snippetType="autosnippet"}, fmta(
+        [[
+      \begin{cases}
+          <>
+      \end{cases}
+    ]],
+        { i(0) }
+    ), { condition = in_mathzone }
+    ),
+
+    s({trig = "ali", snippetType="autosnippet"}, fmta(
+        [[
+      \begin{align}
+          <>
+      \end{align}
+    ]],
+        { i(0) }
+    ),
+		{ condition = in_mathzone }
+
+    ),
 }
