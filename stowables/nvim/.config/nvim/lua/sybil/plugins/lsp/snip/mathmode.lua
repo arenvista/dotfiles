@@ -26,6 +26,8 @@ return {
 	-- ==========================================
 	-- 0. LOGIC & SYMBOLS
 	-- ==========================================
+    --
+	s({ trig = ". ", snippetType = "autosnippet" }, { t("& ") }, { condition = in_mathzone }),
 	s({ trig = ";x", snippetType = "autosnippet" }, { t("\\times") }, { condition = in_mathzone }),
 	s({ trig = "exi", snippetType = "autosnippet" }, { t("\\exists ~") }, { condition = in_mathzone }),
 	s({ trig = "for", snippetType = "autosnippet" }, { t("\\forall ~") }, { condition = in_mathzone }),
@@ -49,9 +51,8 @@ return {
 	-- 2. CONDITIONAL LOGIC
 	-- ==========================================
 	s({ trig = "imp", snippetType = "autosnippet" }, { t("\\implies ") }, { condition = in_mathzone }),
-	s({ trig = "rarr", snippetType = "autosnippet" }, { t("\\rightarrow ") }, { condition = in_mathzone }),
-	s({ trig = "->", snippetType = "autosnippet" }, { t("\\rightarrow ") }, { condition = in_mathzone }),
-	s({ trig = "<-", snippetType = "autosnippet" }, { t("\\leftarrow ") }, { condition = in_mathzone }),
+	s({ trig = "-ra", snippetType = "autosnippet" }, { t("\\rightarrow ") }, { condition = in_mathzone }),
+	s({ trig = ".<=", snippetType = "autosnippet" }, { t("\\leftarrow ") }, { condition = in_mathzone }),
 	s({ trig = "<->", snippetType = "autosnippet" }, { t("\\iff ") }, { condition = in_mathzone }),
 	s({ trig = "land", snippetType = "autosnippet" }, { t("\\land ") }, { condition = in_mathzone }),
 	s({ trig = "lor", snippetType = "autosnippet" }, { t("\\lor ") }, { condition = in_mathzone }),
@@ -62,6 +63,18 @@ return {
 	-- ==========================================
 	-- 3. STRUCTURES INSIDE MATH
 	-- ==========================================
+
+	s(
+		{ trig = "./", snippetType = "autosnippet" },
+		fmta(
+			[[
+            \\
+            <>
+    ]],
+			{ i(1) }
+		),
+		{ condition = in_mathzone }
+	),
 	s(
 		{ trig = "set", snippetType = "autosnippet" },
 		fmta(
@@ -102,9 +115,10 @@ return {
 	s({ trig = ";e", snippetType = "autosnippet" }, { t("\\epsilon") }, { condition = in_mathzone }),
 	s({ trig = ";ve", snippetType = "autosnippet" }, { t("\\varepsilon") }, { condition = in_mathzone }),
 	s({ trig = ";o", snippetType = "autosnippet" }, { t("\\omega") }, { condition = in_mathzone }),
-	s({ trig = "inf", snippetType = "autosnippet" }, { t("\\infty") }, { condition = in_mathzone }),
+	s({ trig = "_inf", snippetType = "autosnippet" }, { t("\\infty") }, { condition = in_mathzone }),
 	s({ trig = "dag", snippetType = "autosnippet" }, { t("\\dagger") }, { condition = in_mathzone }),
 	s({ trig = "~=", snippetType = "autosnippet" }, { t("\\approx") }, { condition = in_mathzone }),
+	s({ trig = "in", snippetType = "autosnippet" }, { t("\\in") }, { condition = in_mathzone }),
 
 	-- ==========================================
 	-- 5. CALCULUS & ANALYSIS
@@ -255,4 +269,63 @@ return {
 
 	-- SQUARE ROOT
 	s({ trig = "sq", snippetType = "autosnippet" }, fmta("\\sqrt{<>}", { i(1) }), { condition = in_mathzone }),
+
+    --- ARRAYS
+	s(
+		{ trig = "ar", snippetType = "autosnippet" },
+		fmta(
+			[[
+      \begin{array}
+          <>
+      \end{array}
+      ]],
+			{ i(1) }
+		),
+		{ condition = in_mathzone }
+	),
+
+	s(
+		{ trig = "lar", snippetType = "autosnippet" },
+		fmta(
+			[[
+      \left \{ 
+      \begin{array}
+          <>
+      \end{array}
+      \right .
+      ]],
+			{ i(1) }
+		),
+		{ condition = in_mathzone }
+	),
+
+	s(
+		{ trig = "rar", snippetType = "autosnippet" },
+		fmta(
+			[[
+      \left . 
+      \begin{array}
+          <>
+      \end{array}
+      \right \}
+      ]],
+			{ i(1) }
+		),
+		{ condition = in_mathzone }
+	),
+
+	s(
+		{ trig = "{}ar", snippetType = "autosnippet" },
+		fmta(
+			[[
+      \left \{
+      \begin{array}
+          <>
+      \end{array}
+      \right \}
+      ]],
+			{ i(1) }
+		),
+		{ condition = in_mathzone }
+	),
 }
