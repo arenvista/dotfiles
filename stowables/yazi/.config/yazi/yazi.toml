@@ -1,12 +1,25 @@
-# 1. Define the Opener
+# 1. Define the Openers
 [opener]
 zathura = [
-	{ run = 'zathura "$@"', orphan = true, for = "unix" },
+    # Added 'desc' so it shows up in the "Open with" menu
+    { run = 'zathura "$@"', orphan = true, desc = "Open with Zathura", for = "unix" },
+]
+nvim = [
+    { run = 'nvim "$@"', block = true, desc = "Edit", for = "unix" },
 ]
 
-# 2. Set the Rule
+# 2. Set the Rules
 [open]
-rules = [
-	# Put this rule near the top of the list to ensure it takes precedence
-	{ url = "*.pdf", use = "zathura" },
+# Use 'prepend_rules' to ADD to defaults instead of 'rules' which overwrites them
+prepend_rules = [
+    # PDF Rules: Match by extension (case-insensitive) OR mime-type
+    { name = "*.pdf", use = "zathura" },
+    { name = "*.PDF", use = "zathura" },
+    { mime = "application/pdf", use = "zathura" },
+
+    # Neovim Rules
+    { name = "*.{txt,md,py,sh,conf,lua,toml,json}", use = "nvim" },
+    
+    # Fallback for text files without extension
+    { mime = "text/*", use = "nvim" },
 ]
