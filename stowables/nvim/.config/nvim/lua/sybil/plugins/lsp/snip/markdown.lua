@@ -49,7 +49,6 @@ return {
       \begin{<>}
           <>
       \end{<>}
-		{ condition = in_mathzone }
     ]],
         { i(1), i(0), rep(1), }
     ), { condition = in_mathzone }
