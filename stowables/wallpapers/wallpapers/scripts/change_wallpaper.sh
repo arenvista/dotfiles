@@ -80,6 +80,6 @@ source ~/wallpapers/scripts/wallpaper_state.env
 
 "$HOME/dotfiles/stowables/waybar/.config/waybar/launch_waybar"
 
-miniserve "$HOME/dotfiles/utils/firefox/" --index home.html &
+miniserve "$HOME/dotfiles/utils/firefox/" --index home.html --header "Cache-Control: no-cache, no-store, must-revalidate"&
 
 echo "serving"
