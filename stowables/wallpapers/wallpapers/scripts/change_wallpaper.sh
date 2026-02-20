@@ -40,9 +40,13 @@ if [[ -n "$WALLPAPER" ]]; then
     swww img ${WALLPAPER} --transition-type center --resize crop --fill-color 080808
 fi
 
-wal -i $WALLPAPER
 rm ~/dotfiles/imgs/utils/firefox/temp.png
 cp ~/wallpapers/imgs/temp.png ~/dotfiles/utils/firefox/
-exec ~/dotfiles/stowables/waybar/.config/waybar/launch_waybar
+wal -i $WALLPAPER 
+pkill miniserve
 kill -SIGUSR1 $(pgrep kitty)
 source wallpaper_state.env
+./firefoxcolors.sh
+./~/dotfiles/stowables/waybar/.config/waybar/launch_waybar
+miniserve /home/sybil/dotfiles/utils/firefox/ --index home.html&
+echo "serving"
