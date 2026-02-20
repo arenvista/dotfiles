@@ -1,9 +1,0 @@
-*{main-bg:          #11111be6;
-main-fg:            #b5bfe2;
-main-br:            #4c4f69;
-main-ex:            #4c4f69;
-select-bg:          #cad3f5;
-select-fg:          #11111bff;
-separatorcolor:     transparent;
-border-color:       transparent;
-}

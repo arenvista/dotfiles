@@ -13,7 +13,7 @@
     "custom/wallpaper": {
     "format": "󰸉",
     "tooltip": false,
-    "on-click": "~/wallpapers/scripts/change_wallpaper.sh",
+    "on-click": "~/wallpapers/scripts/change_wallpaper.sh&",
     },
 
     "custom/cava": {
@@ -106,7 +106,7 @@
             // "5": "",
             // "6": " ",
             "urgent": "⏁",
-            "default": "❍ ",
+            "default": "○",
             "active":""
         },
         "sort-by-number": true
