@@ -22,6 +22,11 @@ return {
         local luasnip = require("luasnip")
         local lspkind = require("lspkind")
 
+        local block_ids = require("block_ids")
+        block_ids.index()
+        cmp.register_source("block_ids", block_ids.new())
+
+
         luasnip.setup({
             enable_autosnippets = true,
         })
@@ -76,6 +81,8 @@ return {
             sources = cmp.config.sources({
                 -- { name = "luasnip" }, -- snippets
                 { name = "buffer" }, -- text within current buffer
+                { name = "obsidian", priority = 100 },
+                { name = "block_ids" },
                 { name = "bufname"},
                 { name = "buffer-lines"},
                 { name = "calc"},
@@ -85,7 +92,7 @@ return {
                 { name = "digraphs"},
                 { name = "path" }, -- file system paths
                 -- { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
-                { name = "nvim_lsp", priority = 100 },
+                { name = "nvim_lsp", priority = 1000 },
                 { name = "orgmode"},
                 { name = "git"},
                 { name = "rg"},

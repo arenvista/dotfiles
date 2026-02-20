@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/zsh
 scrDir="$(dirname "$(realpath "$0")")"
 rofiConf="~/.config/rofi/selector.rasi"
 # Set rofi scaling
@@ -26,15 +26,23 @@ case "${themeSelect}" in
     thmbExtn="sqre" ;;
 esac
 # Launch rofi menu
-wallpaper_selection=$(find ~/wallpapers/favorites -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.gif" -o -name "*.jpeg" \) -print0 | xargs -0 -I {} echo -en "$(basename '{}' .png)\x00icon\x1f{}\n"  | rofi -dmenu -theme-str "${r_scale}" -theme-str "${r_override}" -config "${rofiConf}")
-if [[ -n "$wallpaper_selection" ]]; then
+WALLPAPER=$(find ~/wallpapers/favorites -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.gif" -o -name "*.jpeg" \) -print0 | xargs -0 -I {} echo -en "$(basename '{}' .png)\x00icon\x1f{}\n"  | rofi -dmenu -theme-str "${r_scale}" -theme-str "${r_override}" -config "${rofiConf}")
+export WALLPAPER
+if [[ -n "$WALLPAPER" ]]; then
     # Create Cropped Images
-    magick convert $wallpaper_selection -gravity center -crop 1400x1600+0+0 +repage ~/wallpapers/imgs/temp.png
-    magick convert $wallpaper_selection -gravity center -crop 2400x1600+0+0 +repage ~/wallpapers/imgs/temp_sddm.png
+    magick convert $WALLPAPER -gravity center -crop 1400x1600+0+0 +repage ~/wallpapers/imgs/temp.png
+    magick convert $WALLPAPER -gravity center -crop 2400x1600+0+0 +repage ~/wallpapers/imgs/temp_sddm.png
     # Set as enviorment variable
-    sed -i "s|export WALLPAPER=\".*\"|export WALLPAPER=\"$wallpaper_selection\"|" ~/wallpapers/scripts/wallpaper_state.env
+    sed -i "s|export WALLPAPER=\".*\"|export WALLPAPER=\"$WALLPAPER\"|" ~/wallpapers/scripts/wallpaper_state.env
     # Define as image to be used in catnap 
-    # sed -i "s|path   = \".*\"|path   = \"$wallpaper_selection\"|" ~/.config/catnap/config.toml
+    # sed -i "s|path   = \".*\"|path   = \"$WALLPAPER\"|" ~/.config/catnap/config.toml
     # Set as image to be rendered for swww background
-    swww img ${wallpaper_selection} --transition-type center --resize crop --fill-color 080808
+    swww img ${WALLPAPER} --transition-type center --resize crop --fill-color 080808
 fi
+
+wal -i $WALLPAPER
+rm ~/dotfiles/imgs/utils/firefox/temp.png
+cp ~/wallpapers/imgs/temp.png ~/dotfiles/utils/firefox/
+exec ~/dotfiles/stowables/waybar/.config/waybar/launch_waybar
+kill -SIGUSR1 $(pgrep kitty)
+source wallpaper_state.env

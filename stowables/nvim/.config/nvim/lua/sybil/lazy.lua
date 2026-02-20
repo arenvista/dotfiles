@@ -49,6 +49,7 @@ else
             {import = "sybil.plugins.utils.compile" },
             {import = "sybil.plugins.utils.extern" },
             {import = "sybil.plugins.utils.qql" },
+            {import = "sybil.plugins.local" },
             {import = "sybil.plugins.lsp" },
             {import = "sybil.plugins.telescope" },
         },
