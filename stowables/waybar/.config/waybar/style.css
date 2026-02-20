@@ -24,19 +24,19 @@ window#waybar {
 
 #workspaces {
 	margin-top: 6px;
-	margin-left: 12px;
-	font-size: 4px;
+	margin-left: 0px;
+	/* font-size: 4px; */
 	margin-bottom: 0px;
 	transition: none;
 	background: @background;
-
 }
 
 #workspaces button {
+	margin-right: 3px;
 	transition: none;
 	color: @foreground;
 	background: transparent;
-	font-size: 16px;
+	font-size: 12px;
 }
 
 #workspaces button.persistent {

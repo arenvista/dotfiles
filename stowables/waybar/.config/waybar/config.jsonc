@@ -105,8 +105,8 @@
             // "4": "",
             // "5": "",
             // "6": " ",
-            "urgent": "",
-            "default": "⃝",
+            "urgent": "⏁",
+            "default": "❍ ",
             "active":""
         },
         "sort-by-number": true
