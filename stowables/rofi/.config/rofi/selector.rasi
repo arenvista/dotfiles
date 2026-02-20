@@ -6,8 +6,14 @@ configuration {
     font:                        "JetBrainsMono Nerd Font 10";
 }
 
-// @theme "~/.config/rofi/theme.rasi"
 @theme "/home/sybil/.cache/wal/colors-rofi-light.rasi"
+*{
+    main-bg:            @background;
+    main-fg:            @urgent-background;
+    main-br:            @background;
+    select-bg:          @selected-active-background;
+    select-fg:          @selected-active-foreground;
+}
 
 
 // Main //

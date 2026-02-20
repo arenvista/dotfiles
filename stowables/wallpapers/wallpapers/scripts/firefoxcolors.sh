@@ -27,29 +27,6 @@ mkdir -p "$CHROME_DIR"
 # Write userChrome.css with full customization mapped to Pywal variables
 cat > "$CHROME_DIR/userChrome.css" <<EOL
 :root {
-    /* Define the 16-color Pywal palette extracted from your file */
-    --color0:  ${wal_colors[0]};
-    --color1:  ${wal_colors[1]};
-    --color2:  ${wal_colors[2]};
-    --color3:  ${wal_colors[3]};
-    --color4:  ${wal_colors[4]};
-    --color5:  ${wal_colors[5]};
-    --color6:  ${wal_colors[6]};
-    --color7:  ${wal_colors[7]};
-    --color8:  ${wal_colors[8]};
-    --color9:  ${wal_colors[9]};
-    --color10: ${wal_colors[10]};
-    --color11: ${wal_colors[11]};
-    --color12: ${wal_colors[12]};
-    --color13: ${wal_colors[13]};
-    --color14: ${wal_colors[14]};
-    --color15: ${wal_colors[15]};
-
-    /* =========================================================
-       MAP PYWAL COLORS TO FIREFOX ELEMENTS HERE 
-       Change the var(--colorX) to customize your theme!
-       ========================================================= */
-    
     /* General Toolbar & Navigation */
     --uc-toolbar-bg:      var(--color1);
     --uc-toolbar-fg:      var(--color7);
@@ -105,15 +82,33 @@ cat > "$CHROME_DIR/userChrome.css" <<EOL
     color: var(--uc-tab-active-fg) !important;
 }
 
-/* URL Bar */
+/* URL Bar Base */
 #urlbar-background {
     background-color: var(--color1) !important;
-    # border: 1px solid var(--uc-urlbar-border) !important;
+    /* border: 1px solid var(--uc-urlbar-border) !important; */
 }
 #urlbar-input {
     color: var(--color1) !important;
 }
 
+/* --- URL BAR DROPDOWN (TRANSPARENT) --- */
+
+/* Makes the background of the expanded URL bar transparent */
+#urlbar[open] > #urlbar-background {
+    background-color: transparent !important;
+    box-shadow: none !important; /* Removes the default dropdown shadow */
+}
+
+/* Ensures the suggestion results container is also transparent */
+.urlbarView {
+    background-color: transparent !important;
+}
+
+/* Optional: Add a slight hover effect to suggested items so you can see what you are selecting */
+.urlbarView-row:hover > .urlbarView-row-inner {
+    background-color: #909 !important;
+    # color: var(--color0) !important;
+}
 /* Context Menus and Popups */
 menupopup, panel {
     --panel-background: var(--uc-popup-bg) !important;
@@ -123,6 +118,48 @@ menupopup, panel {
 menuitem:hover, menu:hover {
     background-color: var(--uc-popup-hover-bg) !important;
     color: var(--uc-popup-hover-fg) !important;
+}
+
+/* --- AUTO-HIDE ENTIRE TOP BAR --- */
+#navigator-toolbox {
+    position: absolute !important;
+    display: block !important;
+    width: 100vw !important;
+    z-index: 100 !important;
+    /* Move the bar off-screen, leaving a 4px invisible hit-area to catch your mouse */
+    transform: translateY(calc(-100% + 20px)) !important;
+    opacity: 0 !important;
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out !important;
+}
+
+/* Reveal top bar on hover or when clicking inside (e.g., using Ctrl+L to type a URL) */
+#navigator-toolbox:hover,
+#navigator-toolbox:focus-within {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+}
+
+/* Auto-hide the nav bar, reveal on hover */
+#nav-bar {
+  min-height: 0 !important;
+  max-height: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.2s ease-in-out !important;
+  opacity: 0 !important;
+}
+
+#navigator-toolbox:hover #nav-bar,
+#navigator-toolbox:focus-within #nav-bar {
+  max-height: 40px !important; /* Adjust based on your UI density */
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+/* Make the expanded URL bar and dropdown background semi-transparent */
+/* #urlbar[breakout][breakout-extend] > #urlbar-background {
+    background-color: rgba(25, 25, 25, 0.65) !important; /* Dark theme semi-transparent */
+    /* Use rgba(255, 255, 255, 0.65) if you use a Light theme */
+    
+    backdrop-filter: blur(8px) !important; /* Optional: gives a frosted glass effect */
 }
 EOL
 
