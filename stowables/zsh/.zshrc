@@ -120,8 +120,6 @@ bindkey -s '^n' "nvim\n"
 bindkey -s '^e' "yazi\n"
 alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf\n)"
 
-catnap
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -159,5 +157,6 @@ function fzf-cd-shallow() {
 # Register the function as a ZLE (Zsh Line Editor) widget
 zle -N fzf-cd-shallow
 
+neofetch 
 # Bind the key. '^f' stands for Ctrl+F
 bindkey '^w' fzf-cd-shallow
