@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Page</title>
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: --foreground;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background-color: var(--background);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: var(--color1);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .links-container a {
+            color: var(--background);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: var(--color1);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .links-container a:hover {
+            background-color: var(--color3);
+            transform: translateX(5px);
+        }
+
+        /* Splash Area Styling */
+        .splash {
+            flex-grow: 1;
+            /* Using a high-quality landscape placeholder from Unsplash */
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), url("temp.png") center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .splash-content {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #clock {
+            font-size: 5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .greeting {
+            font-size: 1.5rem;
+            color: var(--foreground);
+            margin-bottom: 30px;
+        }
+
+        /* Search Bar */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 400px;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 30px;
+            background: var(--foreground);
+            color: var(--color1);
+            outline: none;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 15px var(--color5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2></h2>
+        <div class="links-container">
+            <a href="https://www.youtube.com"><i class="fa-brands fa-youtube"></i> YouTube</a>
+            <a href="https://www.github.com"><i class="fa-brands fa-github"></i> GitHub</a>
+            <a href="https://mail.google.com"><i class="fa-solid fa-envelope"></i> Gmail</a>
+            <a href="https://calendar.google.com"><i class="fa-solid fa-calendar-days"></i> Calendar</a>
+            <a href="https://blackboard.umbc.edu/"><i class="fa-solid fa-chalkboard"></i> Blackboard</a>
+            <a href="https://portfolio.arenvista.me/"> <i class="fa-solid fa-house"></i> Portfolio</a>
+        </div>
+    </div>
+
+    <div class="splash">
+        <div class="splash-content">
+            <div id="clock">00:00</div>
+            <div class="greeting"></div>
+
+            <form class="search-form" action="https://www.google.com/search" method="GET">
+                <input type="text" name="q" class="search-input" placeholder="Search the web..." autocomplete="off"
+                    autofocus>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            const timeString = hours + ':' + minutes + ' ' + ampm;
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        // Initialize and set interval
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+
+</html>

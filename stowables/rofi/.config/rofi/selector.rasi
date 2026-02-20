@@ -6,7 +6,8 @@ configuration {
     font:                        "JetBrainsMono Nerd Font 10";
 }
 
-@theme "~/.config/rofi/theme.rasi"
+// @theme "~/.config/rofi/theme.rasi"
+@theme "/home/sybil/.cache/wal/colors-rofi-light.rasi"
 
 
 // Main //
@@ -66,8 +67,10 @@ element {
     text-color:                  @main-fg;
 }
 element selected.normal {
-    background-color:            @select-bg;
-    text-color:                  @select-fg;
+    background-color:            lightgray;
+    text-color:                  lightgray;
+    // background-color:            @select-bg;
+    // text-color:                  @select-fg;
 }
 element-icon {
     cursor:                      inherit;

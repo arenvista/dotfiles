@@ -1,12 +1,14 @@
 {
 	"layer": "top",
 	// Using margin-bottom with a negative value in order to reduce the space between Hyprland window and waybar
+    "height": 1,
 	"margin-bottom": -10,
-	"margin-top": 10,
-	// "modules-left": ["custom/launcher", "cpu","memory", "network","custom/spotify", "tray", "custom/wallpaper", "custom/cava"],
+	"margin-top": 8,
+	"margin-left": 10,
+	"margin-right": 10,
 	"modules-left": ["custom/wallpaper", "tray"],
 	"modules-center": ["hyprland/workspaces"],
-	"modules-right": ["network", "backlight","pulseaudio", "clock", "battery", "custom/power"],
+	"modules-right": ["network", "backlight","pulseaudio", "clock", "battery"],
 
     "custom/wallpaper": {
     "format": "󰸉",
@@ -58,7 +60,7 @@
         "format-icons": ["", "", "", "", ""]
     },
 	"tray":{
-		"icon-size":18,
+		"icon-size":17,
 		"spacing": 10
 	},
     "clock": {

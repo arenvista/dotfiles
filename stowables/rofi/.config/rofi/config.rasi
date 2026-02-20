@@ -12,7 +12,8 @@ configuration {
     icon-theme:                  "Tela-circle-dracula";
 }
 
-@theme "~/.config/rofi/theme.rasi"
+// @theme "~/.config/rofi/theme.rasi"
+@theme "/home/sybil/.cache/wal/colors-rofi-light.rasi"
 
 
 // Main //
@@ -40,7 +41,7 @@ mainbox {
 dummywall {
     spacing:                     0em;
     padding:                     0em;
-    width:                       27em;
+    width:                       32em;
     expand:                      false;
     orientation:                 horizontal;
     children:                    [ "mode-switcher" , "inputbar" ];
@@ -61,7 +62,7 @@ mode-switcher{
 button {
     cursor:                      pointer;
     border-radius:               2em;
-    background-color:            @main-bg;
+    background-color:            @active-background;
     text-color:                  @main-fg;
 }
 button selected {
