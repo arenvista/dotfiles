@@ -71,7 +71,6 @@ cp ~/wallpapers/imgs/temp.png ~/dotfiles/utils/firefox/
 wal -i "$WALLPAPER" 
 neofetch --clean 
 
-pkill miniserve
 pkill -USR1 kitty 
 
 source ~/wallpapers/scripts/wallpaper_state.env
@@ -79,7 +78,5 @@ source ~/wallpapers/scripts/wallpaper_state.env
 ./firefoxcolors.sh
 
 "$HOME/dotfiles/stowables/waybar/.config/waybar/launch_waybar"
-
-miniserve "$HOME/dotfiles/utils/firefox/" --index home.html --header "Cache-Control: no-cache, no-store, must-revalidate"&
 
 echo "serving"
