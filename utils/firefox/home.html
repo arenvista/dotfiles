@@ -19,156 +19,279 @@
         body {
             display: flex;
             height: 100vh;
-            background-color: --foreground;
+            background-color: var(--foreground);
             color: #ffffff;
             overflow: hidden;
         }
 
         /* Sidebar Styling */
         .sidebar {
-            width: 260px;
+            width: 300px;
             background-color: var(--background);
-            padding: 30px 20px;
+            padding: 30px 15px;
             display: flex;
             flex-direction: column;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
             z-index: 10;
         }
 
-        .sidebar h2 {
+        .sidebar i {
             font-size: 1.2rem;
             color: var(--color1);
             margin-bottom: 20px;
-            text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
         }
 
-        .links-container {
+        .sidebar-calendar {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
         }
 
-        .links-container a {
-            color: var(--background);
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: 8px;
-            background-color: var(--color1);
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-
-        .links-container a:hover {
-            background-color: var(--color3);
-            transform: translateX(5px);
+        .sidebar-calendar iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            filter: invert(0.9) hue-rotate(180deg) brightness(0.8);
+            border: none;
         }
 
         /* Splash Area Styling */
         .splash {
             flex-grow: 1;
-            /* Using a high-quality landscape placeholder from Unsplash */
             background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), url("temp.png") center/cover no-repeat;
             display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center; /* Centers the whole stack vertically */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Floating Transparent Weather */
+        .top-weather {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 100;
+            background: transparent;
+            color: white;
+            display: flex;
             flex-direction: column;
+            align-items: flex-end;
+            opacity: 0.8;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #weather-data {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #weather-icon {
+            font-size: 3rem;
+            color: var(--color1);
+        }
+
+        .weather-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        #weather-temp {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        #weather-desc {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .weather-location {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Carousel Area */
+        .card-carousel {
+            flex-grow: 0; /* Changed from 1 to keep it tight to its content */
+            position: relative;
+            width: 100%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            margin-bottom: 30px; /* Space between card and buttons */
         }
 
-        .splash-content {
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 50px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        #clock {
-            font-size: 5rem;
-            font-weight: 300;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-
-        .greeting {
-            font-size: 1.5rem;
-            color: var(--foreground);
-            margin-bottom: 30px;
-        }
-
-        /* Search Bar */
-        .search-form {
+        .splash-card {
+            opacity: 1; /* Fixed since there is only one card currently */
             display: flex;
             justify-content: center;
             width: 100%;
         }
 
-        .search-input {
-            width: 400px;
-            padding: 15px 25px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 30px;
-            background: var(--foreground);
-            color: var(--color1);
-            outline: none;
-            transition: box-shadow 0.3s ease;
+        .splash-content {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .search-input:focus {
-            box-shadow: 0 0 15px var(--color5);
+        #clock {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 10px;
         }
+
+        .greeting {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--color1);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            background: white;
+            color: #333;
+            outline: none;
+        }
+
+        /* --- Raised Bottom Nav --- */
+        .bottom-nav {
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+            padding-bottom: 20px; /* Slight padding from very center */
+        }
+
+        .nav-icon-link {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-icon-link:hover {
+            background: var(--color1);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn { display: none; }
     </style>
 </head>
 
 <body>
-
     <div class="sidebar">
-        <h2></h2>
-        <div class="links-container">
-            <a href="https://www.youtube.com"><i class="fa-brands fa-youtube"></i> YouTube</a>
-            <a href="https://www.github.com"><i class="fa-brands fa-github"></i> GitHub</a>
-            <a href="https://mail.google.com"><i class="fa-solid fa-envelope"></i> Gmail</a>
-            <a href="https://calendar.google.com"><i class="fa-solid fa-calendar-days"></i> Calendar</a>
-            <a href="https://blackboard.umbc.edu/"><i class="fa-solid fa-chalkboard"></i> Blackboard</a>
-            <a href="https://portfolio.arenvista.me/"> <i class="fa-solid fa-house"></i> Portfolio</a>
+        <i>Calendar</i>
+        <div class="sidebar-calendar">
+            <iframe src="https://calendar.google.com/calendar/embed?src=arenv1@umbc.edu&mode=AGENDA&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&ctz=America%2FNew_York" frameborder="0" scrolling="no"></iframe>
         </div>
     </div>
 
     <div class="splash">
-        <div class="splash-content">
-            <div id="clock">00:00</div>
-            <div class="greeting"></div>
+        <div class="top-weather">
+            <div id="weather-loading">Fetching sky...</div>
+            <div id="weather-data" style="display: none;">
+                <div class="weather-details">
+                    <h1 id="weather-temp">--°F</h1>
+                    <p id="weather-desc">--</p>
+                    <p class="weather-location">Glen Burnie, MD</p>
+                </div>
+                <i id="weather-icon" class="fa-solid fa-sun"></i>
+            </div>
+        </div>
 
-            <form class="search-form" action="https://www.google.com/search" method="GET">
-                <input type="text" name="q" class="search-input" placeholder="Search the web..." autocomplete="off"
-                    autofocus>
-            </form>
+        <div class="card-carousel">
+            <div class="splash-card">
+                <div class="splash-content">
+                    <div id="clock">00:00</div>
+                    <div class="greeting" id="greeting">Welcome</div>
+                    <form action="https://www.google.com/search" method="GET">
+                        <input type="text" name="q" class="search-input" placeholder="Search Google..." autocomplete="off" autofocus>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="https://www.youtube.com" class="nav-icon-link" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://www.github.com" class="nav-icon-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://mail.google.com" class="nav-icon-link" title="Gmail"><i class="fa-solid fa-envelope"></i></a>
+            <a href="https://calendar.google.com" class="nav-icon-link" title="Calendar"><i class="fa-solid fa-calendar-days"></i></a>
+            <a href="https://drive.google.com" class="nav-icon-link" title="Drive"><i class="fa-brands fa-google-drive"></i></a>
+            <a href="https://blackboard.umbc.edu/" class="nav-icon-link" title="Blackboard"><i class="fa-solid fa-chalkboard"></i></a>
+            <a href="https://portfolio.arenvista.me/" class="nav-icon-link" title="Portfolio"><i class="fa-solid fa-house"></i></a>
         </div>
     </div>
 
     <script>
-        function updateClock() {
-            const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let ampm = hours >= 12 ? 'PM' : 'AM';
-
-            hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-
-            const timeString = hours + ':' + minutes + ' ' + ampm;
-            document.getElementById('clock').textContent = timeString;
+        /* Weather and Clock scripts remain unchanged from previous version */
+        async function fetchWeather() {
+            const lat = 39.16; const lon = -76.62;
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=auto`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const temp = Math.round(data.current.temperature_2m);
+                const weatherInfo = getWeatherDetails(data.current.weather_code);
+                document.getElementById('weather-temp').textContent = `${temp}°F`;
+                document.getElementById('weather-desc').textContent = weatherInfo.desc;
+                document.getElementById('weather-icon').className = `fa-solid ${weatherInfo.icon}`;
+                document.getElementById('weather-loading').style.display = 'none';
+                document.getElementById('weather-data').style.display = 'flex';
+            } catch (error) { console.error(error); }
         }
 
-        // Initialize and set interval
-        updateClock();
-        setInterval(updateClock, 1000);
+        function getWeatherDetails(code) {
+            if (code === 0) return {desc: "Clear sky", icon: "fa-sun"};
+            if (code <= 3) return {desc: "Partly cloudy", icon: "fa-cloud-sun"};
+            if (code <= 48) return {desc: "Foggy", icon: "fa-smog"};
+            if (code <= 57) return {desc: "Drizzle", icon: "fa-cloud-rain"};
+            if (code <= 67) return {desc: "Rain", icon: "fa-cloud-showers-heavy"};
+            if (code <= 77) return {desc: "Snow", icon: "fa-snowflake"};
+            if (code <= 82) return {desc: "Rain showers", icon: "fa-cloud-showers-heavy"};
+            if (code <= 86) return {desc: "Snow showers", icon: "fa-snowflake"};
+            return {desc: "Storms", icon: "fa-cloud-bolt"};
+        }
+
+        fetchWeather();
+        setInterval(fetchWeather, 30 * 60 * 1000);
+
+        function updateUI() {
+            const now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            let greet = h < 12 ? "Good Morning" : (h < 18 ? "Good Afternoon" : "Good Evening");
+            document.getElementById('greeting').textContent = greet;
+            h = h % 12 || 12;
+            m = m < 10 ? '0' + m : m;
+            document.getElementById('clock').textContent = `${h}:${m} ${ampm}`;
+        }
+        updateUI();
+        setInterval(updateUI, 1000);
     </script>
 </body>
-
 </html>
