@@ -12,6 +12,7 @@ for dir in "${dirs[@]}"; do
     # We suppress errors (2>/dev/null) in case the directory 
     # wasn't previously stowed, so the script doesn't stop or complain.
     stow -D "$pkg" -t ~ 2>/dev/null || true
+    rm -rf ~/.config/$pkg
 done
 
 echo "Done!"

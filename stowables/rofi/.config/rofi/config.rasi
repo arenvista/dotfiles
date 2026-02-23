@@ -61,7 +61,7 @@ mainbox {
 dummywall {
     spacing:                     0em;
     padding:                     0em;
-    width:                       32em;
+    width:                       28em;
     expand:                      false;
     orientation:                 horizontal;
     children:                    [ "mode-switcher" , "inputbar" ];

@@ -1,0 +1,260 @@
+@import url("/home/sybil/.cache/wal/colors-waybar.css");
+* {
+	border: none;
+	border-radius: 10px;
+	font-family: "JetbrainsMono Nerd Font" ;
+	font-size: 15px;
+}
+
+window#waybar {
+	background: transparent;
+
+    opacity: 0.75;
+}
+
+/* #window { */
+/* 	margin-top: 0px; */
+/* 	padding-left: 10px; */
+/* 	padding-right: 10px; */
+/* 	border-radius: 10px; */
+/* 	transition: none; */
+/*         color: transparent; */
+/* 	background: transparent; */
+/* } */
+
+#workspaces {
+	margin-top: 6px;
+	margin-left: 0px;
+	/* font-size: 4px; */
+	margin-bottom: 0px;
+	transition: none;
+	background: @background;
+}
+
+#workspaces button {
+	margin-right: 3px;
+	transition: none;
+	color: @foreground;
+	background: transparent;
+	font-size: 12px;
+}
+
+#workspaces button.persistent {
+	transition: none;
+	color: gray;
+	background: transparent;
+	font-size: 4px;
+}
+
+#workspaces button.active {
+	transition: none;
+	box-shadow: inherit;
+	text-shadow: inherit;
+    color: @foreground;
+}
+
+#workspaces button:hover {
+	transition: none;
+	box-shadow: inherit;
+	text-shadow: inherit;
+	border-color: #E8A2AF;
+	color: #b4befe
+}
+
+#workspaces button.active:hover {
+    color: #89dceb;
+}
+
+#workspaces button.urgent {
+    color: #f38ba8;
+}
+#network {
+	background: @background;
+
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 18px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	color: @foreground;
+}
+
+#pulseaudio {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	/* color: #1A1826; */
+	color: @foreground;
+	background: @background;
+
+	/* background: #FAE3B0; */
+}
+
+#battery {
+	margin-top: 6px;
+	margin-left: 8px;
+	margin-right: 8px;
+	padding-left: 10px;
+	background: @background;
+
+	padding-right: 17px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	/* color: #161320; */
+	color: @foreground;
+}
+
+#battery.charging, #battery.plugged {
+	color: @foreground;
+}
+
+#battery.critical:not(.charging) {
+    /* background-color: #B5E8E0; */
+	color: @foreground;
+    /* color: #161320; */
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #BF616A;
+        color: #B5E8E0;
+    }
+}
+
+#backlight {
+	background: @background;
+
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	/* color: #161320; */
+	color: @foreground;
+	/* background: #F8BD96; */
+}
+#clock {
+	background: @background;
+
+	margin-top: 6px;
+	margin-left: 8px;
+	margin-right: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	/* color: black; */
+	/* background: #ABE9B3; */
+	color: @foreground;
+	/*background: #1A1826;*/
+}
+
+#memory {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	margin-bottom: 0px;
+	padding-right: 10px;
+	border-radius: 10px;
+	transition: none;
+	/* color: #161320; */
+	color: @foreground;
+	/* background: #DDB6F2; */
+}
+
+#cpu {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	margin-bottom: 0px;
+	padding-right: 10px;
+	border-radius: 10px;
+	transition: none;
+	/* color: #161320; */
+	color: @foreground;
+	/* background: #96CDFB; */
+}
+
+#tray {
+	margin-top: 6px;
+	background: @background;
+
+	margin-left: 8px;
+	padding-left: 10px;
+	margin-bottom: 0px;
+	padding-right: 10px;
+	border-radius: 10px;
+	transition: none;
+	color: @foreground;
+	/* background: #161320; */
+    
+}
+
+#custom-wallpaper {
+	font-size: 14px;
+	background: @background;
+
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 13px;
+	border-radius: 50px;
+	transition: none;
+	color: @foreground;
+	/* color: #B5E8E0; */
+    /* background: #161320; */
+}
+#custom-launcher {
+	font-size: 14px;
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 5px;
+	border-radius: 50px;
+	transition: none;
+    /* color: #89DCEB; */
+    /* background: #161320; */
+	color: @foreground;
+}
+
+#custom-power {
+	font-size: 20px;
+	margin-top: 6px;
+	margin-left: 8px;
+	margin-right: 8px;
+	padding-left: 10px;
+	padding-right: 5px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	color: #161320;
+	background: #F28FAD;
+}
+
+
+#custom-spotify {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	color: #161320;
+	background: #F2CDCD;
+}
