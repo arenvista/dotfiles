@@ -84,35 +84,35 @@ cat > "$CHROME_DIR/userChrome.css" <<EOL
 
 /* URL Bar Base */
 #urlbar-background {
-    background-color: var(--color1) !important;
-    /* border: 1px solid var(--uc-urlbar-border) !important; */
+     background-color: var(--uc-urlbar-bg) !important; 
 }
+
 #urlbar-input {
-    color: var(--color1) !important;
+    color: var(--uc-urlbar-fg) !important;
 }
 
 /* --- URL BAR DROPDOWN (TRANSPARENT) --- */
 
 /* Makes the background of the expanded URL bar transparent */
 #urlbar[open] > #urlbar-background {
-    background-color: transparent !important;
+    background-color: rgba(25, 25, 25, 0.65) !important;
     box-shadow: none !important; /* Removes the default dropdown shadow */
 }
 
 /* Ensures the suggestion results container is also transparent */
 .urlbarView {
-    background-color: transparent !important;
+    background-color: rgba(25, 25, 25, 0.65) !important;
 }
 
-/* Optional: Add a slight hover effect to suggested items so you can see what you are selecting */
+/* Optional: Hover effect to suggested items */
 .urlbarView-row:hover > .urlbarView-row-inner {
-    background-color: #909 !important;
-    # color: var(--color0) !important;
+    color: var(--uc-popup-hover-fg) !important; 
 }
+
 /* Context Menus and Popups */
 menupopup, panel {
-    --panel-background: var(--uc-popup-bg) !important;
-    --panel-color: var(--uc-popup-fg) !important;
+    --panel-background: rgba(25, 25, 25, 0.65) !important;
+    --panel-color: whitesmoke;
 }
 
 menuitem:hover, menu:hover {
@@ -120,46 +120,38 @@ menuitem:hover, menu:hover {
     color: var(--uc-popup-hover-fg) !important;
 }
 
-/* --- AUTO-HIDE ENTIRE TOP BAR --- */
 #navigator-toolbox {
     position: absolute !important;
     display: block !important;
     width: 100vw !important;
     z-index: 100 !important;
-    /* Move the bar off-screen, leaving a 4px invisible hit-area to catch your mouse */
-    transform: translateY(calc(-100% + 20px)) !important;
+    transform: translateY(calc(-100% + 8px)) !important;
     opacity: 0 !important;
     transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out !important;
 }
+/* 1. Set the default state of the urlbar to hidden */
+#urlbar {
+    opacity: 0 !important;
+    /* Optional: Adds a smooth fade effect rather than a sudden snap */
+    transition: opacity 0.2s ease-in-out !important; 
+}
 
-/* Reveal top bar on hover or when clicking inside (e.g., using Ctrl+L to type a URL) */
-#navigator-toolbox:hover,
-#navigator-toolbox:focus-within {
-    transform: translateY(0) !important;
+/* 2. Target the urlbar when the toolbox is hovered or focused */
+#navigator-toolbox:hover #urlbar,
+#navigator-toolbox:focus-within #urlbar {
     opacity: 1 !important;
 }
 
-/* Auto-hide the nav bar, reveal on hover */
-#nav-bar {
-  min-height: 0 !important;
-  max-height: 0 !important;
-  visibility: hidden !important;
-  transition: all 0.2s ease-in-out !important;
-  opacity: 0 !important;
+#navigator-toolbox:hover,
+#navigator-toolbox:focus-within {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    background-color: rgba(25, 25, 25, 0.65) !important;
 }
 
-#navigator-toolbox:hover #nav-bar,
-#navigator-toolbox:focus-within #nav-bar {
-  max-height: 40px !important; /* Adjust based on your UI density */
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-/* Make the expanded URL bar and dropdown background semi-transparent */
-/* #urlbar[breakout][breakout-extend] > #urlbar-background {
-    background-color: rgba(25, 25, 25, 0.65) !important; /* Dark theme semi-transparent */
-    /* Use rgba(255, 255, 255, 0.65) if you use a Light theme */
-    
-    backdrop-filter: blur(8px) !important; /* Optional: gives a frosted glass effect */
+#urlbar[breakout][breakout-extend] > #urlbar-background {
+    background-color: rgba(25, 25, 25, 0.85) !important; 
+    backdrop-filter: blur(8px) !important; 
 }
 EOL
 
