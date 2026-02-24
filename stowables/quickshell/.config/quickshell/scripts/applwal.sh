@@ -24,5 +24,7 @@ setsid wal -i "$WALLPAPER_PATH" -n -q >/dev/null 2>&1 &
 # Sleep for 1 second to ensure processes complete
 sleep 1
 
+neofetch --clean
+
 # Exit the script cleanly
 exit 0
