@@ -2,9 +2,9 @@
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
+
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="nvim"
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -99,7 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # - $ZSH_CUSTOM/aliases.zsh
 # - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
-#
+
 # Example aliases
 alias ah="nvim"
 alias ..="cd .."
@@ -120,9 +120,6 @@ bindkey -s '^n' "nvim\n"
 bindkey -s '^e' "yazi\n"
 alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf\n)"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 eval "$(fzf --zsh)"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -138,7 +135,7 @@ function fzf-cd-shallow() {
     # 2. mindepth 0/maxdepth 1: as requested
     # 3. type d: directories only
     # 4. fzf: opens the fuzzy finder
-    local dir=$(find . -mindepth 0 -maxdepth 1 -type d | fzf \
+    local dir=$(fd --max-depth 5 --type d | fzf \
     --prompt=" Change Dir. " \
     --height=50% \
     --layout=reverse \
