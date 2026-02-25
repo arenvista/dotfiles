@@ -1,0 +1,128 @@
+:root {
+    /* General Toolbar & Navigation */
+    --uc-toolbar-bg:      var(--color1);
+    --uc-toolbar-fg:      var(--color7);
+
+    /* Tabs */
+    --uc-tab-active-bg:   var(--color4);
+    --uc-tab-active-fg:   var(--color0);
+    --uc-tab-inactive-bg: var(--color1);
+    --uc-tab-inactive-fg: var(--color7);
+    --uc-tab-hover-bg:    var(--color2);
+
+    /* URL Bar (Awesome Bar) */
+    --uc-urlbar-bg:       var(--color8);
+    --uc-urlbar-fg:       var(--color7);
+    --uc-urlbar-border:   var(--color4);
+
+    /* Context Menus & Popups */
+    --uc-popup-bg:        var(--color0);
+    --uc-popup-fg:        var(--color7);
+    --uc-popup-hover-bg:  var(--color4);
+    --uc-popup-hover-fg:  var(--color0);
+}
+
+/* --- APPLY VARIABLES TO FIREFOX ELEMENTS --- */
+
+/* General Toolbar Background */
+#navigator-toolbox,
+#TabsToolbar,
+#PersonalToolbar,
+#nav-bar {
+    background-color: var(--uc-toolbar-bg) !important;
+    color: var(--uc-toolbar-fg) !important;
+}
+
+/* Tab Backgrounds */
+.tabbrowser-tab .tab-background {
+    background-color: var(--uc-tab-inactive-bg) !important;
+}
+.tabbrowser-tab .tab-label {
+    color: var(--uc-tab-inactive-fg) !important;
+}
+
+/* Hovered Tab */
+.tabbrowser-tab:hover .tab-background {
+    background-color: var(--uc-tab-hover-bg) !important;
+}
+
+/* Active Tab */
+.tabbrowser-tab[selected="true"] .tab-background {
+    background-color: var(--uc-tab-active-bg) !important;
+}
+.tabbrowser-tab[selected="true"] .tab-label {
+    color: var(--uc-tab-active-fg) !important;
+}
+
+/* URL Bar Base */
+#urlbar-background {
+     background-color: var(--uc-urlbar-bg) !important; 
+}
+
+#urlbar-input {
+    color: var(--uc-urlbar-fg) !important;
+}
+
+/* --- URL BAR DROPDOWN (TRANSPARENT) --- */
+
+/* /* Makes the background of the expanded URL bar transparent */ */
+/* #urlbar[open] > #urlbar-background { */
+/*     background-color: rgba(25, 25, 25, 0.65) !important; */
+/*     box-shadow: none !important; /* Removes the default dropdown shadow */ */
+/* } */
+/**/
+/* /* Ensures the suggestion results container is also transparent */ */
+/* .urlbarView { */
+/*     background-color: rgba(25, 25, 25, 0.65) !important; */
+/* } */
+/**/
+/* /* Optional: Hover effect to suggested items */ */
+/* .urlbarView-row:hover > .urlbarView-row-inner { */
+/*     color: var(--uc-popup-hover-fg) !important;  */
+/* } */
+/**/
+/* /* Context Menus and Popups */ */
+/* menupopup, panel { */
+/*     --panel-background: rgba(25, 25, 25, 0.65) !important; */
+/*     --panel-color: whitesmoke; */
+/* } */
+/**/
+/* menuitem:hover, menu:hover { */
+/*     background-color: var(--uc-popup-hover-bg) !important; */
+/*     color: var(--uc-popup-hover-fg) !important; */
+/* } */
+/**/
+/* #navigator-toolbox { */
+/*     position: absolute !important; */
+/*     display: block !important; */
+/*     width: 100vw !important; */
+/*     z-index: 100 !important; */
+/*     transform: translateY(calc(-100% + 8px)) !important; */
+/*     opacity: 0 !important; */
+/*     transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out !important; */
+/* } */
+/* /* 1. Set the default state of the urlbar to hidden */ */
+/* #urlbar { */
+/*     opacity: 0 !important; */
+/*     /* Optional: Adds a smooth fade effect rather than a sudden snap */ */
+/*     transition: opacity 0.2s ease-in-out !important;  */
+/* } */
+/**/
+/* /* 2. Target the urlbar when the toolbox is hovered or focused */ */
+/* #navigator-toolbox:hover #urlbar, */
+/* #navigator-toolbox:focus-within #urlbar { */
+/*     opacity: 1 !important; */
+/* } */
+/**/
+/* #navigator-toolbox:hover, */
+/* #navigator-toolbox:focus-within { */
+/*     opacity: 1 !important; */
+/*     transform: translateY(0) !important; */
+/*     background-color: rgba(25, 25, 25, 0.65) !important; */
+/* } */
+/**/
+/* #urlbar[breakout][breakout-extend] > #urlbar-background { */
+/*     background-color: rgba(25, 25, 25, 0.85) !important;  */
+/*     backdrop-filter: blur(8px) !important;  */
+/* } */
+/**/
