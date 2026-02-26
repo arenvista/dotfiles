@@ -30,6 +30,7 @@ return {
     -- 0. LOGIC & SYMBOLS
     -- ==========================================
     --
+    s({ trig = "-con", snippetType = "autosnippet" }, { t("\\unicode{x21af}") }, { condition = in_mathzone }),
     s({ trig = "*", snippetType = "autosnippet" }, { t("\\cdot") }, { condition = in_mathzone }),
     s({ trig = ". ", snippetType = "autosnippet" }, { t("& ") }, { condition = in_mathzone }),
     s({ trig = ";x", snippetType = "autosnippet" }, { t("\\times") }, { condition = in_mathzone }),
