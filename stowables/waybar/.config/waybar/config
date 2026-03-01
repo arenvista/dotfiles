@@ -10,7 +10,7 @@
     "modules-right": ["battery", "custom/volume", "custom/network", "custom/dashboard"],
 
     "custom/apps": {
-        "format": "",
+        "format": " .",
         "on-click": "qs ipc call launcher toggle",
         "on-click-right": "qs ipc call wallpaper toggle",
         "tooltip": false

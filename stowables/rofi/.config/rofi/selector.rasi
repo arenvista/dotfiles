@@ -5,7 +5,6 @@ configuration {
     drun-display-format:         "{name}";
     font:                        "JetBrainsMono Nerd Font 10";
 }
-
 @theme "/home/sybil/.cache/wal/colors-rofi-light.rasi"
 *{
     main-bg:            @background;
@@ -14,8 +13,6 @@ configuration {
     select-bg:          @selected-active-background;
     select-fg:          @selected-active-foreground;
 }
-
-
 // Main //
 window {
     enabled:                     true;
@@ -39,7 +36,6 @@ frame {
     children:                    [ "listview" ];
     background-color:            transparent;
 }
-
 // Lists //
 listview {
     enabled:                     true;
@@ -61,8 +57,6 @@ dummy {
     expand:                      false;
     background-color:            transparent;
 }
-
-
 // Elements //
 element {
     enabled:                     true;
@@ -75,8 +69,6 @@ element {
 element selected.normal {
     background-color:            lightgray;
     text-color:                  lightgray;
-    // background-color:            @select-bg;
-    // text-color:                  @select-fg;
 }
 element-icon {
     cursor:                      inherit;
@@ -91,4 +83,3 @@ element-text {
     background-color:            transparent;
     text-color:                  inherit;
 }
-
