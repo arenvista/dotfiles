@@ -14,7 +14,7 @@ mapfile -t wal_colors < "$COLORS_FILE"
 
 # Find Firefox default profile
 # Added 'head -n 1' to ensure only one profile is targeted if multiple exist
-PROFILE_DIR=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name "*.default-release" | head -n 1)
+PROFILE_DIR=$(find ~/.config/mozilla/firefox -maxdepth 1 -type d -name "*.default-release" | head -n 1)
 
 if [[ -z "$PROFILE_DIR" ]]; then
     echo "Error: Default Firefox profile not found!"
