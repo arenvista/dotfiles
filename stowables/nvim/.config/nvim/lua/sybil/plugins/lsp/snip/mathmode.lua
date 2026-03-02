@@ -32,12 +32,10 @@ local function in_mathzone()
             return false
         end
         if t == "displayed_equation" or t == "inline_formula" or t == "math_environment" or t == "superscript" or t == "subscript" then
-            print("✓")
             return true
         end
         node = node:parent()
     end
-    print("X")
     return false
 end
 
