@@ -4,6 +4,22 @@ local i = ls.insert_node
 local rep = require("luasnip.extras").rep
 local fmta = require("luasnip.extras.fmt").fmta
 
+local function in_mathzone()
+	local node = vim.treesitter.get_node({ ignore_injections = false })
+	while node do
+		local t = node:type()
+		-- text_mode overrides math
+		if t == "text_mode" then
+			return false
+		end
+		if t == "displayed_equation" or t == "inline_formula" or t == "math_environment" then
+			return true
+		end
+		node = node:parent()
+	end
+	return false
+end
+
 return {
     s({trig = "pff", snippetType="autosnippet"}, fmta(
         [[

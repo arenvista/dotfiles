@@ -12,16 +12,15 @@ local line_begin = require("luasnip.extras.expand_conditions").line_begin
 
 local function in_mathzone()
 	local node = vim.treesitter.get_node({ ignore_injections = false })
-
 	while node do
-		local type = node:type()
-		-- Debug: Print types to see what the injected parser sees
-		-- print(type)
-
-		if type == "displayed_equation" or type == "inline_formula" or type == "math_environment" then
+		local t = node:type()
+		-- text_mode overrides math
+		if t == "text_mode" then
+			return false
+		end
+		if t == "displayed_equation" or t == "inline_formula" or t == "math_environment" then
 			return true
 		end
-
 		node = node:parent()
 	end
 	return false
@@ -35,6 +34,7 @@ return {
 -- ----------------------------------------------------------------------------
 -- LATEX
 -- ----------------------------------------------------------------------------
+    s({ trig = "contra", snippetType = "autosnippet" }, { t("\\unicode{x21af}") }, { condition = in_mathzone }),
     s({trig = "dm", snippetType="autosnippet"}, fmta(
         [[
       $$

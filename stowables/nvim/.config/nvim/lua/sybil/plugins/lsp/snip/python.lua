@@ -12,7 +12,7 @@ return {
 
 	-- SHEBANG
 	s(
-		{ trig = "#!", snippetType = "autosnippet" },
+		{ trig = "#!", snippetType = "snippet" },
 		fmta(
 			[[
         #!/usr/bin/env python3
@@ -24,7 +24,7 @@ return {
 
 	-- MAIN CHECK (if __name__ == "__main__":)
 	s(
-		{ trig = "ifmain", snippetType = "autosnippet" },
+		{ trig = "ifmain", snippetType = "snippet" },
 		fmta(
 			[[
         if __name__ == "__main__":
@@ -35,10 +35,10 @@ return {
 	),
 
 	-- IMPORT
-	s({ trig = "imp", snippetType = "autosnippet" }, fmta("import <>", { i(1) })),
+	s({ trig = "imp", snippetType = "snippet" }, fmta("import <>", { i(1) })),
 
 	-- FROM IMPORT
-	s({ trig = "fim", snippetType = "autosnippet" }, fmta("from <> import <>", { i(1, "module"), i(2, "item") })),
+	s({ trig = "fim", snippetType = "snippet" }, fmta("from <> import <>", { i(1, "module"), i(2, "item") })),
 
 	-- ==========================================
 	-- 2. FUNCTIONS & CLASSES
@@ -46,7 +46,7 @@ return {
 
 	-- FUNCTION DEFINITION
 	s(
-		{ trig = "def", snippetType = "autosnippet" },
+		{ trig = "def", snippetType = "snippet" },
 		fmta(
 			[[
         def <>(<>):
@@ -58,7 +58,7 @@ return {
 
 	-- METHOD (with self)
 	s(
-		{ trig = "defs", snippetType = "autosnippet" },
+		{ trig = "defs", snippetType = "snippet" },
 		fmta(
 			[[
         def <>(self, <>):
@@ -70,7 +70,7 @@ return {
 
 	-- INIT (__init__)
 	s(
-		{ trig = "init", snippetType = "autosnippet" },
+		{ trig = "init", snippetType = "snippet" },
 		fmta(
 			[[
         def __init__(self, <>):
@@ -82,7 +82,7 @@ return {
 
 	-- CLASS
 	s(
-		{ trig = "cl", snippetType = "autosnippet" },
+		{ trig = "cl", snippetType = "snippet" },
 		fmta(
 			[[
         class <>:
@@ -95,7 +95,7 @@ return {
 
 	-- DATACLASS
 	s(
-		{ trig = "dcl", snippetType = "autosnippet" },
+		{ trig = "dcl", snippetType = "snippet" },
 		fmta(
 			[[
         @dataclass
@@ -107,7 +107,7 @@ return {
 	),
 
 	-- LAMBDA
-	s({ trig = "ld", snippetType = "autosnippet" }, fmta("lambda <>: <>", { i(1, "vars"), i(2, "expr") })),
+	s({ trig = "ld", snippetType = "snippet" }, fmta("lambda <>: <>", { i(1, "vars"), i(2, "expr") })),
 
 	-- ==========================================
 	-- 3. CONTROL FLOW
@@ -115,7 +115,7 @@ return {
 
 	-- IF
 	s(
-		{ trig = "if", snippetType = "autosnippet" },
+		{ trig = "if", snippetType = "snippet" },
 		fmta(
 			[[
         if <>:
@@ -127,7 +127,7 @@ return {
 
 	-- ELIF
 	s(
-		{ trig = "elif", snippetType = "autosnippet" },
+		{ trig = "elif", snippetType = "snippet" },
 		fmta(
 			[[
         elif <>:
@@ -139,7 +139,7 @@ return {
 
 	-- ELSE
 	s(
-		{ trig = "el", snippetType = "autosnippet" },
+		{ trig = "el", snippetType = "snippet" },
 		fmta(
 			[[
         else:
@@ -151,7 +151,7 @@ return {
 
 	-- FOR LOOP (Standard)
 	s(
-		{ trig = "for", snippetType = "autosnippet" },
+		{ trig = "for", snippetType = "snippet" },
 		fmta(
 			[[
         for <> in <>:
@@ -163,7 +163,7 @@ return {
 
 	-- FOR RANGE
 	s(
-		{ trig = "forr", snippetType = "autosnippet" },
+		{ trig = "forr", snippetType = "snippet" },
 		fmta(
 			[[
         for <> in range(<>):
@@ -174,7 +174,7 @@ return {
 	),
 
 	s(
-		{ trig = "eforr", snippetType = "autosnippet" },
+		{ trig = "eforr", snippetType = "snippet" },
 		fmta(
 			[[
         for <> in range(len(<>)):
@@ -186,7 +186,7 @@ return {
 
 	-- WHILE
 	s(
-		{ trig = "wh", snippetType = "autosnippet" },
+		{ trig = "wh", snippetType = "snippet" },
 		fmta(
 			[[
         while <>:
@@ -198,7 +198,7 @@ return {
 
 	-- TRY / EXCEPT
 	s(
-		{ trig = "try", snippetType = "autosnippet" },
+		{ trig = "try", snippetType = "snippet" },
 		fmta(
 			[[
         try:
@@ -212,7 +212,7 @@ return {
 
 	-- WITH (Context Manager)
 	s(
-		{ trig = "with", snippetType = "autosnippet" },
+		{ trig = "with", snippetType = "snippet" },
 		fmta(
 			[[
         with <> as <>:
@@ -227,18 +227,18 @@ return {
 	-- ==========================================
 
 	-- PRINT
-	s({ trig = "pr", snippetType = "autosnippet" }, fmta("print(<>)", { i(1) })),
+	s({ trig = "pr", snippetType = "snippet" }, fmta("print(<>)", { i(1) })),
 
 	-- F-STRING (Print)
-	s({ trig = "fpr", snippetType = "autosnippet" }, fmta('print(f"<>")', { i(1) })),
+	s({ trig = "fpr", snippetType = "snippet" }, fmta('print(f"<>")', { i(1) })),
 
 	-- F-STRING (Inline)
 	-- Type "ff" to start an f-string
-	s({ trig = "ff", snippetType = "autosnippet" }, fmta('f"<>"', { i(1) })),
+	s({ trig = "ff", snippetType = "snippet" }, fmta('f"<>"', { i(1) })),
 
 	-- DOCSTRING
 	s(
-		{ trig = "doc", snippetType = "autosnippet" },
+		{ trig = "doc", snippetType = "snippet" },
 		fmta(
 			[[
         """

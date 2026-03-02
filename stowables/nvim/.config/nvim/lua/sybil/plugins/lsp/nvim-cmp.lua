@@ -94,10 +94,10 @@ return {
                 -- { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
                 { name = "nvim_lsp", priority = 1000 },
                 { name = "orgmode"},
+                { name = "luasnip", priority = 10000},
                 { name = "git"},
                 { name = "rg"},
                 { name = "cmdline"},
-                { name = "vimtex"},
             }),
 
             -- configure lspkind for vs-code like pictograms in completion menu
