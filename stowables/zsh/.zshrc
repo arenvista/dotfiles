@@ -3,6 +3,7 @@
 
 # Path to your Oh My Zsh installation.
 
+source "$HOME/.secret_keys/openai.env"
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="nvim"
 # Set name of the theme to load --- if set to "random", it will

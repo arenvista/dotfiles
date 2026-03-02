@@ -12,6 +12,5 @@ return {
     s({ trig = "@uv1", snippetType = "autosnippet" }, {
         t("arenv1@umbc.edu"),
     }),
-
 }
 
