@@ -1,24 +1,24 @@
 local ls = require("luasnip")
 local s = ls.snippet
-local sn = ls.snippet_node
+-- local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
-local f = ls.function_node
-local d = ls.dynamic_node
-local fmt = require("luasnip.extras.fmt").fmt
+-- local f = ls.function_node
+-- local d = ls.dynamic_node
+-- local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
-local line_begin = require("luasnip.extras.expand_conditions").line_begin
+-- local line_begin = require("luasnip.extras.expand_conditions").line_begin
 
 local function in_mathzone()
 	local node = vim.treesitter.get_node({ ignore_injections = false })
 	while node do
-		local t = node:type()
+		local type = node:type()
 		-- text_mode overrides math
-		if t == "text_mode" then
+		if type == "text_mode" then
 			return false
 		end
-		if t == "displayed_equation" or t == "inline_formula" or t == "math_environment" then
+		if type == "displayed_equation" or type == "inline_formula" or type == "math_environment" then
 			return true
 		end
 		node = node:parent()
