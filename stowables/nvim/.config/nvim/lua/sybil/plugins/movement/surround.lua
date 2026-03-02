@@ -1,22 +1,28 @@
 return {
     "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-        require("nvim-surround").setup({
-            keymaps = {
-                insert = "<C-g>s",
-                insert_line = "<C-g>S",
-                normal = "ys",
-                normal_cur = "yss",
-                normal_line = "yS",
-                normal_cur_line = "ySS",
-                visual = "S",
-                visual_line = "gS",
-                delete = "ds",
-                change = "cs",
-                change_line = "cS",
-            },
-            })
+        -- Disable all default mappings
+        vim.g.nvim_surround_no_mappings = true
+
+        -- Setup (only for options, not keymaps)
+        require("nvim-surround").setup({})
+
+        -- Insert mode
+        vim.keymap.set("i", "<C-g>s", "<Plug>(nvim-surround-insert)")
+        vim.keymap.set("i", "<C-g>S", "<Plug>(nvim-surround-insert-line)")
+
+        -- Normal mode
+        vim.keymap.set("n", "ys", "<Plug>(nvim-surround-normal)")
+        vim.keymap.set("n", "yss", "<Plug>(nvim-surround-normal-cur)")
+        vim.keymap.set("n", "yS", "<Plug>(nvim-surround-normal-line)")
+        vim.keymap.set("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)")
+        vim.keymap.set("n", "ds", "<Plug>(nvim-surround-delete)")
+        vim.keymap.set("n", "cs", "<Plug>(nvim-surround-change)")
+        vim.keymap.set("n", "cS", "<Plug>(nvim-surround-change-line)")
+
+        -- Visual mode
+        vim.keymap.set("x", "S", "<Plug>(nvim-surround-visual)")
+        vim.keymap.set("x", "gS", "<Plug>(nvim-surround-visual-line)")
     end
 }

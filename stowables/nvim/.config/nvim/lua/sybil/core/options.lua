@@ -1,4 +1,5 @@
 vim.cmd("let g:netrw_liststyle = 3")
+vim.o.conceallevel = 2
 vim.o.timeoutlen = 1000
 vim.o.ttimeoutlen = 10
 vim.opt.spelllang = "en"

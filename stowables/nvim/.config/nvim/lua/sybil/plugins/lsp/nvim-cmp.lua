@@ -6,8 +6,6 @@ return {
         "hrsh7th/cmp-path", -- source for file system paths
         {
             "L3MON4D3/LuaSnip",
-            -- follow latest release.
-            version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
             -- install jsregexp (optional!).
             build = "make install_jsregexp",
         },
@@ -20,6 +18,7 @@ return {
         local cmp = require "cmp"
         local compare = cmp.config.compare
         local luasnip = require("luasnip")
+        local cmp_obsidian_tags = require("custom.obsidian-tags").new()
         local lspkind = require("lspkind")
 
         local block_ids = require("block_ids")
@@ -98,6 +97,7 @@ return {
                 { name = "git"},
                 { name = "rg"},
                 { name = "cmdline"},
+                { name = "obsidian_tags", source = cmp_obsidian_tags },
             }),
 
             -- configure lspkind for vs-code like pictograms in completion menu

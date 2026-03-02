@@ -237,3 +237,31 @@ vim.api.nvim_create_user_command("Cd", cd_picker, {})
 
 -- Create the keybinding (e.g., Leader + cd)
 vim.keymap.set("n", "<leader>cd", ":Cd<CR>", { noremap = true, silent = true, desc = "Change Directory" })
+
+vim.api.nvim_create_autocmd({ "TermRequest" }, {
+    desc = "Manipulates 'path' option on dir change",
+    callback = function(ev)
+        local val, n = string.gsub(ev.data.sequence, "\027]7;file://[^/]*", "")
+        if n > 0 then
+            -- OSC 7: dir-change
+            local dir = val
+            if vim.fn.isdirectory(dir) == 0 then
+                vim.notify("invalid dir: " .. dir)
+                return
+            end
+            if vim.api.nvim_get_current_buf() == ev.buf then
+                if vim.b[ev.buf].osc7_dir then
+                    vim.cmd("setlocal path-=" .. vim.b[ev.buf].osc7_dir)
+                end
+                vim.cmd("setlocal path+=" .. dir)
+                vim.b[ev.buf].osc7_dir = dir
+            end
+        end
+    end,
+})
+
+vim.cmd("set isfname+=[,]")
+
+-- Swap gf and gF
+vim.keymap.set("n", "gf", "gF", { noremap = true, silent = true })
+vim.keymap.set("n", "gF", "gf", { noremap = true, silent = true })
