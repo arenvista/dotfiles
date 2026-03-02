@@ -1,4 +1,3 @@
-vim.b.minipairs_disable = true
 local ls = require("luasnip")
 local fmta = require("luasnip.extras.fmt").fmta
 local s = ls.snippet
@@ -24,7 +23,7 @@ local function array_snippet(open, close)
 end
 
 local function in_mathzone()
-    local node = vim.treesitter.get_node({ ignore_injections = true })
+    local node = vim.treesitter.get_node({ ignore_injections = false })
     while node do
         local t = node:type()
         -- text_mode overrides math
@@ -69,18 +68,19 @@ return {
     -- ==========================================================
     -- 2. LOGIC & RELATIONS
     -- ==========================================================
-    s({ trig = "for", snippetType = "autosnippet" }, t("\\forall "), { condition = in_mathzone }),
-    s({ trig = "exi", snippetType = "autosnippet" }, t("\\exists "), { condition = in_mathzone }),
+    s({ trig = "for", snippetType = "autosnippet" }, t("\\forall~ "), { condition = in_mathzone }),
+    s({ trig = "exi", snippetType = "autosnippet" }, t("\\exists~ "), { condition = in_mathzone }),
     s({ trig = "!!", snippetType = "autosnippet" }, t("\\neg "), { condition = in_mathzone }),
 
     s({ trig = "imp", snippetType = "autosnippet" }, t("\\implies "), { condition = in_mathzone }),
-    s( { trig = "x->", snippetType = "autosnippet", wordTrig = false }, fmta("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
-    s( { trig = "x<-", snippetType = "autosnippet", wordTrig = false }, fmta("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
-    s( { trig = "->", snippetType = "autosnippet", wordTrig = false }, t("\\rightarrow "), { condition = in_mathzone }),
-    s( { trig = "<-", snippetType = "autosnippet", wordTrig = false }, t("\\leftarrow "), { condition = in_mathzone }),
+    s({ trig = "x->", snippetType = "autosnippet", wordTrig = false }, fmta("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s({ trig = "x<-", snippetType = "autosnippet", wordTrig = false }, fmta("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s({ trig = "->", regTrig = true, snippetType = "autosnippet", wordTrig = false }, t("\\rightarrow "), { condition = in_mathzone }),
+    s({ trig = "<-", snippetType = "autosnippet", wordTrig = false }, t("\\leftarrow "), { condition = in_mathzone }),
     s({ trig = "<->", snippetType = "autosnippet" }, t("\\iff "), { condition = in_mathzone }),
     s({ trig = "and", snippetType = "autosnippet" }, t("\\land "), { condition = in_mathzone }),
     s({ trig = "or", snippetType = "autosnippet" }, t("\\lor "), { condition = in_mathzone }),
+    s({ trig = "xor", snippetType = "autosnippet" }, t("\\oplus "), { condition = in_mathzone }),
     s({ trig = "there", snippetType = "autosnippet" }, t("\\therefore "), { condition = in_mathzone }),
 
     s({ trig = ">=", snippetType = "autosnippet" }, t("\\geq "), { condition = in_mathzone }),
@@ -93,10 +93,11 @@ return {
     -- ==========================================================
     -- DOTS 
     -- ==========================================================
-    s({ trig = "...", snippetType = "autosnippet" }, t("\\hdots "), { condition = in_mathzone }),
+    -- s({ trig = "...", snippetType = "autosnippet", wordTrig=false }, t("\\hdots "), { condition = in_mathzone }),
     s({ trig = "d..", snippetType = "autosnippet" }, t("\\ddots "), { condition = in_mathzone }),
-    s({ trig = "c..", snippetType = "autosnippet" }, t("\\cdots "), { condition = in_mathzone }),
+    s({ trig = "...", snippetType = "autosnippet" }, t("\\cdots "), { condition = in_mathzone }),
     s({ trig = "v..", snippetType = "autosnippet" }, t("\\vdots "), { condition = in_mathzone }),
+    s({ trig = "ss", snippetType = "autosnippet" }, t("& "), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 3. BASIC OPERATORS
@@ -130,18 +131,18 @@ return {
         fmta("\\int_{<>}^{<>} <> \\, d<>", { i(1), i(2), i(3), i(0) }),
         { condition = in_mathzone }),
 
-    s({ trig = "part", snippetType = "autosnippet" },
+    s({ trig = "part", snippetType = "snippet" },
         fmta("\\frac{\\partial <>}{\\partial <>}", { i(1), i(2) }),
         { condition = in_mathzone }),
 
     -- ==========================================================
     -- 6. DELIMITERS
     -- ==========================================================
-    s({ trig = "()", snippetType = "autosnippet" }, fmta("\\left( <> \\right)", { i(1) }), { condition = in_mathzone }),
-    s({ trig = "<>", snippetType = "autosnippet" }, fmta("\\left[ <> \\right]", { i(1) }), { condition = in_mathzone }),
-    s({ trig = "{}", snippetType = "autosnippet" }, fmta("\\left\\{ <> \\right\\}", { i(1) }), { condition = in_mathzone }),
-    s({ trig = ";|", snippetType = "autosnippet" }, fmta("\\left| <> \\right|", { i(1) }), { condition = in_mathzone }),
-    s({ trig = "||", snippetType = "autosnippet" }, fmta("\\left\\| <> \\right\\|", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "()", snippetType = "snippet" }, fmta("\\left( <> \\right)", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "<>", snippetType = "snippet" }, fmta("\\left[ <> \\right]", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "{}", snippetType = "snippet" }, fmta("\\left\\{ <> \\right\\}", { i(1) }), { condition = in_mathzone }),
+    s({ trig = ";|", snippetType = "snippet" }, fmta("\\left| <> \\right|", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "||", snippetType = "snippet" }, fmta("\\left\\| <> \\right\\|", { i(1) }), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 7. MATRICES & ARRAYS
@@ -236,17 +237,6 @@ return {
     s({ trig = ";ve", snippetType = "autosnippet" }, t("\\varepsilon"), { condition = in_mathzone }),
 
     -- ==========================================================
-    -- 8. GREEK LETTERS
+    -- 8. 
     -- ==========================================================
-    s({ trig = "bmat", snippetType = "autosnippet" },
-        fmta(
-            [[
-        \begin{center}
-            <>
-        \end{center}
-        ]],
-            { i(1) }
-        ),
-        { condition = in_mathzone }
-    ),
 }

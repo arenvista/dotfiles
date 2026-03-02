@@ -1,4 +1,8 @@
 vim.cmd("let g:netrw_liststyle = 3")
+vim.opt.timeoutlen = 300
+vim.opt.updatetime = 250
+vim.opt.shada = "'100,<50,s10,h"
+
 vim.o.conceallevel = 2
 vim.o.timeoutlen = 1000
 vim.o.ttimeoutlen = 10
@@ -65,5 +69,4 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-vim.opt.updatetime = 50
 vim.g.markdown_fenced_languages = { "javascript", "typescript", "bash", "lua", "go", "rust", "c", "cpp", "python" }

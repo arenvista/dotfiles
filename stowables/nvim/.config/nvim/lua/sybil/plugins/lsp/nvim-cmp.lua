@@ -15,10 +15,9 @@ return {
         "micangl/cmp-vimtex",
     },
     config = function()
-        local cmp = require "cmp"
+        local cmp = require("cmp")
         local compare = cmp.config.compare
         local luasnip = require("luasnip")
-        local cmp_obsidian_tags = require("custom.obsidian-tags").new()
         local lspkind = require("lspkind")
 
         local block_ids = require("block_ids")
@@ -78,10 +77,9 @@ return {
             }),
             -- sources for autocompletion
             sources = cmp.config.sources({
-                -- { name = "luasnip" }, -- snippets
                 { name = "buffer" }, -- text within current buffer
                 { name = "obsidian", priority = 100 },
-                { name = "block_ids" },
+                -- { name = "block_ids" },
                 { name = "bufname"},
                 { name = "buffer-lines"},
                 { name = "calc"},
@@ -90,14 +88,12 @@ return {
                 { name = "omni"},
                 { name = "digraphs"},
                 { name = "path" }, -- file system paths
-                -- { name = "jupynium", priority = 1000 },  -- consider higher priority than LSP
-                { name = "nvim_lsp", priority = 1000 },
                 { name = "orgmode"},
-                { name = "luasnip", priority = 10000},
                 { name = "git"},
                 { name = "rg"},
                 { name = "cmdline"},
-                { name = "obsidian_tags", source = cmp_obsidian_tags },
+                { name = "nvim_lsp", priority = 1000 },
+                { name = "luasnip", priority = 10000},
             }),
 
             -- configure lspkind for vs-code like pictograms in completion menu
