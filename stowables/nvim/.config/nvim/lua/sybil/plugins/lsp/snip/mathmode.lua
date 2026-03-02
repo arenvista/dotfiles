@@ -1,5 +1,5 @@
-local ls = require("luasnip")
 vim.b.minipairs_disable = true
+local ls = require("luasnip")
 local fmta = require("luasnip.extras.fmt").fmta
 local s = ls.snippet
 local t = ls.text_node
