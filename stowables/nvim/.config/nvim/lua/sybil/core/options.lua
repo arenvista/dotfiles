@@ -3,7 +3,7 @@ vim.opt.timeoutlen = 300
 vim.opt.updatetime = 250
 vim.opt.shada = "'100,<50,s10,h"
 
-vim.o.conceallevel = 2
+vim.o.conceallevel = 0
 vim.o.timeoutlen = 1000
 vim.o.ttimeoutlen = 10
 vim.opt.spelllang = "en"

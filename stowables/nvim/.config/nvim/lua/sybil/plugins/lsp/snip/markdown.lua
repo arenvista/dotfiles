@@ -11,19 +11,19 @@ local rep = require("luasnip.extras").rep
 -- local line_begin = require("luasnip.extras.expand_conditions").line_begin
 
 local function in_mathzone()
-	local node = vim.treesitter.get_node({ ignore_injections = false })
-	while node do
-		local type = node:type()
-		-- text_mode overrides math
-		if type == "text_mode" then
-			return false
-		end
-		if type == "displayed_equation" or type == "inline_formula" or type == "math_environment" then
-			return true
-		end
-		node = node:parent()
-	end
-	return false
+    local node = vim.treesitter.get_node({ ignore_injections = false })
+    while node do
+        local type = node:type()
+        -- text_mode overrides math
+        if type == "text_mode" then
+            return false
+        end
+        if type == "displayed_equation" or type == "inline_formula" or type == "math_environment" then
+            return true
+        end
+        node = node:parent()
+    end
+    return false
 end
 
 -- ----------------------------------------------------------------------------
@@ -31,48 +31,37 @@ end
 -- ----------------------------------------------------------------------------
 
 return {
--- ----------------------------------------------------------------------------
--- LATEX
--- ----------------------------------------------------------------------------
+    -- ----------------------------------------------------------------------------
+    -- LATEX
+    -- ----------------------------------------------------------------------------
     s({ trig = "contra", snippetType = "autosnippet" }, { t("\\unicode{x21af}") }, { condition = in_mathzone }),
     s({trig = "dm", snippetType="autosnippet"}, fmta(
         [[
-      $$
-          <>
-      $$ <>
-    ]],
+          $$
+              <>
+          $$ <>
+        ]],
         { i(1), i(0) }
     )),
-	s({ trig = "il", snippetType = "autosnippet" }, fmta("$<>$<>", { i(1), i(0) })),
+    s({ trig = "il", snippetType = "autosnippet" }, fmta("$<>$<>", { i(1), i(0) })),
     s({trig = "beg", snippetType="autosnippet"}, fmta(
         [[
-      \begin{<>}
-          <>
-      \end{<>}
-    ]],
+          \begin{<>}
+              <>
+          \end{<>}
+        ]],
         { i(1), i(0), rep(1), }
     ), { condition = in_mathzone }
     ),
 
     s({trig = "cas", snippetType="autosnippet"}, fmta(
         [[
-      \begin{cases}
-          <>
-      \end{cases}
-    ]],
+          \begin{cases}
+              <>
+          \end{cases}
+        ]],
         { i(0) }
     ), { condition = in_mathzone }
     ),
 
-    s({trig = "ali", snippetType="autosnippet"}, fmta(
-        [[
-      \begin{align}
-          <>
-      \end{align}
-    ]],
-        { i(0) }
-    ),
-		{ condition = in_mathzone }
-
-    ),
 }
