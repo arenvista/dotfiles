@@ -73,9 +73,9 @@ return {
     s({ trig = "!!", snippetType = "autosnippet" }, t("\\neg "), { condition = in_mathzone }),
 
     s({ trig = "imp", snippetType = "autosnippet" }, t("\\implies "), { condition = in_mathzone }),
-    s({ trig = "x->", snippetType = "autosnippet", wordTrig = false }, fmta("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
-    s({ trig = "x<-", snippetType = "autosnippet", wordTrig = false }, fmta("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
-    s({ trig = "->", regTrig = true, snippetType = "autosnippet", wordTrig = false }, t("\\rightarrow "), { condition = in_mathzone }),
+    s({ trig = "x->", snippetType = "autosnippet", wordTrig = false }, t("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s({ trig = "x<-", snippetType = "autosnippet", wordTrig = false }, t("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s({ trig = "->", snippetType = "autosnippet", wordTrig = false }, t("\\rightarrow "), { condition = in_mathzone }),
     s({ trig = "<-", snippetType = "autosnippet", wordTrig = false }, t("\\leftarrow "), { condition = in_mathzone }),
     s({ trig = "<->", snippetType = "autosnippet" }, t("\\iff "), { condition = in_mathzone }),
     s({ trig = "and", snippetType = "autosnippet" }, t("\\land "), { condition = in_mathzone }),
@@ -94,8 +94,9 @@ return {
     -- DOTS 
     -- ==========================================================
     -- s({ trig = "...", snippetType = "autosnippet", wordTrig=false }, t("\\hdots "), { condition = in_mathzone }),
+    s({ trig = "...", snippetType = "autosnippet" }, t("\\dots "), { condition = in_mathzone }),
     s({ trig = "d..", snippetType = "autosnippet" }, t("\\ddots "), { condition = in_mathzone }),
-    s({ trig = "...", snippetType = "autosnippet" }, t("\\cdots "), { condition = in_mathzone }),
+    s({ trig = "c..", snippetType = "autosnippet" }, t("\\cdots "), { condition = in_mathzone }),
     s({ trig = "v..", snippetType = "autosnippet" }, t("\\vdots "), { condition = in_mathzone }),
     s({ trig = "ss", snippetType = "autosnippet" }, t("& "), { condition = in_mathzone }),
 

@@ -3,7 +3,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
 	dependencies = {
-		"windwp/nvim-ts-autotag",
+		-- "windwp/nvim-ts-autotag",
 	},
 	config = function()
 		-- import nvim-treesitter plugin
@@ -12,8 +12,8 @@ return {
 		-- Autotag setup (kept as you had it, though latex doesn't use tags anyway)
 		require("nvim-ts-autotag").setup({
 			opts = {
-				enable_close = true,
-				enable_rename = true,
+				enable_close = false,
+				enable_rename = false,
 				enable_close_on_slash = false,
 			},
 		})
@@ -62,10 +62,10 @@ return {
 			incremental_selection = {
 				enable = true,
 				keymaps = {
-					init_selection = "<C-space>",
-					node_incremental = "<C-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
+					-- init_selection = "<C-space>",
+					-- node_incremental = "<C-space>",
+					-- scope_incremental = false,
+					-- node_decremental = "<bs>",
 				},
 			},
 		})

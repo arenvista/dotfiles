@@ -8,8 +8,8 @@ return {
         local set = vim.keymap.set
 
         -- Bind Alt+j to add cursor below, Alt+k to add cursor above
-        set({"n", "x"}, "<M-j>", function() mc.lineAddCursor(1) end)   -- M = Meta/Alt
-        set({"n", "x"}, "<M-k>", function() mc.lineAddCursor(-1) end)
+        set({"n", "x"}, "<M-down>", function() mc.lineAddCursor(1) end)   -- M = Meta/Alt
+        set({"n", "x"}, "<M-up>", function() mc.lineAddCursor(-1) end)
 
         -- Bind Alt+; to skip cursor below, Alt+: to skip cursor above
         set({"n", "x"}, "<M-;>", function() mc.lineSkipCursor(1) end)
