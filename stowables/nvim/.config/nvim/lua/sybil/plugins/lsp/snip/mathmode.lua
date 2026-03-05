@@ -140,7 +140,8 @@ return {
     -- 6. DELIMITERS
     -- ==========================================================
     s({ trig = "()", snippetType = "snippet" }, fmta("\\left( <> \\right)", { i(1) }), { condition = in_mathzone }),
-    s({ trig = "<>", snippetType = "snippet" }, fmta("\\left[ <> \\right]", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "<>", snippetType = "snippet" }, fmta( "\\left< [1] \\right>", { i(1) }, { delimiters = "[]" }), { condition = in_mathzone }),
+    s({ trig = "[]", snippetType = "snippet" }, fmta("\\left[ <> \\right]", { i(1) }), { condition = in_mathzone }),
     s({ trig = "{}", snippetType = "snippet" }, fmta("\\left\\{ <> \\right\\}", { i(1) }), { condition = in_mathzone }),
     s({ trig = ";|", snippetType = "snippet" }, fmta("\\left| <> \\right|", { i(1) }), { condition = in_mathzone }),
     s({ trig = "||", snippetType = "snippet" }, fmta("\\left\\| <> \\right\\|", { i(1) }), { condition = in_mathzone }),
