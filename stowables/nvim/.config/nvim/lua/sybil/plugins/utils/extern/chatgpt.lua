@@ -1,13 +1,11 @@
 return {
 	"jackMort/ChatGPT.nvim",
 	event = "VeryLazy",
-
 	config = function()
 		require("chatgpt").setup({
 			actions_paths = {
 				vim.fn.stdpath("config") .. "/lua/sybil/plugins/utils/extern/actions.json",
 			},
-
 			openai_params = {
 				model = "gpt-5.2",
 				frequency_penalty = 0,
