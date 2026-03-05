@@ -1,25 +1,98 @@
 local ls = require("luasnip")
+local rep = require("luasnip.extras").rep
+local fmta = require("luasnip.extras.fmt").fmta
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
+local c = ls.choice_node
 
 return {
+s({ trig = "print", snippetType = "autosnippet" },
+        fmta([[
+        printf("<>");
+        ]],
+        {i(1)}
+        )
+),
+
+s({ trig = "prnl", snippetType = "autosnippet" },
+    fmta([[
+        printf("<>\n"<>);
+        ]],
+        {
+            i(1, "Text"),
+            i(2, ", args")
+        }
+    )
+),
+s({ trig = "#inc", snippetType = "autosnippet" },
+        fmta([[#include <>]],
+        {i(1)}
+        )
+),
+
+s({ trig = "#def", snippetType = "autosnippet" },
+        fmta([[#define <>]],
+        {i(1)}
+        )
+),
 
 -- ==================================================
 -- BASIC STRUCTURE
 -- ==================================================
+s({ trig = "if", snippetType = "snippet" },
+    fmta([[
+    if (<>){
+        <>
+    }
+        ]] ,
+        {
+            i(1, "/*expression*/"),
+            i(2, "// code"),
+        }
+    ), {}
+),
 
-s({ trig = "main" }, {
-    t({ "#include <bits/stdc++.h>",
-        "using namespace std;",
-        "",
-        "int main() {",
-        "    " }),
-    i(1),
-    t({ "",
-        "    return 0;",
-        "}" }),
-}),
+s({ trig = "elif", snippetType = "snippet" },
+    fmta([[
+    else if (<>){
+        <>
+    }
+        ]] ,
+        {
+            i(1, "/*expression*/"),
+            i(2, "// code"),
+        }
+    ), {}
+),
+
+s({ trig = "else", snippetType = "snippet" },
+    fmta([[
+    else {
+        <>
+    }
+        ]] ,
+        {
+            i(1, "// code"),
+        }
+    ), {}
+),
+
+s({ trig = "func", snippetType = "snippet" },
+    fmta([[
+    <> <> (<>){
+        <>
+    } <>
+        ]] ,
+        {
+            i(1, "void"),
+            i(2, "func"),
+            i(3, "int num"),
+            i(4, "return;"),
+            i(5)
+        }
+    ), {}
+),
 
 s({ trig = "mainc" }, {
     t({ "#include <stdio.h>",
@@ -38,139 +111,237 @@ s({ trig = "mainc" }, {
 -- STRUCTS
 -- ==================================================
 
-s({ trig = "struct" }, {
-    t({ "struct " }), i(1, "Name"),
-    t({ " {", "    " }),
-    i(2, "// members"),
-    t({ "", "};" }),
-}),
+s({ trig = "struct", snippetType = "snippet" },
+    fmta([[
+    struct <>{
+        <>
+    } <>
+        ]] ,
+        {
+            i(1, "Name"),
+            i(2, "// Members"),
+            i(3)
+        }
+    ), {}
+),
 
-s({ trig = "tstruct" }, {
-    t({ "typedef struct {", "    " }),
-    i(1, "// members"),
-    t({ "", "} " }), i(2, "Name"), t({ ";" }),
-}),
+s({ trig = "tstruct", snippetType = "snippet" },
+    fmta([[
+    typedef struct <>{
+        <>
+    } <>
+        ]] ,
+        {
+            i(1, "NameA"),
+            i(2, "// Members"),
+            i(3, "NameB")
+        }
+    ), {}
+),
 
 -- ==================================================
 -- HEADER GUARDS
 -- ==================================================
 
-s({ trig = "guard" }, {
-    t({ "#ifndef " }), i(1, "FILENAME_H"),
-    t({ "", "#define " }), i(1),
-    t({ "", "" }),
-    i(2, "// declarations"),
-    t({ "", "", "#endif // " }), i(1),
-}),
+s({ trig = "tstruct", snippetType = "snippet" },
+    fmta([[
+    #ifndef <>
+    #define <>
+    <>
+    #endif 
+        ]] ,
+        {
+            i(1, "Name"),
+            rep(1),
+            i(2, "// Declarations"),
+        }
+    ), {}
+),
 
-s({ trig = "once" }, {
-    t({ "#pragma once", "" }),
-    i(1, "// declarations"),
-}),
-
--- ==================================================
--- STL CONTAINERS
--- ==================================================
-
-s({ trig = "vec" }, {
-    t("vector<"), i(1, "int"), t("> "), i(2, "v")
-}),
-
-s({ trig = "mp" }, {
-    t("map<"), i(1, "int"), t(", "), i(2, "int"), t("> "), i(3, "m")
-}),
-
-s({ trig = "ump" }, {
-    t("unordered_map<"), i(1, "int"), t(", "), i(2, "int"), t("> "), i(3, "um")
-}),
-
-s({ trig = "st" }, {
-    t("set<"), i(1, "int"), t("> "), i(2, "s")
-}),
-
-s({ trig = "pq" }, {
-    t("priority_queue<"), i(1, "int"), t("> "), i(2, "pq")
-}),
-
-s({ trig = "ll" }, t("long long")),
-s({ trig = "pii" }, t("pair<int,int>")),
-s({ trig = "pll" }, t("pair<long long,long long>")),
 
 -- ==================================================
 -- LOOPS
 -- ==================================================
+s({ trig = "fori", snippetType = "snippet" },
+    fmta([[
+    for (int i=0; i << <>; i++){
+    <>
+    } <>
+        ]],
+        {
+            i(1, "itters"),
+            i(2, "// Content"),
+            i(3),
+        }, { delimiters = "<>" }
+    ), {}
+),
 
-s({ trig = "fori" }, {
-    t("for (int "), i(1, "i"),
-    t(" = "), i(2, "0"),
-    t("; "), i(1),
-    t(" < "), i(3, "n"),
-    t("; "), i(1),
-    t("++) {"),
-    t({ "", "    " }),
-    i(4),
-    t({ "", "}" }),
-}),
 
-s({ trig = "each" }, {
-    t("for (auto &"), i(1, "x"),
-    t(" : "), i(2, "container"),
-    t(") {"),
-    t({ "", "    " }),
-    i(3),
-    t({ "", "}" }),
-}),
+s({ trig = "while", snippetType = "snippet" },
+    fmta([[
+    while (<>){
+    <>
+    }
+        ]],
+        {
+            i(1, "expression"),
+            i(2, "// code"),
+        }, { delimiters = "<>" }
+    ), {}
+),
+
+s({ trig = "len", snippetType = "snippet" },
+    fmta([[
+        size_t <> = sizeof(<>) / sizeof(<>[0]);
+        ]],
+        {
+            i(1, "length"),
+            i(2, "continer"),
+            rep(2)
+        }, { delimiters = "<>" }
+    ), {}
+),
 
 -- ==================================================
 -- SWITCH / CASE
 -- ==================================================
 
-s({ trig = "switch" }, {
-    t("switch ("), i(1, "expr"), t(") {"),
-    t({ "", "case " }), i(2, "value"), t(":"),
-    t({ "", "    " }), i(3, "// code"),
-    t({ "", "    break;", "", "default:", "    " }),
-    i(4, "// default"),
-    t({ "", "    break;", "}" }),
-}),
+s({ trig = "switch", snippetType = "snippet" },
+    fmta([[
+        switch (<>){
+        case <>:
+             <>
+             break;
+        default:
+             <>
+             break;
+        }
+        ]],
+        {
+            i(1, "expression"),
+            i(2, "value"),
+            i(3, "// code"),
+            i(4, "default"),
+        }, { delimiters = "<>" }
+    ), {}
+),
 
-s({ trig = "case" }, {
-    t("case "), i(1, "value"), t(":"),
-    t({ "", "    " }), i(2, "// code"),
-    t({ "", "    break;" }),
-}),
+s({ trig = "switch", snippetType = "snippet" },
+    fmta([[
+    case <>:
+        <>
+        break;
+        ]],
+        {
+            i(1, "value"),
+            i(2, "// code"),
+        }, { delimiters = "<>" }
+    ), {}
+),
 
 -- ==================================================
--- STL HELPERS
+-- ENUM
 -- ==================================================
 
-s({ trig = "pb" }, t(".push_back(")),
-s({ trig = "em" }, t(".emplace_back(")),
+s({ trig = "enum", snippetType = "snippet" },
+    fmta([[
+    enum <>{
+        <>
+    };
+        ]],
+        {
+            i(1, "Name"),
+            i(2, "// code"),
+        }, { delimiters = "<>" }
+    ), {}
+),
 
-s({ trig = "all" }, {
-    i(1, "v"), t(".begin(), "), i(1), t(".end()")
-}),
+s({ trig = "enumr", snippetType = "snippet" },
+    fmta([[
+    enum <>{
+        <>
+    };
 
-s({ trig = "srt" }, {
-    t("sort("), i(1, "v.begin(), v.end()"), t(");")
-}),
-
+    enum <> resolve_<>(char* cmd_str){
+        if (cmd_str == NULL) return 0;
+        if (strcmp(cmd_str, "<>") == 0) return <>;
+    }
+        ]],
+        {
+            i(1, "Name"), -- 1st <>
+            i(2, "VAL"),  -- 2nd <>
+            rep(1),       -- 3rd <> (Repeats "Name")
+            rep(1),       -- 4th <> (Repeats "Name")
+            rep(2),       -- 5th <> (Repeats "VAL")
+            rep(2),       -- 6th <> (Repeats "VAL")
+        }
+    )
+),
 -- ==================================================
--- IO
+-- FOPEN
 -- ==================================================
+s({ trig = "open_read", snippetType = "snippet" },
+    fmta([[
+        FILE* file = fopen("<>", "<>");
+        if (file == NULL){
+            printf("Error: File (<>) Could not open file.\n");
+            return EXIT_FAILURE;
+        }
 
-s({ trig = "cout" }, {
-    t("cout << "), i(1), t(" << endl;")
-}),
+        char *buffer = NULL; 
+        size_t bufsize = 0;
+        ssize_t chars_read;
+        while ((chars_read = getline(&buffer, &bufsize, file)) != -1) {
+            // buffer now holds the entire line, no matter how long it is
+            printf("%s", buffer);
+            <>
+        }
 
-s({ trig = "cin" }, {
-    t("cin >> "), i(1), t(";")
-}),
+        if (ferror(file)) {
+            perror("Error reading from file");
+            free(buffer);
+            fclose(file);
+            return EXIT_FAILURE;
+        }
 
-s({ trig = "printf" }, {
-    t('printf("'), i(1),
-    t('\\n", '), i(2), t(");")
-}),
+        free(buffer);
+        fclose(file);
+        ]],
+        {
+            i(1, "file_name"),
+            i(2, "r"),
+            rep(1),
+            i(3, "// code"),
+        }
+    )
+),
+
+s({ trig = "open_write", snippetType = "snippet" },
+    fmta([[
+        FILE* file = fopen("<>", "<>");
+        if (file == NULL){
+            printf("Error: File (<>) could not be opened.\n");
+            return EXIT_FAILURE;
+        }
+
+        fprintf(file, <>);
+
+        if (ferror(file)) {
+            perror("Error writing to file");
+            fclose(file);
+            return EXIT_FAILURE;
+        }
+
+        fclose(file);
+        ]],
+        {
+            i(1, "file_name.txt"),
+            i(2, "w"),
+            rep(1),
+            i(3, "f\"Hello World\\n\""),
+        }
+    )
+),
 
 -- ==================================================
 -- POSIX SYSCALLS
@@ -222,4 +393,68 @@ s({ trig = "exit" }, {
     t("exit("), i(1, "0"), t(");")
 }),
 
+--- 
+s({ trig = "malloc", snippetType = "snippet" },
+    fmta([[
+        <> *<> = malloc(sizeof(<>) * <>);
+        if (<> == NULL) {
+            fprintf(stderr, "Error: Memory allocation failed for <>\n");
+            <>
+        }
+        ]],
+        {
+            i(1, "type"),
+            i(2, "ptr"),
+            rep(1),          -- Repeats the type for sizeof
+            i(3, "count"),
+            rep(2),          -- Repeats ptr name in if check
+            rep(2),          -- Repeats ptr name in error message
+            i(4, "return EXIT_FAILURE;"),
+        }
+    )
+),
+
+s({ trig = "sfree", snippetType = "snippet" },
+    fmta([[
+        if (<> != NULL) {
+            free(<>);
+            <> = NULL;
+        }
+        ]],
+        {
+            i(1, "ptr"),
+            rep(1),
+            rep(1),
+        }
+    )
+),
+
+s({ trig = "alloc", snippetType = "snippet" },
+    fmta([[
+        <> *<> = <>(<>);
+        if (<> == NULL) {
+            fprintf(stderr, "Error: Memory allocation failed for <>\n");
+            <>
+        }
+        ]],
+        {
+            i(1, "type"),
+            i(2, "ptr"),
+            -- Choice Node 1: Toggle between malloc and calloc
+            c(3, {
+                t("malloc"),
+                t("calloc")
+            }),
+            i(4, "sizeof(type) * count"), -- The arguments
+            rep(2),                       -- Repeats ptr for NULL check
+            rep(2),                       -- Repeats ptr for error log
+            -- Choice Node 2: Toggle how the error is handled
+            c(5, {
+                t("return EXIT_FAILURE;"),
+                t("return NULL;"),
+                t("exit(1);")
+            }),
+        }
+    )
+),
 }

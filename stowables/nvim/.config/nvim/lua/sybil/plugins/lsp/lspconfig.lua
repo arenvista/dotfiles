@@ -57,10 +57,22 @@ return {
 
 			-- Clangd
 			clangd = {
-                cmd = {'clangd', '--background-index', '--clang-tidy', '--log=verbose'},
-                init_options = {
-                    fallbackFlags = { '-std=c++17' },
-                },
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--log=verbose",
+					-- Optional: specify compile_commands.json directory if not at root
+					-- '--compile-commands-dir=build',
+				},
+				init_options = {
+					fallbackFlags = { "-std=c++17" },
+				},
+				-- Automatically find compile_commands.json in project root
+				root_dir = function(fname)
+					return lspconfig.util.root_pattern("compile_commands.json", ".git")(fname)
+						or lspconfig.util.path.dirname(fname)
+				end,
 			},
 
 			-- Pyright
