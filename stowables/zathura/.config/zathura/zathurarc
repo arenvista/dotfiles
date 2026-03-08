@@ -1,22 +1,53 @@
-set default-bg "{background}"
-set default-fg "{foreground}"
-set statusbar-bg "{background}"
-set statusbar-fg "{foreground}"
-set inputbar-bg "{background}"
-set inputbar-fg "{foreground}"
-set notification-bg "{background}"
-set notification-fg "{foreground}"
-set notification-error-bg "{color1}"
-set notification-error-fg "{foreground}"
-set notification-warning-bg "{color3}"
-set notification-warning-fg "{background}"
-set highlight-color "{color4}"
-set highlight-active-color "{color6}"
-set completion-bg "{background}"
-set completion-fg "{foreground}"
-set completion-highlight-bg "{color4}"
-set completion-highlight-fg "{background}"
-set recolor-lightcolor "{background}"
-set recolor-darkcolor "{foreground}"
+
+# ==========================================
+# General Settings
+# ==========================================
+# Copy selected text to the system clipboard (instead of primary selection)
+set selection-clipboard clipboard
+
+# Automatically fit the document to the window width when opened
+set adjust-open "width"
+
+# Smooth scrolling settings
+set scroll-page-aware true
+set smooth-scroll true
+set scroll-step 50
+
+# Set the font for the status bar and index
+set font "monospace 10"
+
+# Hide the status bar by default (press 'Ctrl + m' to toggle)
+# set optionsbar-hidden true 
+
+# ==========================================
+# Document Recoloring (Dark Mode)
+# ==========================================
+# Automatically invert pages to dark mode (Toggle on/off with Ctrl + r)
 set recolor true
 
+# Keep the original colors of images and links when recoloring
+set recolor-keephue true
+
+# ==========================================
+# PyWal Colors
+# ==========================================
+set default-bg "#392039"
+set default-fg "#e2c9e8"
+set statusbar-bg "#392039"
+set statusbar-fg "#e2c9e8"
+set inputbar-bg "#392039"
+set inputbar-fg "#e2c9e8"
+set notification-bg "#392039"
+set notification-fg "#e2c9e8"
+set notification-error-bg "#9B5DE1"
+set notification-error-fg "#e2c9e8"
+set notification-warning-bg "#72AEE2"
+set notification-warning-fg "#392039"
+set highlight-color "#E0A7AD"
+set highlight-active-color "#9E9CE6"
+set completion-bg "#392039"
+set completion-fg "#e2c9e8"
+set completion-highlight-bg "#E0A7AD"
+set completion-highlight-fg "#392039"
+set recolor-lightcolor "#392039"
+set recolor-darkcolor "#e2c9e8"
