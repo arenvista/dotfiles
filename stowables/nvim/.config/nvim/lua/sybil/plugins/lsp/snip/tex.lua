@@ -118,7 +118,7 @@ return {
     )),
 
     -- FIGURE
-    s({trig = "fig", snippetType="autosnippet"}, fmta(
+    s({trig = "fig", snippetType="snippet"}, fmta(
         [[
       \begin{figure}[htpb]
           \centering
@@ -149,4 +149,26 @@ return {
     ]],
         { i(1), i(0) }
     )),
+
+    s({ trig = "center", snippetType = "snippet" },
+        fmta(
+            [[
+        \begin{center}
+            <>
+        \end{center}
+        ]],
+            { i(1) }
+        )
+    ),
+
+    s({ trig = "gathered", snippetType = "snippet" },
+        fmta(
+            [[
+        \begin{gathered}
+            <>
+        \end{gathered}
+        ]],
+            { i(1) }
+        )
+    ),
 }

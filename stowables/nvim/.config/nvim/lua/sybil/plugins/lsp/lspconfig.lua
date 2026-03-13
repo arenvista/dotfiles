@@ -107,7 +107,6 @@ return {
 					local server_config = servers[server_name] or {}
 					server_config.capabilities =
 						vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
-
 					lspconfig[server_name].setup(server_config)
 				end,
 			},
@@ -118,25 +117,76 @@ return {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
 				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				local opts = { buffer = ev.buf, silent = true }
+				local telescope = require("telescope.builtin")
 
-				opts.desc = "Show documentation"
-				keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				opts.desc = "Go to declaration"
-				keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-				opts.desc = "Show LSP definitions"
-				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
-				opts.desc = "Code Action"
-				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-				opts.desc = "Rename"
-				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+				-- A handy wrapper function so we don't have to type out the `{ buffer, desc }` table every time
+				local map = function(mode, keys, func, desc)
+					vim.keymap.set(mode, keys, func, { buffer = ev.buf, desc = "LSP: " .. desc })
+				end
 
-				-- Clangd Switch Header specific
+				-- ==========================================
+				-- 1. Navigation (Jumping around the code)
+				-- ==========================================
+				-- (Added) Jump to the declaration (e.g., header file in C)
+				map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
+
+				-- Jump to the definition of the word under your cursor
+				map("n", "gd", function()
+					telescope.lsp_definitions({ reuse_win = true })
+				end, "Goto Definition")
+
+				-- (Added) Find all references to the word under your cursor
+				map("n", "gr", telescope.lsp_references, "Goto References")
+
+				-- (Added) Jump to the implementation of an interface/trait
+				map("n", "gi", telescope.lsp_implementations, "Goto Implementation")
+
+				-- (Added) Jump to the definition of the *type* of the word under your cursor
+				map("n", "gy", telescope.lsp_type_definitions, "Goto Type Definition")
+
+				-- ==========================================
+				-- 2. Code Actions & Refactoring
+				-- ==========================================
+				-- Rename the variable under your cursor across the entire project
+				map("n", "<leader>rn", vim.lsp.buf.rename, "Rename Symbol")
+
+				map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+
+				-- ==========================================
+				-- 3. Documentation & Information
+				-- ==========================================
+				-- Show documentation for the word under your cursor
+				map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
+
+				-- (Added) Show function signature (parameters) while typing in Insert mode
+				map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
+				local function switch_source_header()
+					local bufnr = vim.api.nvim_get_current_buf()
+					local params = { uri = vim.uri_from_bufnr(bufnr) }
+
+					vim.lsp.buf_request(bufnr, "textDocument/switchSourceHeader", params, function(err, result)
+						if err then
+							vim.notify("Error switching source/header: " .. tostring(err.message), vim.log.levels.ERROR)
+							return
+						end
+
+						if not result then
+							vim.notify("Corresponding source/header file not found", vim.log.levels.WARN)
+							return
+						end
+
+						-- Open the returned file
+						vim.cmd("edit " .. vim.uri_to_fname(result))
+					end)
+				end
+
+				-- 2. Bind it inside your LspAttach callback
+				-- ...
 				if client.name == "clangd" then
-					keymap.set(
+					vim.keymap.set(
 						"n",
 						"gs",
-						"<cmd>ClangdSwitchSourceHeader<CR>",
+						switch_source_header, -- Call the Lua function directly instead of <cmd>
 						{ buffer = ev.buf, desc = "Switch Source/Header" }
 					)
 				end

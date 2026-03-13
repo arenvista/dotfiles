@@ -26,14 +26,14 @@ if vim.g.started_by_firenvim == true then
 		-- {hostname} and {pathname} are variables replaced by Firenvim
 		filename = "{hostname}_{pathname}.md",
 	}
-	vim.cmd("hi Normal guibg=#1e1e2e")
-	vim.opt.laststatus = 0 --remove footer
-	vim.opt.signcolumn = "no" -- Disable the column where git signs and LSP errors usually appear
-	vim.opt.foldcolumn = "0" -- Disable the column used for folding markers
+	-- vim.cmd("hi Normal guibg=#1e1e2e")
+	-- vim.opt.laststatus = 0 --remove footer
+	-- vim.opt.signcolumn = "no" -- Disable the column where git signs and LSP errors usually appear
+	-- vim.opt.foldcolumn = "0" -- Disable the column used for folding markers
 else
 	-- vim.o.laststatus = 2
 	require("lazy").setup({
-		{ import = "sybil.plugins.firenvim" },
+		-- { import = "sybil.plugins.firenvim" },
 		{ import = "sybil.plugins.mini" },
 		{ import = "sybil.plugins.movement" },
 		{ import = "sybil.plugins.ui.inline-render" },
@@ -61,5 +61,6 @@ else
 	})
 	vim.opt.laststatus = 1
 	-- views can only be fully collapsed with the global statusline
-	vim.cmd.colorscheme("pywal")
+	-- vim.cmd.colorscheme("pywal")
+	vim.cmd.colorscheme("catppuccin-macchiato")
 end
