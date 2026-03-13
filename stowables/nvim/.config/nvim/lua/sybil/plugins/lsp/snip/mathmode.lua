@@ -88,7 +88,7 @@ return {
     s({ trig = "==", snippetType = "autosnippet" }, t("\\equiv "), { condition = in_mathzone }),
     s({ trig = "-=", snippetType = "autosnippet" }, t("\\neq "), { condition = in_mathzone }),
     s({ trig = "~=", snippetType = "autosnippet" }, t("\\approx "), { condition = in_mathzone }),
-    s({ trig = "contra", snippetType = "autosnippet" }, { t("\\lightning") }, { condition = in_mathzone }),
+    s({ trig = "contra", snippetType = "autosnippet" }, { t("\\lightning") }),
 
     -- ==========================================================
     -- DOTS 
@@ -99,6 +99,7 @@ return {
     s({ trig = "c..", snippetType = "autosnippet" }, t("\\cdots "), { condition = in_mathzone }),
     s({ trig = "v..", snippetType = "autosnippet" }, t("\\vdots "), { condition = in_mathzone }),
     s({ trig = "ss", snippetType = "autosnippet" }, t("& "), { condition = in_mathzone }),
+    s({ trig = "./", snippetType = "autosnippet", wordTrig=false }, t("\\ "), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 3. BASIC OPERATORS
@@ -143,7 +144,7 @@ return {
     s({ trig = "<>", snippetType = "snippet" }, fmta( "\\left< [1] \\right>", { i(1) }, { delimiters = "[]" }), { condition = in_mathzone }),
     s({ trig = "[]", snippetType = "snippet" }, fmta("\\left[ <> \\right]", { i(1) }), { condition = in_mathzone }),
     s({ trig = "{}", snippetType = "snippet" }, fmta("\\left\\{ <> \\right\\}", { i(1) }), { condition = in_mathzone }),
-    s({ trig = ";|", snippetType = "snippet" }, fmta("\\left| <> \\right|", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "|", snippetType = "snippet" }, fmta("\\left| <> \\right|", { i(1) }), { condition = in_mathzone }),
     s({ trig = "||", snippetType = "snippet" }, fmta("\\left\\| <> \\right\\|", { i(1) }), { condition = in_mathzone }),
 
     -- ==========================================================
@@ -177,7 +178,7 @@ return {
     ),
 
     -- Plain array
-    s({ trig = "ar", snippetType = "snippet" },
+    s({ trig = "arr", snippetType = "snippet" },
         array_snippet("", ""),
         { condition = in_mathzone }
     ),
@@ -189,32 +190,68 @@ return {
     ),
 
     -- [ ]
-    s({ trig = "ar[", snippetType = "snippet" },
+    s({ trig = "ar[]", snippetType = "snippet" },
         array_snippet("\\left[", "\\right]"),
         { condition = in_mathzone }
     ),
 
     -- { }
-    s({ trig = "ar{", snippetType = "snippet" },
+    s({ trig = "ar{}", snippetType = "snippet" },
         array_snippet("\\left\\{", "\\right\\}"),
         { condition = in_mathzone }
     ),
 
     -- | |
-    s({ trig = "ar|", snippetType = "snippet" },
+    s({ trig = "arr|", snippetType = "snippet" },
         array_snippet("\\left|", "\\right|"),
         { condition = in_mathzone }
     ),
 
     -- || ||
-    s({ trig = "ar||", snippetType = "snippet" },
+    s({ trig = "arr||", snippetType = "snippet" },
         array_snippet("\\left\\|", "\\right\\|"),
         { condition = in_mathzone }
     ),
 
     -- ⟨ ⟩
-    s({ trig = "ar<", snippetType = "snippet" },
+    s({ trig = "ar<>", snippetType = "snippet" },
         array_snippet("\\left\\langle", "\\right\\rangle"),
+        { condition = in_mathzone }
+    ),
+
+    --- singles
+    s({ trig = "ar(", snippetType = "snippet" },
+        array_snippet("\\left(", "\\right ."),
+        { condition = in_mathzone }
+    ),
+
+    -- [ ]
+    s({ trig = "ar[", snippetType = "snippet" },
+        array_snippet("\\left[", "\\right ."),
+        { condition = in_mathzone }
+    ),
+
+    -- { }
+    s({ trig = "ar{", snippetType = "snippet" },
+        array_snippet("\\left\\{", "\\right ."),
+        { condition = in_mathzone }
+    ),
+
+    -- | |
+    s({ trig = "ar|", snippetType = "snippet" },
+        array_snippet("\\left|", "\\right ."),
+        { condition = in_mathzone }
+    ),
+
+    -- || ||
+    s({ trig = "ar||", snippetType = "snippet" },
+        array_snippet("\\left\\|", "\\right ."),
+        { condition = in_mathzone }
+    ),
+
+    -- ⟨ ⟩
+    s({ trig = "ar<", snippetType = "snippet" },
+        array_snippet("\\left\\langle", "\\right ."),
         { condition = in_mathzone }
     ),
 
@@ -241,6 +278,29 @@ return {
     s({ trig = ";ve", snippetType = "autosnippet" }, t("\\varepsilon"), { condition = in_mathzone }),
 
     -- ==========================================================
-    -- 8. 
+    -- colors
     -- ==========================================================
+    s({ trig = "color", snippetType = "snippet" },
+        fmta("{\\color{{red} <>}}", { i(1)}),
+        { condition = in_mathzone }),
+
+    s({ trig = "gathered", snippetType = "snippet" },
+        fmta(
+            [[
+        \begin{gathered}
+            <>
+        \end{gathered}
+        ]],
+            { i(1) }
+        )
+    ),
+    s({ trig = "._", snippetType = "snippet" },
+        fmta(
+            [[
+            \underbrace{<>}_{<>}
+        ]],
+            { i(1), i(2) }
+        )
+    ),
 }
+

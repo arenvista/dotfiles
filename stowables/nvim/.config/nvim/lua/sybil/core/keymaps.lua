@@ -239,25 +239,25 @@ vim.api.nvim_create_user_command("Cd", cd_picker, {})
 vim.keymap.set("n", "<leader>cd", ":Cd<CR>", { noremap = true, silent = true, desc = "Change Directory" })
 
 vim.api.nvim_create_autocmd({ "TermRequest" }, {
-    desc = "Manipulates 'path' option on dir change",
-    callback = function(ev)
-        local val, n = string.gsub(ev.data.sequence, "\027]7;file://[^/]*", "")
-        if n > 0 then
-            -- OSC 7: dir-change
-            local dir = val
-            if vim.fn.isdirectory(dir) == 0 then
-                vim.notify("invalid dir: " .. dir)
-                return
-            end
-            if vim.api.nvim_get_current_buf() == ev.buf then
-                if vim.b[ev.buf].osc7_dir then
-                    vim.cmd("setlocal path-=" .. vim.b[ev.buf].osc7_dir)
-                end
-                vim.cmd("setlocal path+=" .. dir)
-                vim.b[ev.buf].osc7_dir = dir
-            end
-        end
-    end,
+	desc = "Manipulates 'path' option on dir change",
+	callback = function(ev)
+		local val, n = string.gsub(ev.data.sequence, "\027]7;file://[^/]*", "")
+		if n > 0 then
+			-- OSC 7: dir-change
+			local dir = val
+			if vim.fn.isdirectory(dir) == 0 then
+				vim.notify("invalid dir: " .. dir)
+				return
+			end
+			if vim.api.nvim_get_current_buf() == ev.buf then
+				if vim.b[ev.buf].osc7_dir then
+					vim.cmd("setlocal path-=" .. vim.b[ev.buf].osc7_dir)
+				end
+				vim.cmd("setlocal path+=" .. dir)
+				vim.b[ev.buf].osc7_dir = dir
+			end
+		end
+	end,
 })
 
 vim.cmd("set isfname+=[,]")
@@ -267,100 +267,106 @@ vim.keymap.set("n", "gf", "gF", { noremap = true, silent = true })
 vim.keymap.set("n", "gF", "gf", { noremap = true, silent = true })
 
 local function telescope_tex_headers(opts)
-  opts = opts or {}
-  
-  local has_telescope, pickers = pcall(require, "telescope.pickers")
-  if not has_telescope then
-    vim.notify("Telescope is not installed or loaded", vim.log.levels.ERROR)
-    return
-  end
-  
-  local finders = require("telescope.finders")
-  local conf = require("telescope.config").values
-  local actions = require("telescope.actions")
-  local action_state = require("telescope.actions.state")
+	opts = opts or {}
 
-  local bufnr = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-  local headers = {}
-  
-  local valid_headers = {
-    "part", "chapter", "section", 
-    "subsection", "subsubsection", "paragraph"
-  }
+	local has_telescope, pickers = pcall(require, "telescope.pickers")
+	if not has_telescope then
+		vim.notify("Telescope is not installed or loaded", vim.log.levels.ERROR)
+		return
+	end
 
-  local indents = {
-    part = "", 
-    chapter = "  ", 
-    section = "    ", 
-    subsection = "      ", 
-    subsubsection = "        ", 
-    paragraph = "          "
-  }
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
 
-  for i, line in ipairs(lines) do
-    for _, h_type in ipairs(valid_headers) do
-      -- NEW ROBUST PATTERN:
-      -- ^[^%%]* : Start of line, ignores line if a comment '%' comes before the command
-      -- \\        : Matches the literal '\'
-      -- %*?       : Matches an optional '*' for unnumbered sections
-      -- [^{]* : Absorbs spaces OR optional arguments like [Short Title]
-      -- {([^}]+)} : Captures everything inside the curly braces
-      local pattern = "^[^%%]*\\" .. h_type .. "%*?[^{]*{([^}]+)}"
-      local title = string.match(line, pattern)
-      
-      if title then
-        -- Trim any accidental leading/trailing whitespace from the title
-        title = title:match("^%s*(.-)%s*$")
-        
-        table.insert(headers, {
-          line_num = i,
-          type = h_type,
-          title = title,
-          display_str = string.format("%s%s: %s", indents[h_type] or "", h_type, title)
-        })
-        break
-      end
-    end
-  end
+	local bufnr = vim.api.nvim_get_current_buf()
+	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+	local headers = {}
 
-  if #headers == 0 then
-    vim.notify("No LaTeX headers found in this buffer.", vim.log.levels.WARN)
-    return
-  end
+	local valid_headers = {
+		"part",
+		"chapter",
+		"section",
+		"subsection",
+		"subsubsection",
+		"paragraph",
+	}
 
-  pickers.new(opts, {
-    prompt_title = "LaTeX Headers",
-    finder = finders.new_table {
-      results = headers,
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = entry.display_str,
-          -- ordinal is what you actually type to fuzzy search
-          ordinal = entry.type .. " " .. entry.title,
-          lnum = entry.line_num,
-        }
-      end,
-    },
-    sorter = conf.generic_sorter(opts),
-    attach_mappings = function(prompt_bufnr, map)
-      actions.select_default:replace(function()
-        actions.close(prompt_bufnr)
-        local selection = action_state.get_selected_entry()
-        if selection then
-          -- Jump to the exact line and center the screen
-          vim.api.nvim_win_set_cursor(0, {selection.lnum, 0})
-          vim.cmd("normal! zz")
-        end
-      end)
-      return true
-    end,
-  }):find()
+	local indents = {
+		part = "",
+		chapter = "  ",
+		section = "    ",
+		subsection = "      ",
+		subsubsection = "        ",
+		paragraph = "          ",
+	}
+
+	for i, line in ipairs(lines) do
+		for _, h_type in ipairs(valid_headers) do
+			-- NEW ROBUST PATTERN:
+			-- ^[^%%]* : Start of line, ignores line if a comment '%' comes before the command
+			-- \\        : Matches the literal '\'
+			-- %*?       : Matches an optional '*' for unnumbered sections
+			-- [^{]* : Absorbs spaces OR optional arguments like [Short Title]
+			-- {([^}]+)} : Captures everything inside the curly braces
+			local pattern = "^[^%%]*\\" .. h_type .. "%*?[^{]*{([^}]+)}"
+			local title = string.match(line, pattern)
+
+			if title then
+				-- Trim any accidental leading/trailing whitespace from the title
+				title = title:match("^%s*(.-)%s*$")
+
+				table.insert(headers, {
+					line_num = i,
+					type = h_type,
+					title = title,
+					display_str = string.format("%s%s: %s", indents[h_type] or "", h_type, title),
+				})
+				break
+			end
+		end
+	end
+
+	if #headers == 0 then
+		vim.notify("No LaTeX headers found in this buffer.", vim.log.levels.WARN)
+		return
+	end
+
+	pickers
+		.new(opts, {
+			prompt_title = "LaTeX Headers",
+			finder = finders.new_table({
+				results = headers,
+				entry_maker = function(entry)
+					return {
+						value = entry,
+						display = entry.display_str,
+						-- ordinal is what you actually type to fuzzy search
+						ordinal = entry.type .. " " .. entry.title,
+						lnum = entry.line_num,
+					}
+				end,
+			}),
+			sorter = conf.generic_sorter(opts),
+			attach_mappings = function(prompt_bufnr, map)
+				actions.select_default:replace(function()
+					actions.close(prompt_bufnr)
+					local selection = action_state.get_selected_entry()
+					if selection then
+						-- Jump to the exact line and center the screen
+						vim.api.nvim_win_set_cursor(0, { selection.lnum, 0 })
+						vim.cmd("normal! zz")
+					end
+				end)
+				return true
+			end,
+		})
+		:find()
 end
 
 -- Create the user command
-vim.api.nvim_create_user_command('TexHeadersTelescope', telescope_tex_headers, { desc = "Fuzzy find LaTeX headers" })
+vim.api.nvim_create_user_command("TexHeadersTelescope", telescope_tex_headers, { desc = "Fuzzy find LaTeX headers" })
 
 -- Map it to a key (e.g., <leader>th)
-vim.keymap.set('n', '<leader>th', telescope_tex_headers, { desc = "[T]ex [H]eaders (Telescope)", buffer = true })
+vim.keymap.set("n", "<leader>th", telescope_tex_headers, { desc = "[T]ex [H]eaders (Telescope)", buffer = true })
