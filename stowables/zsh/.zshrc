@@ -3,6 +3,7 @@
 
 # Path to your Oh My Zsh installation.
 
+neofetch 
 source "$HOME/.secret_keys/openai.env"
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="nvim"
@@ -72,7 +73,16 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+
+# | Plugin     | What it does                                                                                     |
+# | ---        | ---                                                                                              |
+# | z          | Tracks your most visited directories. Type `z my-project` to jump there instantly from anywhere. |
+# | sudo       | Hit `Esc` twice to prefix your previous (failed) command with `sudo`. A literal lifesaver.       |
+# | web-search | Search the web directly from the terminal. Example: `google oh my zsh plugins`.                  |
+# | copypath   | Copies the absolute path of your current directory to your clipboard.                            |
+# | extract    | One command (`extract <file>`) to unzip/untar almost any archive type without remembering flags. |
+
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting sudo web-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -97,31 +107,10 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though Oh My Zsh
 # users are encouraged to define aliases within a top-level file in
 # the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
+source $ZSH_CUSTOM/aliases.zsh
+source $ZSH_CUSTOM/macros.zsh
 # For a full list of active aliases, run `alias`.
 
-# Example aliases
-alias ah="nvim"
-alias ..="cd .."
-alias ls="lsd"
-
-alias t="tmux"
-alias tnw="tmux new-window -n"
-alias tns="tmux new-session -d -n "
-alias trw="tmux rename-window"
-alias trs="tmux rename-session"
-alias tks="pkill tmux"
-bindkey -s '^s' "tmux-attacher\n"
-bindkey -s '^f' "tmux-sessionizer\n"
-bindkey -s '^x' "tmux-killer\n"
-
-bindkey -s '^r' "source ~/.zshrc\n"
-bindkey -s '^n' "nvim\n"
-bindkey -s '^e' "yazi\n"
-alias cdf="cd \$(find -mindepth 1 -maxdepth 1 -type d | fzf\n)"
-
-eval "$(fzf --zsh)"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
@@ -129,32 +118,3 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="$HOME/.cargo/bin:$PATH"
-
-# Function to find dir and cd into it
-function fzf-cd-shallow() {
-    # 1. find: searches current dir (.)
-    # 2. mindepth 0/maxdepth 1: as requested
-    # 3. type d: directories only
-    # 4. fzf: opens the fuzzy finder
-    local dir=$(fd --max-depth 5 --type d | fzf \
-    --prompt=" Change Dir. " \
-    --height=50% \
-    --layout=reverse \
-    --border=rounded \
-    --info=inline \
-    --preview 'ls --color=always -F {} | head -20' \
-    --preview-window='right:50%:wrap')
-
-    # If a directory was selected (enter was pressed), cd into it
-    if [[ -n "$dir" ]]; then
-        cd "$dir"
-        zle reset-prompt # Refreshes the prompt to show the new path
-    fi
-}
-
-# Register the function as a ZLE (Zsh Line Editor) widget
-zle -N fzf-cd-shallow
-
-neofetch 
-# Bind the key. '^f' stands for Ctrl+F
-bindkey '^w' fzf-cd-shallow
