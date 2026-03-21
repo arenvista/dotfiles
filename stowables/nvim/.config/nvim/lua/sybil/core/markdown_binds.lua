@@ -105,31 +105,31 @@ end, { silent = true, desc = "Add Nested Callout with Text Blocks" })
 
 -- 2. Undo All Formatting (Strip Quotes & Headers)
 -- Usage: Visually select text, press U
-vim.keymap.set("v", "U", function()
-    local r1 = vim.fn.line("v")
-    local r2 = vim.fn.line(".")
-    local start_row = math.min(r1, r2) - 1
-    local end_row = math.max(r1, r2)
-    local lines = vim.api.nvim_buf_get_lines(0, start_row, end_row, false)
-    
-    local new_lines = {}
-    for _, line in ipairs(lines) do
-        local clean_line = line
-        
-        -- Safely strip leading `>` and their trailing space without touching math indentations
-        while clean_line:match("^%s*>") do
-            clean_line = clean_line:gsub("^%s*>%s?", "")
-        end
-        
-        -- Strip any markdown headers if they were added
-        clean_line = clean_line:gsub("^#+%s+", "")
-        
-        table.insert(new_lines, clean_line)
-    end
-
-    vim.api.nvim_buf_set_lines(0, start_row, end_row, false, new_lines)
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-end, { silent = true, desc = "Undo all Callout and Header formatting" })
+-- vim.keymap.set("v", "U", function()
+--     local r1 = vim.fn.line("v")
+--     local r2 = vim.fn.line(".")
+--     local start_row = math.min(r1, r2) - 1
+--     local end_row = math.max(r1, r2)
+--     local lines = vim.api.nvim_buf_get_lines(0, start_row, end_row, false)
+--     
+--     local new_lines = {}
+--     for _, line in ipairs(lines) do
+--         local clean_line = line
+--         
+--         -- Safely strip leading `>` and their trailing space without touching math indentations
+--         while clean_line:match("^%s*>") do
+--             clean_line = clean_line:gsub("^%s*>%s?", "")
+--         end
+--         
+--         -- Strip any markdown headers if they were added
+--         clean_line = clean_line:gsub("^#+%s+", "")
+--         
+--         table.insert(new_lines, clean_line)
+--     end
+--
+--     vim.api.nvim_buf_set_lines(0, start_row, end_row, false, new_lines)
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+-- end, { silent = true, desc = "Undo all Callout and Header formatting" })
 
 -- 2. Remove Callout Level (Unwrap >)
 --

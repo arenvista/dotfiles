@@ -70,3 +70,4 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.g.markdown_fenced_languages = { "javascript", "typescript", "bash", "lua", "go", "rust", "c", "cpp", "python" }
+vim.env.TEXINPUTS = "/home/sybil/.tex_templates//:"
