@@ -1,0 +1,130 @@
+\documentclass[11pt, letterpaper]{article}
+
+% Graphics & Formatting
+\usepackage{tkz-graph} % From your original main.tex
+\usepackage[margin=1in]{geometry}
+
+% The Subfiles Package (Crucial for this setup)
+\usepackage{subfiles}
+
+% ==========================================
+% 1. MATH PACKAGES & THEOREMS
+% ==========================================
+\usepackage{amsmath, amsthm, amssymb, mathrsfs}
+\usepackage{wasysym}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{cor}{Corollary}
+
+% Custom list for Cases
+\usepackage{enumitem}
+\newlist{caseslist}{enumerate}{2}
+\setlist[caseslist]{
+    label=\textbf{Case \arabic*:}, 
+    leftmargin=*, 
+    itemsep=0.5em, 
+    topsep=0.5em
+}
+
+% Math Macros
+\newcommand{\ds}{\displaystyle}
+\newcommand{\sU}{\mathscr{U}}
+
+% ==========================================
+% 2. LAYOUT & FORMATTING
+% ==========================================
+% Set standard 1-inch margins (Replaces manual \topmargin, \textwidth, etc.)
+\usepackage[margin=1in]{geometry} 
+\usepackage{parskip}   % Removes paragraph indent, adds space between paragraphs
+\usepackage{multicol}  % For multiple columns
+\usepackage{sectsty}   % For styling section headers
+\usepackage{soul}      % For underlining/highlighting
+\usepackage{hyperref}  % For clickable links
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
+}
+
+% ==========================================
+% 3. GRAPHICS, TABLES & COLORS
+% ==========================================
+% Load xcolor ONCE with necessary options for tables and named colors
+\usepackage[svgnames, table]{xcolor} 
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% Table packages
+\usepackage{booktabs, multirow}
+\usepackage{changepage, threeparttable}
+
+% ==========================================
+% 4. CUSTOM BOXES (tcolorbox)
+% ==========================================
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\tcbuselibrary{skins}
+\definecolor{catblue}{HTML}{1E66F5}
+\definecolor{catgreen}{HTML}{40A02B}
+\definecolor{catred}{HTML}{d20f39} 
+\definecolor{catorange}{HTML}{fe640b} 
+\definecolor{catyellow}{HTML}{df8e1d} 
+\definecolor{catpurple}{HTML}{8839ef} 
+\definecolor{catgray}{HTML}{5c5f77} 
+
+\newcommand{\ciea}[3][catblue]{
+    \begin{tcolorbox}[
+        colback=white,
+        colframe=gray,
+        boxrule=0.5pt,
+        arc=5pt,
+        top=10pt,
+        bottom=10pt,
+        % halign=center,
+    ]
+    \textcolor{#1}{#2} #3
+    \end{tcolorbox}
+}
+% Question Box
+\newcommand{\question}[2]{
+    \begin{tcolorbox}[
+        colback=white,
+        colframe=gray,
+        boxrule=0.5pt,
+        arc=5pt,
+        top=10pt,
+        bottom=10pt,
+        % halign=center,
+    ]
+    \textcolor{catblue}{#1} #2
+    \end{tcolorbox}
+}
+
+\newcommand{\corr}[2]{
+    \begin{tcolorbox}[
+        colback=white,
+        colframe=gray,
+        boxrule=0.5pt,
+        arc=5pt,
+        top=10pt,
+        bottom=10pt,
+        % halign=center,
+    ]
+    \textcolor{catgreen}{#1} #2
+    \end{tcolorbox}
+}
+% Blockquote Box
+\newtcolorbox{blockquote}{
+    colback=white,
+    colframe=gray,
+    boxrule=0pt,
+    leftrule=3pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    top=0pt,
+    bottom=0pt,
+    right=0pt,
+    breakable
+}
