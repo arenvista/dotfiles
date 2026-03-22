@@ -26,5 +26,7 @@ sleep 1
 
 neofetch --clean
 
+python ~/.config/zathura/templater.py
+
 # Exit the script cleanly
 exit 0

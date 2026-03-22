@@ -1,6 +1,14 @@
 import json
 from pathlib import Path
 
+def hex_to_rgba(hex_str, alpha):
+    """Converts a hex color string to an rgba string."""
+    hex_str = hex_str.lstrip('#')
+    if len(hex_str) == 6:
+        r, g, b = tuple(int(hex_str[i:i+2], 16) for i in (0, 2, 4))
+        return f"rgba({r}, {g}, {b}, {alpha})"
+    return f"#{hex_str}"
+
 def resolve_filepath(path_string):
     """
     Expands the tilde (~) to the user's home directory and 
@@ -29,7 +37,11 @@ def read_json_from_file(filepath):
         print(f"An unexpected error occurred: {e}")
 
 def create_rc(color_tbl):
+    hl_color        = hex_to_rgba(f"{color_tbl["color4"]}", 0.2)
+    hl_color_active = hex_to_rgba(f"{color_tbl["color6"]}", 0.5)
     opts = """
+set synctex-editor-command "nvim --remote-silent +%{line} %{input}"
+set synctex true
 # ==========================================
 # General Settings
 # ==========================================
@@ -75,8 +87,8 @@ set notification-error-bg "{color_tbl["color1"]}"
 set notification-error-fg "{color_tbl["foreground"]}"
 set notification-warning-bg "{color_tbl["color3"]}"
 set notification-warning-fg "{color_tbl["background"]}"
-set highlight-color "{color_tbl["color4"]}"
-set highlight-active-color "{color_tbl["color6"]}"
+set highlight-color "{hl_color}"
+set highlight-active-color "{hl_color_active}"
 set completion-bg "{color_tbl["background"]}"
 set completion-fg "{color_tbl["foreground"]}"
 set completion-highlight-bg "{color_tbl["color4"]}"
