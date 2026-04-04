@@ -2,7 +2,7 @@
 
 % Graphics & Formatting
 \usepackage{tkz-graph} % From your original main.tex
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.50in]{geometry}
 
 % The Subfiles Package (Crucial for this setup)
 \usepackage{subfiles}
@@ -12,10 +12,6 @@
 % ==========================================
 \usepackage{amsmath, amsthm, amssymb, mathrsfs}
 \usepackage{wasysym}
-
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}
-\newtheorem{cor}{Corollary}
 
 % Custom list for Cases
 \usepackage{enumitem}
@@ -73,7 +69,7 @@
 \definecolor{catpurple}{HTML}{8839ef} 
 \definecolor{catgray}{HTML}{5c5f77} 
 
-\newcommand{\ciea}[3][catblue]{
+\newcommand{\cbox}[3]{
     \begin{tcolorbox}[
         colback=white,
         colframe=gray,

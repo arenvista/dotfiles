@@ -1,11 +1,3 @@
-alias install="sudo pacman -S"
-alias update="sudo pacman -Sy"
-
-alias ah="nvim"
-alias ..="cd .."
-alias ls="lsd"
-alias l="ls"
-
 bindkey -s '^s' "tmux-attacher\n"
 bindkey -s '^f' "tmux-sessionizer\n"
 

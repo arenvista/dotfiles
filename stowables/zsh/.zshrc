@@ -3,7 +3,7 @@
 # =============================================================================
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/zsh_custom"
-export EDITOR="nvim"
+export EDITOR="vi"
 
 # Prepend Cargo to PATH
 export PATH="$HOME/.cargo/bin:$PATH"

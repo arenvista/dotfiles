@@ -6,7 +6,7 @@ return {
         "ravitemer/mcphub.nvim", 
         {
             "MeanderingProgrammer/render-markdown.nvim",
-            ft = { "markdown", "codecompanion" }, 
+            ft = { "markdown", "codecompanion" },
         },
     },
     -- 1. Add this keys section
@@ -24,6 +24,10 @@ return {
                             -- Ensure your env var matches what is in your shell (e.g., OPENAI_API_KEY)
                             api_key = "cmd:echo $OPEN_AI_KEY",
                         },
+                        -- Set default model to gpt-5-mini
+                        default_options = {
+                            model = "gpt-5",
+                        },
                     })
                 end,
             },
@@ -33,7 +37,7 @@ return {
                 agent = { adapter = "openai" },
             },
             opts = {
-                log_level = "DEBUG", 
+                log_level = "DEBUG",
             },
         })
     end,
