@@ -65,6 +65,7 @@ wk.add({
   { "<leader>w", "<cmd>w<CR>", desc = "Save", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
+  { "<c-c>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
 })
 
 wk.add{
