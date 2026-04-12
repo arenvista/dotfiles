@@ -127,54 +127,31 @@ return {
 				-- ==========================================
 				-- 1. Navigation (Jumping around the code)
 				-- ==========================================
-				-- (Added) Jump to the declaration (e.g., header file in C)
-				map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
-
-				-- Jump to the definition of the word under your cursor
-				map("n", "gd", function()
-					telescope.lsp_definitions({ reuse_win = true })
-				end, "Goto Definition")
-
-				-- (Added) Find all references to the word under your cursor
-				map("n", "gr", telescope.lsp_references, "Goto References")
-
-				-- (Added) Jump to the implementation of an interface/trait
-				map("n", "gi", telescope.lsp_implementations, "Goto Implementation")
-
-				-- (Added) Jump to the definition of the *type* of the word under your cursor
-				map("n", "gy", telescope.lsp_type_definitions, "Goto Type Definition")
-
 				-- ==========================================
 				-- 2. Code Actions & Refactoring
 				-- ==========================================
 				-- Rename the variable under your cursor across the entire project
-				map("n", "<leader>rn", vim.lsp.buf.rename, "Rename Symbol")
-
-				map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-
+				map("n", "<c-r>n", vim.lsp.buf.rename, "Rename Symbol")
+				map({ "n", "v" }, "<c-r>a", vim.lsp.buf.code_action, "Code Action")
 				-- ==========================================
 				-- 3. Documentation & Information
 				-- ==========================================
 				-- Show documentation for the word under your cursor
 				map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
-
 				-- (Added) Show function signature (parameters) while typing in Insert mode
 				map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
 				local function switch_source_header()
 					local bufnr = vim.api.nvim_get_current_buf()
 					local params = { uri = vim.uri_from_bufnr(bufnr) }
-
 					vim.lsp.buf_request(bufnr, "textDocument/switchSourceHeader", params, function(err, result)
 						if err then
 							vim.notify("Error switching source/header: " .. tostring(err.message), vim.log.levels.ERROR)
 							return
 						end
-
 						if not result then
 							vim.notify("Corresponding source/header file not found", vim.log.levels.WARN)
 							return
 						end
-
 						-- Open the returned file
 						vim.cmd("edit " .. vim.uri_to_fname(result))
 					end)
@@ -185,7 +162,7 @@ return {
 				if client.name == "clangd" then
 					vim.keymap.set(
 						"n",
-						"gs",
+						"<-r>s",
 						switch_source_header, -- Call the Lua function directly instead of <cmd>
 						{ buffer = ev.buf, desc = "Switch Source/Header" }
 					)

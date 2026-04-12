@@ -64,6 +64,7 @@ return {
     s({ trig = "_set", snippetType = "autosnippet" }, t("\\subset"), { condition = in_mathzone }),
     s({ trig = "=set", snippetType = "autosnippet" }, t("\\subseteq"), { condition = in_mathzone }),
     s({ trig = "in", snippetType = "autosnippet" }, t("\\in "), { condition = in_mathzone }),
+    s({ trig = "nin", snippetType = "autosnippet" }, t("\\not\\in "), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 2. LOGIC & RELATIONS
@@ -73,8 +74,8 @@ return {
     s({ trig = "!!", snippetType = "autosnippet" }, t("\\neg "), { condition = in_mathzone }),
 
     s({ trig = "imp", snippetType = "autosnippet" }, t("\\implies "), { condition = in_mathzone }),
-    s({ trig = "x->", snippetType = "autosnippet", wordTrig = false }, t("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
-    s({ trig = "x<-", snippetType = "autosnippet", wordTrig = false }, t("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s({ trig = "x->", snippetType = "autosnippet", wordTrig = false }, fmta("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s({ trig = "x<-", snippetType = "autosnippet", wordTrig = false }, fmta("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
     s({ trig = "->", snippetType = "autosnippet", wordTrig = false }, t("\\rightarrow "), { condition = in_mathzone }),
     s({ trig = "<-", snippetType = "autosnippet", wordTrig = false }, t("\\leftarrow "), { condition = in_mathzone }),
     s({ trig = "<->", snippetType = "autosnippet" }, t("\\iff "), { condition = in_mathzone }),
@@ -88,7 +89,8 @@ return {
     s({ trig = "==", snippetType = "autosnippet" }, t("\\equiv "), { condition = in_mathzone }),
     s({ trig = "-=", snippetType = "autosnippet" }, t("\\neq "), { condition = in_mathzone }),
     s({ trig = "~=", snippetType = "autosnippet" }, t("\\approx "), { condition = in_mathzone }),
-    s({ trig = "contra", snippetType = "autosnippet" }, { t("\\lightning") }),
+    s({ trig = "<->", snippetType = "autosnippet" }, { t("\\lightning") }),
+    s({ trig = "_qed", snippetType = "autosnippet" }, { t("$\\blacksquare$") }),
 
     -- ==========================================================
     -- DOTS 
@@ -270,25 +272,22 @@ return {
     s({ trig = ";l", snippetType = "autosnippet", wordTrig=false  }, t("\\lambda"), { condition = in_mathzone }),
     s({ trig = ";L", snippetType = "autosnippet", wordTrig=false  }, t("\\Lambda"), { condition = in_mathzone }),
     s({ trig = ";s", snippetType = "autosnippet", wordTrig=false  }, t("\\sigma"), { condition = in_mathzone }),
+    s({ trig = ";s", snippetType = "autosnippet", wordTrig=false  }, t("\\Sigma"), { condition = in_mathzone }),
     s({ trig = ";p", snippetType = "autosnippet", wordTrig=false  }, t("\\phi"), { condition = in_mathzone }),
     s({ trig = ";o", snippetType = "autosnippet", wordTrig=false  }, t("\\omega"), { condition = in_mathzone }),
     s({ trig = ";O", snippetType = "autosnippet", wordTrig=false  }, t("\\Omega"), { condition = in_mathzone }),
     s({ trig = ";x", snippetType = "autosnippet", wordTrig=false  }, t("\\xi"), { condition = in_mathzone }),
     s({ trig = ";e", snippetType = "autosnippet", wordTrig=false  }, t("\\epsilon"), { condition = in_mathzone }),
-    s({ trig = ";ve", snippetType = "autosnippet" }, t("\\varepsilon"), { condition = in_mathzone }),
+    s({ trig = ";m", snippetType = "autosnippet", wordTrig=false  }, t("\\mu"), { condition = in_mathzone }),
 
     -- ==========================================================
     -- colors
     -- ==========================================================
-    s({ trig = "color", snippetType = "snippet" },
-        fmta("{\\color{{red} <>}}", { i(1)}),
-        { condition = in_mathzone }),
-
     s({ trig = "gathered", snippetType = "snippet" },
         fmta(
-            [[
+        [[
         \begin{gathered}
-            <>
+        <>
         \end{gathered}
         ]],
             { i(1) }
@@ -298,7 +297,7 @@ return {
         fmta(
             [[
             \underbrace{<>}_{<>}
-        ]],
+            ]],
             { i(1), i(2) }
         )
     ),
