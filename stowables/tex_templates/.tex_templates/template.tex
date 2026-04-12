@@ -1,17 +1,19 @@
-\documentclass[11pt, letterpaper]{article}
-
-% Graphics & Formatting
-\usepackage{tkz-graph} % From your original main.tex
-\usepackage[margin=1in]{geometry}
-
-% The Subfiles Package (Crucial for this setup)
-\usepackage{subfiles}
+\documentclass[8pt, letterpaper]{article}
 
 % ==========================================
-% 1. MATH PACKAGES & THEOREMS
+% 1. CORE & PAGE GEOMETRY
 % ==========================================
-\usepackage{amsmath, amsthm, amssymb, mathrsfs}
-\usepackage{wasysym}
+% Load xcolor first to prevent option clashes with other graphical packages
+\usepackage[svgnames, table]{xcolor} 
+
+% Consolidated duplicate geometry calls into a single 1-inch declaration
+\usepackage[margin=1in]{geometry} 
+\usepackage{subfiles} % Crucial for multi-file setups
+
+% ==========================================
+% 2. MATH PACKAGES & THEOREMS
+% ==========================================
+\usepackage{amsmath, amsthm, amssymb, mathrsfs, wasysym}
 
 
 \theoremstyle{plain}
@@ -31,41 +33,32 @@
 % Math Macros
 \newcommand{\ds}{\displaystyle}
 \newcommand{\sU}{\mathscr{U}}
+\newcommand{\qq}{\hfill $\blacksquare$} % Moved here for relevance
 
 % ==========================================
-% 2. LAYOUT & FORMATTING
+% 3. LAYOUT, TEXT FORMATTING & TABLES
 % ==========================================
-% Set standard 1-inch margins (Replaces manual \topmargin, \textwidth, etc.)
-\usepackage[margin=1in]{geometry} 
 \usepackage{parskip}   % Removes paragraph indent, adds space between paragraphs
 \usepackage{multicol}  % For multiple columns
 \usepackage{sectsty}   % For styling section headers
 \usepackage{soul}      % For underlining/highlighting
-\usepackage{hyperref}  % For clickable links
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue
-}
-
-% ==========================================
-% 3. GRAPHICS, TABLES & COLORS
-% ==========================================
-% Load xcolor ONCE with necessary options for tables and named colors
-\usepackage[svgnames, table]{xcolor} 
-\usepackage{graphicx}
-\usepackage{tikz}
 
 % Table packages
 \usepackage{booktabs, multirow}
 \usepackage{changepage, threeparttable}
 
 % ==========================================
-% 4. CUSTOM BOXES (tcolorbox)
+% 4. GRAPHICS & VISUALS
 % ==========================================
-\usepackage{tcolorbox}
-\tcbuselibrary{breakable}
-\tcbuselibrary{skins}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tkz-graph} 
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % Prevents compilation warnings related to pgfplots versions
+
+% ==========================================
+% 5. CUSTOM COLORS (Catppuccin Palette)
+% ==========================================
 \definecolor{catblue}{HTML}{1E66F5}
 \definecolor{catgreen}{HTML}{40A02B}
 \definecolor{catred}{HTML}{d20f39} 
@@ -74,11 +67,21 @@
 \definecolor{catpurple}{HTML}{8839ef} 
 \definecolor{catgray}{HTML}{5c5f77} 
 
+<<<<<<< Updated upstream
 \newcommand{\pop}[1]{
     {\color{red}\mathbf{{#1}}}
 }
 
 
+=======
+% ==========================================
+% 6. CUSTOM BOXES (tcolorbox)
+% ==========================================
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+
+% Base Custom Box
+>>>>>>> Stashed changes
 \newcommand{\cbox}[3]{
     \begin{tcolorbox}[
         colback=white,
@@ -87,39 +90,16 @@
         arc=5pt,
         top=10pt,
         bottom=10pt,
-        % halign=center,
+        breakable, % Allows the box to break smoothly across pages
     ]
-    \textcolor{#1}{#2} #3
-    \end{tcolorbox}
-}
-% Question Box
-\newcommand{\question}[2]{
-    \begin{tcolorbox}[
-        colback=white,
-        colframe=gray,
-        boxrule=0.5pt,
-        arc=5pt,
-        top=10pt,
-        bottom=10pt,
-        % halign=center,
-    ]
-    \textcolor{catblue}{#1} #2
+    \textcolor{#1}{\textbf{#2}} #3
     \end{tcolorbox}
 }
 
-\newcommand{\corr}[2]{
-    \begin{tcolorbox}[
-        colback=white,
-        colframe=gray,
-        boxrule=0.5pt,
-        arc=5pt,
-        top=10pt,
-        bottom=10pt,
-        % halign=center,
-    ]
-    \textcolor{catgreen}{#1} #2
-    \end{tcolorbox}
-}
+% Derived custom boxes (Utilizing DRY principle: Don't Repeat Yourself)
+\newcommand{\question}[2]{\cbox{catblue}{#1}{#2}}
+\newcommand{\corr}[2]{\cbox{catgreen}{#1}{#2}}
+
 % Blockquote Box
 \newtcolorbox{blockquote}{
     colback=white,
@@ -133,4 +113,14 @@
     bottom=0pt,
     right=0pt,
     breakable
+}
+
+% ==========================================
+% 7. HYPERLINKS (Must be loaded last)
+% ==========================================
+\usepackage{hyperref}  
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
 }
