@@ -104,7 +104,7 @@ return {
     -- ==========================================================
     -- 3. BASIC OPERATORS
     -- ==========================================================
-    s({ trig = "*", snippetType = "autosnippet" }, t("\\cdot "), { condition = in_mathzone }),
+    s({ trig = " *", snippetType = "autosnippet" }, t("\\cdot "), { condition = in_mathzone }),
     s({ trig = "xx", snippetType = "autosnippet" }, t("\\times "), { condition = in_mathzone }),
     s({ trig = "_inf", snippetType = "autosnippet" }, t("\\infty"), { condition = in_mathzone }),
     s({ trig = ".p", snippetType = "autosnippet" }, t("\\perp"), { condition = in_mathzone }),
