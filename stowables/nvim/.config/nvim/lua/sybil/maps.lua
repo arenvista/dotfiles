@@ -52,20 +52,21 @@ wk.add({
       vim.cmd("normal! gg=G")
       vim.fn.winrestview(view)
   end, desc = "Format entire buffer with =", mode = "n" },
+{ "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer", },
 
   -- Clipboard & Registers
-{ "<leader>y", [["+y]], desc = "Yank to system clipboard", mode = { "n", "v" }, icon = "" },
-{ "<leader>Y", [["+Y]], desc = "Yank line to system clipboard", mode = "n", icon = "" },
+{ "<leader>y", [["+y]], desc = "which_key_ignore", mode = { "n", "v" }, icon = "" },
+{ "<leader>Y", [["+Y]], desc = "which_key_ignore", mode = "n", icon = "" },
 
-{ "<leader>p", [["_dP]], desc = "Paste (keep register)", mode = "x", icon = "" },
-{ "<leader>p", [["+p]], desc = "Paste from system clipboard", mode = "n", icon = "" },
-{ "<leader>P", [["+P]], desc = "Paste from system clipboard (before)", mode = { "n", "v" }, icon = "" },
+{ "<leader>p", [["_dP]], desc = "which_key_ignore", mode = "x", icon = "" },
+{ "<leader>p", [["+p]], desc = "which_key_ignore", mode = "n", icon = "" },
+{ "<leader>P", [["+P]], desc = "which_key_ignore", mode = { "n", "v" }, icon = ""},
 
   -- Save, Quit & Suspend
-  { "<leader>w", "<cmd>w<CR>", desc = "Save", mode = "n" , icon=" "},
+  { "<leader>w", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
-  { "<c-c>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
+  { "<c-x>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
 })
 
 wk.add{
@@ -77,35 +78,34 @@ wk.add{
 
 wk.add{
 -- Top Pickers & Explorer (Find)
-{ "<leader>ff", function() Snacks.picker.smart() end, desc = "Find Files", icon=" "},
-{ "<leader>fg", function() Snacks.picker.grep() end, desc = "Find Grep", icon=" "},
-{ "<leader>:", function() Snacks.picker.command_history() end, desc = "Find Command History", icon=" "},
-{ "<leader>fx", function() Snacks.explorer() end, desc = "File Explorer", icon=" "},
-{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffers", icon=" "},
-{ "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File", icon=" "},
-{ "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files", icon=" "},
-{ "<leader>fp", function() Snacks.picker.projects() end, desc = "Find Projects", icon=" "},
-{ "<leader>fr", function() Snacks.picker.recent() end, desc = "Find Recent", icon=" "},
-{ "<leader>fb", function() Snacks.picker.lines() end, desc = "Find Buffer Lines", icon=" "},
-{ "<leader>fB", function() Snacks.picker.grep_buffers() end, desc = "Find in Open Buffers", icon=" "},
-{ "<leader>fN", function() Snacks.picker.notifications() end, desc = "Find Notification History",icon=" " },
-{ "<leader>fs", function() Snacks.picker.grep() end, desc = "Find Grep", icon=" "},
-{ "<leader>fw", function() Snacks.picker.grep_word() end, desc = "Find Visual selection or word", mode = { "n", "x" }, icon=" "},
+{ "<leader>fS", function() Snacks.scratch.select() end, desc = "Find Scratch Buffer", icon="󱈄 " },
+{ "<leader>ff", function() Snacks.picker.smart() end, desc = "Find Files", icon="󰱼 "},
+{ "<leader>f:", function() Snacks.picker.command_history() end, desc = "Find Command History", icon="󰺅 "},
+{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffers", icon="󱦞 "},
+{ "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File", icon="󰩊 "},
+{ "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files", icon="󰱂 "},
+{ "<leader>fp", function() Snacks.picker.projects() end, desc = "Find Projects", icon="󰡦 "},
+{ "<leader>fr", function() Snacks.picker.recent() end, desc = "Find Recent", icon="󰹓 "},
+{ "<leader>fb", function() Snacks.picker.lines() end, desc = "Find Buffer Lines", icon="󰺯 "},
+{ "<leader>fB", function() Snacks.picker.grep_buffers() end, desc = "Find in Open Buffers", icon="󱈅 "},
+{ "<leader>fN", function() Snacks.picker.notifications() end, desc = "Find Notification History",icon=" " },
+{ "<leader>fg", function() Snacks.picker.grep() end, desc = "Find Grep", icon="󱎸 "},
+{ "<leader>fw", function() Snacks.picker.grep_word() end, desc = "Find Visual selection or word", mode = { "n", "x" }, icon="󱎸 "},
 -- Git
-{ "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches", icon="󰊤 "},
+{ "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches", icon=" "},
 { "<leader>gf", vim.cmd.Git, desc = " Fugitive", mode = "n", icon="󰊤 " },
-{ "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log", icon="󰊤 "},
-{ "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line", icon="󰊤 "},
-{ "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status", icon="󰊤 "},
-{ "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash", icon="󰊤 "},
-{ "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)", icon="󰊤 "},
-{ "<leader>gF", function() Snacks.picker.git_log_file() end, desc = "Git Log File", icon="󰊤 "},
-{ "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)", icon="󰊤 "},
-{ "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)", icon="󰊤 "},
+{ "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log", icon=" "},
+{ "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line", icon=" "},
+{ "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status", icon="󱖫 "},
+{ "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash", icon=" "},
+{ "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)", icon="󰕚 "},
+{ "<leader>gF", function() Snacks.picker.git_log_file() end, desc = "Git Log File", icon="󰮗 "},
+{ "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)", icon=" "},
+{ "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)", icon=" "},
 { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)", icon="󰊤 "},
-{ "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)", icon="󰊤 "},
+{ "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)", icon=" "},
 { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit", icon="󰊤 "},
-{ "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" }, icon="󰊤 "},
+{ "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" }, icon="󰊢 "},
 
 -- Search
 { '<leader>s"', function() Snacks.picker.registers() end, desc = "Search Registers", icon=" "},
@@ -141,8 +141,6 @@ wk.add{
 { "<leader>lS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols", },
 
 -- Other
-{ "<leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer", },
-{ "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer", },
 -- { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", },
 { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", },
 { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" }, },
@@ -203,16 +201,16 @@ vim.api.nvim_create_autocmd("User", {
 
 -- Window Management Group
 wk.add{
-{ "<leader>b", group = "Windows", icon = " " },
-{ "<leader>bh", "<C-w>h", desc = "Move Left", icon = " "},
-{ "<leader>bj", "<C-w>j", desc = "Move Down", icon = " "},
-{ "<leader>bk", "<C-w>k", desc = "Move Up", icon = " "},
-{ "<leader>bl", "<C-w>l", desc = "Move Right", icon = " "},
-{ "<leader>bv", "<C-w>v", desc = "Split Vertical", icon = " "},
-{ "<leader>bs", "<C-w>s", desc = "Split Horizontal", icon = " "},
-{ "<leader>bc", "<C-w>c", desc = "Close Window", icon = " "},
-{ "<leader>bo", "<C-w>o", desc = "Close Others", icon = " "},
-{ "<leader>b=", "<C-w>=", desc = "Equalize Size", icon = " "},
+{ "<leader>r", group = "Windows", icon = " " },
+{ "<leader>rh", "<C-w>h", desc = "Move Left", icon = "⟵"},
+{ "<leader>rj", "<C-w>j", desc = "Move Down", icon = "↓"},
+{ "<leader>rk", "<C-w>k", desc = "Move Up", icon = "↑"},
+{ "<leader>rl", "<C-w>l", desc = "Move Right", icon = "⟶"},
+{ "<leader>rv", "<C-w>v", desc = "Split Vertical", icon = "󰤼 "},
+{ "<leader>rs", "<C-w>s", desc = "Split Horizontal", icon = "󰤻 "},
+{ "<leader>rc", "<C-w>c", desc = "Close Window", icon = "󰅗"},
+{ "<leader>ro", "<C-w>o", desc = "Close Others", icon = "󰅘"},
+{ "<leader>r=", "<C-w>=", desc = "Equalize Size", icon = "="},
 }
 
 vim.keymap.set("n", "<a-h>", "<C-w>>", { desc = "Move Window Left" })
