@@ -22,7 +22,7 @@ return {
                     return require("codecompanion.adapters").extend("openai", {
                         env = {
                             -- Ensure your env var matches what is in your shell (e.g., OPENAI_API_KEY)
-                            api_key = "cmd:echo $OPEN_AI_KEY",
+                            api_key = "cmd:echo $OPENAI_API_KEY",
                         },
                     })
                 end,

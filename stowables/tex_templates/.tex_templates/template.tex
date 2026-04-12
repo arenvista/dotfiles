@@ -13,6 +13,7 @@
 \usepackage{amsmath, amsthm, amssymb, mathrsfs}
 \usepackage{wasysym}
 
+
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{cor}{Corollary}
@@ -73,7 +74,12 @@
 \definecolor{catpurple}{HTML}{8839ef} 
 \definecolor{catgray}{HTML}{5c5f77} 
 
-\newcommand{\ciea}[3][catblue]{
+\newcommand{\pop}[1]{
+    {\color{red}\mathbf{{#1}}}
+}
+
+
+\newcommand{\cbox}[3]{
     \begin{tcolorbox}[
         colback=white,
         colframe=gray,
