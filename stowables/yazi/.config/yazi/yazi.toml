@@ -7,11 +7,18 @@ zathura = [
 nvim = [
     { run = 'nvim "$@"', block = true, desc = "Edit", for = "unix" },
 ]
+nsxiv = [
+    # Added nsxiv for images. 'orphan = true' keeps it running if you close/navigate yazi
+    { run = 'nsxiv "$@"', orphan = true, desc = "Open with nsxiv", for = "unix" },
+]
 
 # 2. Set the Rules
 [open]
 # Use 'prepend_rules' to ADD to defaults instead of 'rules' which overwrites them
 prepend_rules = [
+    # Image Rules: Match by mime-type
+    { mime = "image/*", use = "nsxiv" },
+
     # PDF Rules: Match by extension (case-insensitive) OR mime-type
     { name = "*.pdf", use = "zathura" },
     { name = "*.PDF", use = "zathura" },

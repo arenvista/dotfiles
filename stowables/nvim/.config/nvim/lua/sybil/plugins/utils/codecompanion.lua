@@ -3,32 +3,37 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
-        "ravitemer/mcphub.nvim", 
-        -- {
-        --     "MeanderingProgrammer/render-markdown.nvim",
-        --     ft = { "markdown", "codecompanion" },
-        -- },
+        "ravitemer/mcphub.nvim",
     },
-    -- 1. Add this keys section
     config = function()
         require("codecompanion").setup({
             adapters = {
                 openai = function()
                     return require("codecompanion.adapters").extend("openai", {
+                        schema = {
+                            model = {
+                                default = "gpt-5",
+                            },
+                            reasoning_effort = {
+                                default = "high",
+                            },
+                            verbosity = {
+                                default = "high",
+                            },
+                        },
                         env = {
-                            -- Ensure your env var matches what is in your shell (e.g., OPENAI_API_KEY)
                             api_key = "cmd:echo $OPENAI_API_KEY",
                         },
                     })
                 end,
             },
             strategies = {
-                chat = { adapter = "openai" },
+                chat   = { adapter = "openai" },
                 inline = { adapter = "openai" },
-                agent = { adapter = "openai" },
+                agent  = { adapter = "openai" },
             },
             opts = {
-                log_level = "DEBUG", 
+                log_level = "DEBUG",
             },
         })
     end,
