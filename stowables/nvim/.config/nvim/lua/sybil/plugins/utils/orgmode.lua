@@ -1,6 +1,5 @@
 return {
 	"nvim-orgmode/orgmode",
-
 	dependencies = {
 		"hamidi-dev/org-super-agenda.nvim",
 		"nvim-telescope/telescope.nvim",

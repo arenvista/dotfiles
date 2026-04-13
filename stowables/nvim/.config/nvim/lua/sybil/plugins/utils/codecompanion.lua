@@ -1,5 +1,7 @@
 return {
     "olimorris/codecompanion.nvim",
+    cmd = { "CodeCompanion", "CodeCompanionChat" },
+    event = "VeryLazy", -- Or loads in the background after startup
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",

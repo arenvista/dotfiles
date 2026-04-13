@@ -1,6 +1,7 @@
 return {
     'stevearc/aerial.nvim',
     opts = {},
+    cmd = { "AerialToggle", "AerialOpen" },
     -- Optional dependencies
     dependencies = {
         "nvim-treesitter/nvim-treesitter",

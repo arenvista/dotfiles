@@ -1,5 +1,6 @@
 return {
 	"L3MON4D3/LuaSnip",
+    event = "InsertEnter", -- Only loads when you start typing
 	-- follow latest release.
 	-- install jsregexp (optional!).
 	build = "make install_jsregexp",
