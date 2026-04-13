@@ -56,13 +56,14 @@ wk.add({
 { "<leader>y", [["+y]], desc = "which_key_ignore", mode = { "n", "v" }, icon = "" },
 { "<leader>Y", [["+Y]], desc = "which_key_ignore", mode = "n", icon = "" },
 
-{ "<leader>p", [["_dP]], desc = "Paste (keep register)", mode = "x", icon = "" },
-{ "<leader>p", [["+p]], desc = "Paste from system clipboard", mode = {"n", "v"}, icon = "" },
-{ "<leader>P", [["+P]], desc = "Paste from system clipboard (before)", mode = { "n", "v" }, icon = "" },
+{ "<leader>p", [["_dP]], desc = "which_key_ignore", mode = "x", icon = "" },
+{ "<leader>p", [["+p]], desc = "which_key_ignore", mode = {"n", "v"}, icon = "" },
+{ "<leader>P", [["+P]], desc = "which_key_ignore", mode = { "n", "v" }, icon = "" },
 
   -- Save, Quit & Suspend
-  { "<leader>w", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
+  { "<c-s>", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
+  { "<leader>qax", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
   { "<leader>qo", "<C-w>o", desc = "Close Others", icon = "󰈆 "},
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
   { "<c-x>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
@@ -157,7 +158,7 @@ wk.add{
     { "<leader>uZ", function() Snacks.zen.zoom() end, desc = "Toggle Zoom", },
     { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", },
     { "<leader>u.", function() Snacks.scratch() end, desc = "Toggle Scratch Buffer", },
-    { "<leader>uC", function() Snacks.picker.colorschemfs() end, desc = "Colorschemes", },
+    { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes", },
 }
 
 vim.api.nvim_create_autocmd("User", {
@@ -211,6 +212,7 @@ wk.add{
 { "<leader>rc", "<C-w>c", desc = "Close Window", icon = "󰅗"},
 { "<leader>ro", "<C-w>o", desc = "Close Others", icon = "󰅘"},
 { "<leader>r=", "<C-w>=", desc = "Equalize Size", icon = "="},
+{ "<leader>rm", "<C-w>_", desc = "Maximize", icon = ""},
 }
 
 vim.keymap.set("n", "<a-h>", "<C-w>><C-w>>", { desc = "Move Window Left Twice" })
@@ -225,3 +227,18 @@ wk.add({
     { "<leader>ai", ":'<,'>CodeCompanion<cr>",            mode = { "n", "v" }, desc = "AI Inline Prompt" },
 })
 
+
+-- Arrow Binds for Buffer Navigation
+vim.keymap.set("n", "H", require("arrow.persist").previous, { desc = "Go to previous Arrow mark" })
+vim.keymap.set("n", "L", require("arrow.persist").next, { desc = "Go to next Arrow mark" })
+vim.keymap.set("n", "<c-s>", require("arrow.persist").toggle, { desc = "Toggle Arrow mark at cursor" })
+vim.keymap.set("n", "<A-1>", function() require("arrow.persist").go_to(1) end, { desc = "Jump to Arrow 1" })
+vim.keymap.set("n", "<A-2>", function() require("arrow.persist").go_to(2) end, { desc = "Jump to Arrow 2" })
+vim.keymap.set("n", "<A-3>", function() require("arrow.persist").go_to(3) end, { desc = "Jump to Arrow 3" })
+vim.keymap.set("n", "<A-4>", function() require("arrow.persist").go_to(4) end, { desc = "Jump to Arrow 4"})
+vim.keymap.set("n", "<A-5>", function() require("arrow.persist").go_to(5) end, { desc = "Jump to Arrow 5"})
+vim.keymap.set("n", "<A-6>", function() require("arrow.persist").go_to(6) end, { desc = "Jump to Arrow 6"})
+vim.keymap.set("n", "<A-7>", function() require("arrow.persist").go_to(7) end, { desc = "Jump to Arrow 7"})
+vim.keymap.set("n", "<A-8>", function() require("arrow.persist").go_to(8) end, { desc = "Jump to Arrow 8"})
+vim.keymap.set("n", "<A-9>", function() require("arrow.persist").go_to(9) end, { desc = "Jump to Arrow 9"})
+vim.keymap.set("n", "<A-0>", function() require("arrow.persist").go_to(0) end, { desc = "Jump to Arrow 10"})

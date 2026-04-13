@@ -10,6 +10,7 @@ return {
 		-- 'Saghen/blink.cmp'
 	},
 	event = "VeryLazy",
+    ft = "org",
 	config = function()
 		require("orgmode").setup({
 			-- See => https://github.com/nvim-orgmode/orgmode/blob/master/docs/configuration.org
