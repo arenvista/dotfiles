@@ -4,7 +4,7 @@ mkdir -p "$HOME/.cache/wallpaper-thumbs"
 cd "$HOME/.cache/wallpaper-thumbs" || exit 1
 
 if command -v vipsthumbnail >/dev/null 2>&1; then
-    SRC="$HOME/wallpapers"
+    SRC="$HOME/wallpapers/favorites"
 else
     SRC="/home/sybil/dotfiles/stowables/wallpapers/wallpapers/favorites"
 fi
@@ -15,6 +15,7 @@ find "$SRC" -maxdepth 1 -type f \
 while IFS= read -r f; do
     hash=$(printf '%s' "$f" | md5sum | cut -d' ' -f1)
     thumb="$HOME/.cache/wallpaper-thumbs/${hash}.jpg"
+    echo "Processing $f"
 
     if [ ! -f "$thumb" ] || [ "$f" -nt "$thumb" ]; then
         case "$f" in

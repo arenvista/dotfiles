@@ -43,8 +43,6 @@ wk.add({
 
 -- 2. Define the Keymaps
 wk.add({
-  -- Plugins & External Tools
-
 
   -- Text Movement & Formatting
   { "<leader>bf", function()
@@ -58,19 +56,20 @@ wk.add({
 { "<leader>y", [["+y]], desc = "which_key_ignore", mode = { "n", "v" }, icon = "" },
 { "<leader>Y", [["+Y]], desc = "which_key_ignore", mode = "n", icon = "" },
 
-{ "<leader>p", [["_dP]], desc = "which_key_ignore", mode = "x", icon = "" },
-{ "<leader>p", [["+p]], desc = "which_key_ignore", mode = "n", icon = "" },
-{ "<leader>P", [["+P]], desc = "which_key_ignore", mode = { "n", "v" }, icon = ""},
+{ "<leader>p", [["_dP]], desc = "Paste (keep register)", mode = "x", icon = "" },
+{ "<leader>p", [["+p]], desc = "Paste from system clipboard", mode = {"n", "v"}, icon = "" },
+{ "<leader>P", [["+P]], desc = "Paste from system clipboard (before)", mode = { "n", "v" }, icon = "" },
 
   -- Save, Quit & Suspend
   { "<leader>w", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
+  { "<leader>qo", "<C-w>o", desc = "Close Others", icon = "󰈆 "},
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
   { "<c-x>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
 })
 
 wk.add{
-    -- Explorer
+  -- Explorer
   { "<leader>ee", vim.cmd.Neotree, desc = " Neotree", mode = "n" },
   {"<leader>ea", "<cmd>AerialToggle!<CR>", desc = "Aerial", mode="n"},
   { "<leader>eo", function() require("oil").open() end, desc = "󰼙 Oil & Vinegar", },
@@ -154,12 +153,13 @@ wk.add{
     -- Toggles
 
 wk.add{
-{ "<leader>uz", function() Snacks.zen() end, desc = "Toggle Zen Mode", },
-{ "<leader>uZ", function() Snacks.zen.zoom() end, desc = "Toggle Zoom", },
-{ "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", },
-{ "<leader>u.", function() Snacks.scratch() end, desc = "Toggle Scratch Buffer", },
-{ "<leader>uC", function() Snacks.picker.colorschemfs() end, desc = "Colorschemes", },
+    { "<leader>uz", function() Snacks.zen() end, desc = "Toggle Zen Mode", },
+    { "<leader>uZ", function() Snacks.zen.zoom() end, desc = "Toggle Zoom", },
+    { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", },
+    { "<leader>u.", function() Snacks.scratch() end, desc = "Toggle Scratch Buffer", },
+    { "<leader>uC", function() Snacks.picker.colorschemfs() end, desc = "Colorschemes", },
 }
+
 vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()
@@ -213,15 +213,15 @@ wk.add{
 { "<leader>r=", "<C-w>=", desc = "Equalize Size", icon = "="},
 }
 
-vim.keymap.set("n", "<a-h>", "<C-w>>", { desc = "Move Window Left" })
-vim.keymap.set("n", "<a-l>", "<C-w><", { desc = "Move Window Right" })
-vim.keymap.set("n", "<a-k>", "<C-w>+", { desc = "Move Window Upper" })
-vim.keymap.set("n", "<a-j>", "<C-w>-", { desc = "Move Window Down" })
+vim.keymap.set("n", "<a-h>", "<C-w>><C-w>>", { desc = "Move Window Left Twice" })
+vim.keymap.set("n", "<a-l>", "<C-w><<C-w><", { desc = "Move Window Right Twice" })
+vim.keymap.set("n", "<a-k>", "<C-w>+<C-w>+", { desc = "Move Window Upper Twice" })
+vim.keymap.set("n", "<a-j>", "<C-w>-<C-w>-", { desc = "Move Window Down Twice" })
 
 
-wk.add{
-{ "<leader>aa", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, desc = "AI Actions Palette" },
-{ "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "AI Toggle Chat" },
-{ "<leader>ai", "<cmd>CodeCompanion<cr>", mode = { "n", "v" }, desc = "AI Inline Prompt" },
-}
+wk.add({
+    { "<leader>aa", ":'<,'>CodeCompanionActions<cr>",     mode = { "n", "v" }, desc = "AI Actions Palette" },
+    { "<leader>ac", ":'<,'>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "AI Toggle Chat" },
+    { "<leader>ai", ":'<,'>CodeCompanion<cr>",            mode = { "n", "v" }, desc = "AI Inline Prompt" },
+})
 
