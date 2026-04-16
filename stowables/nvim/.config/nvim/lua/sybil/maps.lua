@@ -11,8 +11,8 @@ vim.g.localleader = "\\"
 -- Standard Keymaps (Non-Leader)
 -- ==========================================
 -- It is best practice to keep standard immediate actions as normal keymaps
-keymap.set("n", "<leader><C-f>f", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-keymap.set("n", "<leader><C-f>s", "<cmd>silent !tmux neww tmux-attacher<CR>")
+keymap.set("n", "<C-f>f", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+keymap.set("n", "<C-f>s", "<cmd>silent !tmux neww tmux-attacher<CR>")
 
 keymap.set({ "n", "i", "v" }, "<C-c>", "<Esc>", { desc = "Rebind ESC to CTRL+C" })
 keymap.set({ "n", "i", "v" }, "<Del>", "<Esc>")
@@ -41,9 +41,9 @@ wk.add({
   { "<leader>a", group = "AI", icon="  " },
 })
 
+_G.Snacks = Snacks  -- Snacks are defined in Snacks.lua; Loaded before this file.
 -- 2. Define the Keymaps
 wk.add({
-
   -- Text Movement & Formatting
   { "<leader>bf", function()
       local view = vim.fn.winsaveview()
@@ -62,8 +62,9 @@ wk.add({
 
   -- Save, Quit & Suspend
   { "<c-s>", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
+  { "<leader>w", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
-  { "<leader>qax", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
+  { "<leader>qx", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
   { "<leader>qo", "<C-w>o", desc = "Close Others", icon = "󰈆 "},
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
   { "<c-x>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
@@ -212,7 +213,7 @@ wk.add{
 { "<leader>rc", "<C-w>c", desc = "Close Window", icon = "󰅗"},
 { "<leader>ro", "<C-w>o", desc = "Close Others", icon = "󰅘"},
 { "<leader>r=", "<C-w>=", desc = "Equalize Size", icon = "="},
-{ "<leader>rm", "<C-w>_", desc = "Maximize", icon = ""},
+{ "<leader>rm", "<cmd>MaximizerToggle<CR>", desc = "Toggle Focus", icon = ""},
 }
 
 vim.keymap.set("n", "<a-h>", "<C-w>><C-w>>", { desc = "Move Window Left Twice" })
