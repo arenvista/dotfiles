@@ -63,6 +63,14 @@ return {
             { "<leader>os", "<cmd>ObsidianAliases<cr>", desc = "Search by Aliases", mode = "n" },
         })
 
+-- -- Corrected keybind for Linux
+-- vim.keymap.set("n", "<leader>oo", function()
+--     local file = vim.fn.expand("%:p")
+--     local uri = "obsidian://open?path=" .. vim.fn.fnamemodify(file, ":p")
+--     -- Changed "open" to "xdg-open" right here:
+--     vim.fn.jobstart({"xdg-open", uri}) 
+-- end, { desc = "Open current file in Obsidian" })
+
         ------------------------------------------------------------------
         -- Cmdline completion for :Obsidian subcommands
         ------------------------------------------------------------------

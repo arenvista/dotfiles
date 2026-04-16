@@ -1,73 +1,84 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	event = { "BufReadPre", "BufNewFile", "VeryLazy" },
-	build = ":TSUpdate",
-	dependencies = {
-		-- "windwp/nvim-ts-autotag",
-	},
-	config = function()
-		-- import nvim-treesitter plugin
-		local treesitter = require("nvim-treesitter.configs")
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    build = function()
+        local TS = require("nvim-treesitter")
+        if not TS.get_installed then
+            error("Please restart Neovim and run `:TSUpdate` to use the `nvim-treesitter` **main** branch.")
+            return
+        end
+    end,
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
+    opts = {
+        ensure_installed = {
+            "bash",
+            "c",
+            "diff",
+            "html",
+            "javascript",
+            "jsdoc",
+            "json",
+            "lua",
+            "luadoc",
+            "luap",
+            "markdown",
+            "markdown_inline",
+            "printf",
+            "python",
+            "query",
+            "regex",
+            "toml",
+            "tsx",
+            "typescript",
+            "vim",
+            "vimdoc",
+            "xml",
+            "yaml",
+        },
+    },
+    config = function(_, opts)
+        local TS = require("nvim-treesitter")
 
-		-- Autotag setup (kept as you had it, though latex doesn't use tags anyway)
-		require("nvim-ts-autotag").setup({
-			opts = {
-				enable_close = false,
-				enable_rename = false,
-				enable_close_on_slash = false,
-			},
-		})
+        setmetatable(require("nvim-treesitter.install"), {
+            __newindex = function(_, k)
+                if k == "compilers" then
+                    vim.schedule(function()
+                        error({
+                            "Setting custom compilers for `nvim-treesitter` is no longer supported.",
+                            "",
+                            "For more info, see:",
+                            "- [compilers](https://docs.rs/cc/latest/cc/#compile-time-requirements)",
+                        })
+                    end)
+                end
+            end,
+        })
 
-		-- configure treesitter
-		treesitter.setup({
-			modules = {},
-			sync_install = false,
-			highlight = {
-				enable = true,
-				-- !!! MOVED HERE: This is what allows VimTeX to work !!!
-				-- disable = { "latex" },
+        if not TS.get_installed then
+            vim.notify("Please use `:Lazy` and update `nvim-treesitter`", vim.log.levels.ERROR)
+            return
+        elseif type(opts.ensure_installed) ~= "table" then
+            vim.notify("`nvim-treesitter` opts.ensure_installed must be a table", vim.log.levels.ERROR)
+            return
+        end
 
-				-- Optional: Use this if you want to force Vim's regex highlighting for these
-				-- additional_vim_regex_highlighting = { "latex", "markdown" },
-			},
-			-- enable indentation
-			indent = { enable = true },
-			auto_install = true,
-			ensure_installed = {
-				"json",
-				"rust",
-				"javascript",
-				"typescript",
-				"latex", -- It is okay to keep this installed, just disabled in 'highlight'
-				"tsx",
-				"yaml",
-				"html",
-				"css",
-				"prisma",
-				"markdown_inline",
-				"bash",
-				"lua",
-				"vim",
-				"python",
-				"gitignore",
-				"query",
-				"vimdoc",
-				"c",
-				"cpp",
-				"asm",
-			},
-			ignore_install = {
-				-- "org",
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					-- init_selection = "<C-space>",
-					-- node_incremental = "<C-space>",
-					-- scope_incremental = false,
-					-- node_decremental = "<bs>",
-				},
-			},
-		})
-	end,
+        TS.setup(opts)
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "*",
+            callback = function(event)
+                -- Start highlighting
+                pcall(vim.treesitter.start, event.buf)
+
+                -- Enable Treesitter folds
+                vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                vim.wo.foldmethod = "manual"
+
+                -- Enable Treesitter indents
+                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end,
+        })
+    end,
+
 }

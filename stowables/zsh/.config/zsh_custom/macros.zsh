@@ -25,6 +25,7 @@ extract() {
   if [ -f "$1" ]; then
     case "$1" in
       *.tar.bz2)   tar xjf "$1"    ;;
+      *.tar.zst)   tar --use-compress-program=unzstd -xf "$1" ;;
       *.tar.gz)    tar xzf "$1"    ;;
       *.bz2)       bunzip2 "$1"    ;;
       *.rar)       unrar x "$1"    ;;
@@ -41,6 +42,7 @@ extract() {
     echo "'$1' is not a valid file"
   fi
 }
+
 
 function glog() {
   # Check if we are inside a valid git repository first
