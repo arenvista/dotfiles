@@ -1,88 +1,59 @@
-\documentclass[8pt, letterpaper]{article}
+\documentclass[11pt]{article}
 
 % ==========================================
-% 1. CORE & PAGE GEOMETRY
+% 1. ENCODING, LANGUAGE & FONTS
 % ==========================================
-% Load xcolor first to prevent option clashes with other graphical packages
-\usepackage[svgnames, table]{xcolor} 
-
-% Consolidated duplicate geometry calls into a single 1-inch declaration
-\usepackage[margin=1in]{geometry} 
-\usepackage{subfiles} % Crucial for multi-file setups
+\usepackage[utf8]{inputenc} % Allows standard keyboard character input
+\usepackage[T1]{fontenc}    % Better font encoding for accented characters
+\usepackage[english]{babel} % Language hyphenation and typographical rules
 
 % ==========================================
-% 2. MATH PACKAGES & THEOREMS
+% 2. PAGE LAYOUT
 % ==========================================
-\usepackage{amsmath, amsthm, amssymb, mathrsfs, wasysym}
-
-
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}
-\newtheorem{cor}{Corollary}
-
-% Custom list for Cases
-\usepackage{enumitem}
-\newlist{caseslist}{enumerate}{2}
-\setlist[caseslist]{
-    label=\textbf{Case \arabic*:}, 
-    leftmargin=*, 
-    itemsep=0.5em, 
-    topsep=0.5em
-}
-
-% Math Macros
-\newcommand{\ds}{\displaystyle}
-\newcommand{\sU}{\mathscr{U}}
-\newcommand{\qq}{\hfill $\blacksquare$} % Moved here for relevance
+\usepackage[letterpaper, margin=1in]{geometry} % Standard 1-inch margins
+\usepackage{microtype}                         % Subtly improves spacing and fully justifies text
+\usepackage{parskip}                           % Adds space between paragraphs instead of indenting
 
 % ==========================================
-% 3. LAYOUT, TEXT FORMATTING & TABLES
+% 3. MATH PACKAGES
 % ==========================================
-\usepackage{parskip}   % Removes paragraph indent, adds space between paragraphs
-\usepackage{multicol}  % For multiple columns
-\usepackage{sectsty}   % For styling section headers
-\usepackage{soul}      % For underlining/highlighting
-
-% Table packages
-\usepackage{booktabs, multirow}
-\usepackage{changepage, threeparttable}
+\usepackage{amsmath}  % Essential for advanced math environments
+\usepackage{amssymb}  % Extended math symbols
+\usepackage{amsfonts} % Mathematical fonts
+\usepackage{amsthm}   % Theorem environments
+\usepackage{mathrsfs} % Required for \mathscr
 
 % ==========================================
-% 4. GRAPHICS & VISUALS
+% 4. COLORS & CODE FORMATTING
 % ==========================================
-\usepackage{graphicx}
-\usepackage{tikz}
-\usepackage{tkz-graph} 
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18} % Prevents compilation warnings related to pgfplots versions
+\usepackage{xcolor}
+\usepackage{minted}
+\usemintedstyle{catppuccin-latte}
 
-% ==========================================
-% 5. CUSTOM COLORS (Catppuccin Palette)
-% ==========================================
+% Catppuccin Palette
 \definecolor{catblue}{HTML}{1E66F5}
 \definecolor{catgreen}{HTML}{40A02B}
-\definecolor{catred}{HTML}{d20f39} 
-\definecolor{catorange}{HTML}{fe640b} 
-\definecolor{catyellow}{HTML}{df8e1d} 
-\definecolor{catpurple}{HTML}{8839ef} 
-\definecolor{catgray}{HTML}{5c5f77} 
+\definecolor{catred}{HTML}{d20f39}
+\definecolor{catorange}{HTML}{fe640b}
+\definecolor{catyellow}{HTML}{df8e1d}
+\definecolor{catpurple}{HTML}{8839ef}
+\definecolor{catgray}{HTML}{5c5f77}
 
-<<<<<<< Updated upstream
-\newcommand{\pop}[1]{
-    {\color{red}\mathbf{{#1}}}
-}
+% ==========================================
+% 5. GRAPHICS, FLOATS & LISTS
+% ==========================================
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float}    % Better control over figure placement (allows [H] modifier)
+\usepackage{enumitem} % Control list formatting
 
-
-=======
 % ==========================================
 % 6. CUSTOM BOXES (tcolorbox)
 % ==========================================
 \usepackage{tcolorbox}
 \tcbuselibrary{breakable, skins}
 
-% Base Custom Box
->>>>>>> Stashed changes
-\newcommand{\cbox}[3]{
+% Base Custom Box Environment
+\newenvironment{cbox}[2]{
     \begin{tcolorbox}[
         colback=white,
         colframe=gray,
@@ -92,35 +63,47 @@
         bottom=10pt,
         breakable, % Allows the box to break smoothly across pages
     ]
-    \textcolor{#1}{\textbf{#2}} #3
+    \textcolor{#1}{\textbf{#2}} % Places the colored text at the start of the box
+}{
     \end{tcolorbox}
 }
 
-% Derived custom boxes (Utilizing DRY principle: Don't Repeat Yourself)
-\newcommand{\question}[2]{\cbox{catblue}{#1}{#2}}
-\newcommand{\corr}[2]{\cbox{catgreen}{#1}{#2}}
+% ==========================================
+% 7. TITLE & HEADER FORMATTING
+% ==========================================
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
 
-% Blockquote Box
-\newtcolorbox{blockquote}{
-    colback=white,
-    colframe=gray,
-    boxrule=0pt,
-    leftrule=3pt,
-    arc=0pt,
-    outer arc=0pt,
-    left=10pt,
-    top=0pt,
-    bottom=0pt,
-    right=0pt,
-    breakable
+% Title Adjustments
+\setlength{\droptitle}{-2cm} % Move title block up
+\pretitle{\begin{center}\large}
+\posttitle{\par\end{center}\vspace{0em}}
+\preauthor{\begin{center}\large\lineskip 0.5em\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\par\end{center}\vspace{0em}}
+\predate{\begin{center}\large}
+\postdate{\par\end{center}\vspace{-1em}}
+
+% Section Formatting
+\titleformat{\section}
+    {\normalfont\large\bfseries}{\thesection}{1em}{}[\titlerule]
+\titleformat{\subsection}
+    {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% Header and Footer
+% Custom Homework Setup Macro
+% Usage: \setupHW{Course Name}{Homework Number}
+\newcommand{\setupHW}[2]{
+    % Header and Footer setup
+    \pagestyle{fancy}
+    \fancyhf{}
+    \lhead{#1: Homework #2}
+    \rhead{\thepage}
+
+    % Title setup
+    \title{#1: Homework #2}
+    \author{Aren Vista} % Hardcoded your name since it won't change
+    \date{\today}
 }
 
-% ==========================================
-% 7. HYPERLINKS (Must be loaded last)
-% ==========================================
-\usepackage{hyperref}  
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue
-}
+%
