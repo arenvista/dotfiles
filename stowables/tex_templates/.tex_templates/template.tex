@@ -74,7 +74,6 @@
 \usepackage{titling}
 \usepackage{titlesec}
 \usepackage{fancyhdr}
-
 % Title Adjustments
 \setlength{\droptitle}{-2cm} % Move title block up
 \pretitle{\begin{center}\large}
@@ -84,24 +83,27 @@
 \predate{\begin{center}\large}
 \postdate{\par\end{center}\vspace{-1em}}
 
+\definecolor{h1}{HTML}{5c5f77}
+\definecolor{h2}{HTML}{4c4f69}
+\definecolor{h3}{HTML}{5c5f77}
+\definecolor{h4}{HTML}{6c6f85}
 % Section Formatting
 \titleformat{\section}
-    {\normalfont\large\bfseries}{\thesection}{1em}{}[\titlerule]
+    {\color{black}\normalfont\large\bfseries}{\thesection}{1em}{}[\titlerule]
 \titleformat{\subsection}
-    {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+  {\color{black}\normalfont\large\bfseries}{\thesubsection}{1em}{}
 
 % Header and Footer
 % Custom Homework Setup Macro
 % Usage: \setupHW{Course Name}{Homework Number}
-\newcommand{\setupHW}[2]{
+\newcommand{\setupHW}[1]{
     % Header and Footer setup
     \pagestyle{fancy}
     \fancyhf{}
-    \lhead{#1: Homework #2}
+    \lhead{#1}
     \rhead{\thepage}
-
     % Title setup
-    \title{#1: Homework #2}
+    \title{#1}
     \author{Aren Vista} % Hardcoded your name since it won't change
     \date{\today}
 }
