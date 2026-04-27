@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "Starting Python HTTP server on port 8000..."
+# 1. Start the Python server in the background (silencing standard output)
+python3 -m http.server 8000 > /dev/null 2>&1 &
+SERVER_PID=$!
+
+echo "Spinning up ngrok tunnel..."
+# 2. Start ngrok in the background (silencing standard output)
+ngrok http 8000 > /dev/null 2>&1 &
+NGROK_PID=$!
+
+# 3. Set a trap to ensure BOTH servers are killed when the script exits
+trap "kill $SERVER_PID $NGROK_PID 2>/dev/null" EXIT
+
+# 4. Wait a few seconds to ensure the ngrok API is fully up before querying it
+sleep 3 
+
+curl -s http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url' | wl-copy
+
+# 5. Fetch and display the Public URL
+echo "========================================="
+echo "Public URL:"
+curl -s http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+echo "========================================="
+
+# 6. Pause the script here so the background processes stay alive
+echo ""
+read -p "Press [Enter] to kill the servers and exit..."
+
+echo "Main task finished! The servers will now be killed automatically."
