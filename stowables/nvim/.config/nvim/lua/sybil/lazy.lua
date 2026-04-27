@@ -12,9 +12,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    -- { import = "sybil.plugins.firenvim" },
-    { import = "sybil.plugins.movement" },
     { import = "sybil.plugins.ui" },
+    { import = "sybil.plugins.movement" },
     { import = "sybil.plugins.treesitter" },
     { import = "sybil.plugins.utils" },
     { import = "sybil.plugins.lsp" },

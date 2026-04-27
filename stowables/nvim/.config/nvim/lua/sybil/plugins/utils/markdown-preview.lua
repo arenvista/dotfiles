@@ -1,6 +1,6 @@
 -- install without yarn or npm
 return {
- "iamcco/markdown-preview.nvim",
+  "iamcco/markdown-preview.nvim",
   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
   build = "cd app && yarn install",
   init = function()
@@ -8,4 +8,3 @@ return {
   end,
   ft = { "markdown" },
 }
-
