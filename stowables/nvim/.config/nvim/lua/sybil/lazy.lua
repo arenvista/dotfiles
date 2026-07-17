@@ -13,11 +13,12 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     { import = "sybil.plugins.ui" },
-    { import = "sybil.plugins.movement" },
+    { import = "sybil.plugins.navigation" },
     { import = "sybil.plugins.treesitter" },
     { import = "sybil.plugins.utils" },
     { import = "sybil.plugins.lsp" },
-    { import = "sybil.plugins.autocomplete" },
+    { import = "sybil.plugins.completion" },
+    { import = "sybil.plugins.text_objects" },
     { import = "sybil.plugins.integrations" },
     { import = "sybil.plugins.viewers" },
 }, {
