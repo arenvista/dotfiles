@@ -32,6 +32,6 @@ return {
 
 		-- Neovim fold settings
 		vim.opt.foldenable = true
-		vim.opt.foldlevelstart = 0 -- Start with everything folded
+		vim.opt.foldlevelstart = 1 -- Start with everything folded
 	end,
 }

@@ -6,23 +6,47 @@ return {
 		require("conform").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- Conform will run multiple formatters sequentially
 				python = { "isort", "black" },
-				-- You can customize some of the format options for the filetype (:help conform.format)
 				rust = { "rustfmt", lsp_format = "fallback" },
-				-- Conform will run the first available formatter
 				javascript = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+
+				-- Formatter mappings for LaTeX and Typst
+				tex = { "latexindent" },
+				typst = { "prettypst" },
 				markdown = { "latexindent", "prettier" },
 			},
+
+			-- Override specific formatter settings globally
+			formatters = {
+				stylua = {
+					prepend_args = { "--indent-width", "4", "--indent-type", "Spaces" },
+				},
+				prettier = {
+					prepend_args = { "--tab-width", "4" },
+				},
+				prettierd = {
+					prepend_args = { "--tab-width", "4" },
+				},
+
+				-- Customizing LaTeX & Typst formatters to enforce your preference
+				latexindent = {
+					-- Force latexindent to use 4 spaces (can be configured via local YAML profiles as well)
+					prepend_args = { "-m", "-g", "/dev/null" },
+				},
+				prettypst = {
+					-- Tells prettypst to seek configuration files (e.g. prettypst.toml with indent = 4)
+					prepend_args = { "--use-configuration" },
+				},
+			},
 		})
+
 		local conform = require("conform")
 		vim.keymap.set({ "n", "v" }, "<Leader>bc", function()
 			conform.format({
 				lsp_fallback = true,
-				-- async = false,
 				timeout_ms = 5000,
 			})
-			-- end
 		end, { desc = "Format file or range (in visual mode)" })
 	end,
 }

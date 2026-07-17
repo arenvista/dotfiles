@@ -11,6 +11,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
     opts = {
+        highlight = { enable = true },
         ensure_installed = {
             "bash",
             "c",
@@ -65,20 +66,22 @@ return {
 
         TS.setup(opts)
 
+        -- 1. Global folding defaults
+        vim.opt.foldenable = true       -- Enable folding at startup
+        vim.opt.foldlevel = 99          -- Start with all folds open
+        vim.opt.foldlevelstart = 99
+
+        -- 2. Apply Tree-sitter folding automatically to all files
         vim.api.nvim_create_autocmd("FileType", {
             pattern = "*",
             callback = function(event)
-                -- Start highlighting
+                -- Start highlighting natively
                 pcall(vim.treesitter.start, event.buf)
 
-                -- Enable Treesitter folds
+                -- Enable native Treesitter folds (requires Neovim 0.10+)
+                vim.wo.foldmethod = "expr"
                 vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                vim.wo.foldmethod = "manual"
-
-                -- Enable Treesitter indents
-                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end,
         })
     end,
-
 }

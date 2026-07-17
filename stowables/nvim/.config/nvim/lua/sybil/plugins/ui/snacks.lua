@@ -1,63 +1,64 @@
 --@enum MILLI_SHADERS
-local MILLI_SHADERS = {
-	attackontitan = "attackontitan",
-	aurora = "aurora",
-	badge = "badge",
-	blackhole = "blackhole",
-	cactus = "cactus",
-	catwoman = "catwoman",
-	chrome = "chrome",
-	dancer = "dancer",
-	dancerramp = "dancerramp",
-	finger = "finger",
-	fire = "fire",
-	flyingcat = "flyingcat",
-	flyingdragon = "flyingdragon",
-	ididnot = "ididnot",
-	lighningtornado = "lighningtornado",
-	lights = "lights",
-	retrocircle = "retrocircle",
-	robot = "robot",
-	shader = "shader",
-	shadertwo = "shadertwo",
-	skeleton = "skeleton",
-	skullone = "skullone",
-	skullthree = "skullthree",
-	skulltwo = "skulltwo",
-	spaceship = "spaceship",
-	spinner = "spinner",
-	vibecat = "vibecat",
-	vibecattwo = "vibecattwo",
-}
-
-MILI_SHADER = MILLI_SHADERS.shader
+-- local MILLI_SHADERS = {
+-- 	attackontitan = "attackontitan",
+-- 	aurora = "aurora",
+-- 	badge = "badge",
+-- 	blackhole = "blackhole",
+-- 	cactus = "cactus",
+-- 	catwoman = "catwoman",
+-- 	chrome = "chrome",
+-- 	dancer = "dancer",
+-- 	dancerramp = "dancerramp",
+-- 	finger = "finger",
+-- 	fire = "fire",
+-- 	flyingcat = "flyingcat",
+-- 	flyingdragon = "flyingdragon",
+-- 	ididnot = "ididnot",
+-- 	lighningtornado = "lighningtornado",
+-- 	lights = "lights",
+-- 	retrocircle = "retrocircle",
+-- 	robot = "robot",
+-- 	shader = "shader",
+-- 	shadertwo = "shadertwo",
+-- 	skeleton = "skeleton",
+-- 	skullone = "skullone",
+-- 	skullthree = "skullthree",
+-- 	skulltwo = "skulltwo",
+-- 	spaceship = "spaceship",
+-- 	spinner = "spinner",
+-- 	vibecat = "vibecat",
+-- 	vibecattwo = "vibecattwo",
+-- }
+--
+-- MILI_SHADER = MILLI_SHADERS.shader
 
 --@param mili_shader MILLI_SHADERS
-local milli_opts = function(milli_shader)
-	local splash = require("milli").load({ splash = milli_shader })
-	local dashboard = {
-		enabled = true,
-		preset = {
-			header = table.concat(splash.frames[1], "\n"),
-		},
-		sections = {
-			{ section = "header", padding = 1 },
-			{ section = "keys", gap = 1, padding = 1 },
-			{ section = "startup" },
-		},
-	}
-	return dashboard
-end
+-- local milli_opts = function(milli_shader)
+-- 	local splash = require("milli").load({ splash = milli_shader })
+-- 	local dashboard = {
+-- 		enabled = true,
+-- 		preset = {
+-- 			header = table.concat(splash.frames[1], "\n"),
+-- 		},
+-- 		sections = {
+-- 			{ section = "header", padding = 1 },
+-- 			{ section = "keys", gap = 1, padding = 1 },
+-- 			{ section = "startup" },
+-- 		},
+-- 	}
+-- 	return dashboard
+-- end
 
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
-	dependencies = { "amansingh-afk/milli.nvim" },
+	-- dependencies = { "amansingh-afk/milli.nvim" },
 	---@type snacks.Config
 	opts = function()
 		return {
-			dashboard = milli_opts(MILI_SHADER),
+			-- dashboard = milli_opts(MILI_SHADER),
+			dashboard = { enabled = true},
 			animate = { enabled = true },
 			bigfile = { enabled = true },
 			bufdelete = { enabled = true },
@@ -145,6 +146,6 @@ return {
 	end,
 	config = function(_, opts)
 		require("snacks").setup(opts)
-		require("milli").snacks({ splash = MILI_SHADER, loop = true })
+		-- require("milli").snacks({ splash = MILI_SHADER, loop = true })
 	end,
 }

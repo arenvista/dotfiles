@@ -8,7 +8,7 @@ return {
 				icons_enabled = true,
 				theme = "auto",
 				refresh = {
-					statusline = 500, -- default 100
+					statusline = 100, -- default 100
 				},
 			},
 			sections = {

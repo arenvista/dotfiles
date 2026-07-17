@@ -49,6 +49,7 @@ return {
     s({ trig = "hat", snippetType = "autosnippet" }, fmta("\\hat{<>}", { i(1) }), { condition = in_mathzone }),
     s({ trig = "vec", snippetType = "autosnippet" }, fmta("\\vec{<>}", { i(1) }), { condition = in_mathzone }),
     s({ trig = "bar", snippetType = "autosnippet" }, fmta("\\overline{<>}", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "   ", snippetType = "autosnippet" }, t("\\quad" ), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 1. SETS & NUMBER SYSTEMS

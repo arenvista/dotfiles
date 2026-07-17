@@ -4,7 +4,7 @@ return {
     "folke/snacks.nvim", 
   },
   config = function()
-    vim.keymap.set("n", "<leader>dd", function()
+    vim.keymap.set("n", "<leader>md", function()
       require("datepicker").open({
         week_start = "monday",
         -- What happens when you press <CR> on a date

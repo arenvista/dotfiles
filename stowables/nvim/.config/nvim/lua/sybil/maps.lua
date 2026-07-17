@@ -37,8 +37,9 @@ wk.add({
   { "<leader>o", group = "Org", icon=" " },
   { "<leader>f", group = "Finder", icon="  " },
   { "<leader><c-f>", group = "Tmux", icon=" " },
-  { "<leader><c-f>", group = "Notfications", icon="󱈸" },
   { "<leader>a", group = "AI", icon="  " },
+  { "<leader>n", group = "Notifications", icon="󰎟  " },
+  { "<leader>m", group = "Misc.", icon="  " },
 })
 
 _G.Snacks = Snacks  -- Snacks are defined in Snacks.lua; Loaded before this file.
@@ -131,7 +132,46 @@ wk.add{
 { "<leader>su", function() Snacks.picker.undo() end, desc = "Search Undo History", icon=" "},
 -- LSP
 --
-{ "<leader>ld", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition", },
+{ 
+    "<leader>ld", 
+    function()
+        local line = vim.api.nvim_get_current_line()
+        local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+
+        -- 1. Asset File Path Jump Fallback (e.g., import "./App.css")
+        if line:match("['\"].-%.css['\"]") or line:match("['\"].-%.svg['\"]") or line:match("['\"].-%.png['\"]") then
+            local success, _ = pcall(vim.cmd, "normal! gf")
+            if not success then
+                Snacks.picker.lsp_definitions()
+            end
+            return
+        end
+
+        -- 2. CSS Class Context Validation (e.g., className="tagline")
+        local substring_before_cursor = line:sub(1, col)
+        local is_class_context = substring_before_cursor:match("class%s*=%s*['\"][^'\"]*$") 
+            or substring_before_cursor:match("className%s*=%s*['\"][^'\"]*$")
+
+        if is_class_context then
+            -- Extract the exact single word under the cursor
+            local class_name = vim.fn.expand("<cword>")
+            
+            if class_name and class_name ~= "" then
+                -- Perform a global text search for the standard CSS class descriptor format: .className
+                Snacks.picker.grep({
+                    search = class_name,
+                    title = "CSS Class Definition: ." .. class_name,
+                })
+            else
+                vim.notify("No class name found under cursor", vim.log.levels.WARN)
+            end
+        else
+            -- 3. Default structural code lookup handler (TypeScript types, functions, variable sources)
+            Snacks.picker.lsp_definitions()
+        end
+    end, 
+    desc = "Goto Definition / CSS Rule Search", 
+},
 { "<leader>lD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration", },
 { "<leader>lr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References", },
 { "<leader>li", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation", },
@@ -141,18 +181,23 @@ wk.add{
 { "<leader>ls", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols", },
 { "<leader>lS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols", },
 
+{ "<leader>lc", function() vim.lsp.buf.code_action() end, desc = "LSP Workspace Symbols", },
+{ "<leader>ln", function() vim.lsp.buf.rename() end, desc = "LSP Workspace Symbols", },
+
 -- Other
 -- { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", },
 { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", },
 { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" }, },
 { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" }, },
 
--- Notifications
-{ "<leader>n", function() Snacks.notifier.show_history() end, desc = "Notification History", },
-{ "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications", },
 }
 
-    -- Toggles
+-- Notifications
+wk.add({
+    { "<leader>nn", function() Snacks.notifier.show_history() end, desc = "Notification History", },
+    { "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications", },
+})
+
 
 wk.add{
     { "<leader>uz", function() Snacks.zen() end, desc = "Toggle Zen Mode", },
