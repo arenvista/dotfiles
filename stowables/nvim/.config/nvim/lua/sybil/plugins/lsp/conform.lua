@@ -1,52 +1,108 @@
 return {
-	"stevearc/conform.nvim",
-	opts = {},
-	event = { "BufReadPre", "BufNewFile" },
-	config = function()
-		require("conform").setup({
-			formatters_by_ft = {
-				lua = { "stylua" },
-				python = { "isort", "black" },
-				rust = { "rustfmt", lsp_format = "fallback" },
-				javascript = { "prettierd", "prettier", stop_after_first = true },
-				typescript = { "prettierd", "prettier", stop_after_first = true },
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    build = function()
+        local ok, ts = pcall(require, "nvim-treesitter")
+        if not ok or not ts.get_installed then
+            vim.schedule(function()
+                vim.notify(
+                    "nvim-treesitter: restart Neovim and run `:TSUpdate` to finish installing the `main` branch.",
+                    vim.log.levels.WARN
+                )
+            end)
+        end
+    end,
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
+    opts = {
+        -- NOTE: `highlight.enable` is a no-op on the `main` branch — highlighting
+        -- is started manually below via `vim.treesitter.start()`. Kept only so
+        -- `opts.ensure_installed` has somewhere sane to live.
+        ensure_installed = {
+            "bash",
+            "c",
+            "diff",
+            "html",
+            "javascript",
+            "jsdoc",
+            "json",
+            "lua",
+            "luadoc",
+            "luap",
+            "markdown",
+            "markdown_inline",
+            "printf",
+            "python",
+            "query",
+            "regex",
+            "toml",
+            "tsx",
+            "typescript",
+            "vim",
+            "vimdoc",
+            "xml",
+            "yaml",
+        },
+    },
+    config = function(_, opts)
+        local ts = require("nvim-treesitter")
 
-				-- Formatter mappings for LaTeX and Typst
-				tex = { "latexindent" },
-				typst = { "prettypst" },
-				markdown = { "latexindent", "prettier" },
-			},
+        if not ts.get_installed then
+            vim.notify(
+                "nvim-treesitter: `main` branch not fully installed — run `:Lazy update`.",
+                vim.log.levels.ERROR
+            )
+            return
+        end
 
-			-- Override specific formatter settings globally
-			formatters = {
-				stylua = {
-					prepend_args = { "--indent-width", "4", "--indent-type", "Spaces" },
-				},
-				prettier = {
-					prepend_args = { "--tab-width", "4" },
-				},
-				prettierd = {
-					prepend_args = { "--tab-width", "4" },
-				},
+        if type(opts.ensure_installed) ~= "table" then
+            vim.notify("nvim-treesitter: `ensure_installed` must be a table.", vim.log.levels.ERROR)
+            return
+        end
 
-				-- Customizing LaTeX & Typst formatters to enforce your preference
-				latexindent = {
-					-- Force latexindent to use 4 spaces (can be configured via local YAML profiles as well)
-					prepend_args = { "-m", "-g", "/dev/null" },
-				},
-				prettypst = {
-					-- Tells prettypst to seek configuration files (e.g. prettypst.toml with indent = 4)
-					prepend_args = { "--use-configuration" },
-				},
-			},
-		})
+        -- Block the old `compilers` setting: it silently did nothing pre-rewrite,
+        -- now it errors loudly so misconfigured dotfiles get noticed immediately.
+        setmetatable(require("nvim-treesitter.install"), {
+            __newindex = function(_, key)
+                if key == "compilers" then
+                    vim.schedule(function()
+                        vim.notify(
+                            table.concat({
+                                "nvim-treesitter: setting custom `compilers` is no longer supported.",
+                                "See: https://docs.rs/cc/latest/cc/#compile-time-requirements",
+                            }, "\n"),
+                            vim.log.levels.ERROR
+                        )
+                    end)
+                end
+            end,
+        })
 
-		local conform = require("conform")
-		vim.keymap.set({ "n", "v" }, "<Leader>bc", function()
-			conform.format({
-				lsp_fallback = true,
-				timeout_ms = 5000,
-			})
-		end, { desc = "Format file or range (in visual mode)" })
-	end,
+        ts.setup(opts)
+
+        -- Fold defaults: start fully unfolded everywhere.
+        vim.opt.foldenable = true
+        vim.opt.foldlevel = 99
+        vim.opt.foldlevelstart = 99
+
+        -- Enable native TS highlighting + folding per-buffer, skipping
+        -- special buffers (terminals, prompts, etc.) where it doesn't apply.
+        vim.api.nvim_create_autocmd("FileType", {
+            group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),
+            pattern = "*",
+            callback = function(event)
+                if vim.bo[event.buf].buftype ~= "" then
+                    return
+                end
+
+                local attached = pcall(vim.treesitter.start, event.buf)
+                if not attached then
+                    return
+                end
+
+                vim.wo.foldmethod = "expr"
+                vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            end,
+        })
+    end,
 }
