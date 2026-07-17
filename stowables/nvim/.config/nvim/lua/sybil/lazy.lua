@@ -31,6 +31,5 @@ require("lazy").setup({
         },
     })
 vim.opt.laststatus = 1
--- vim.cmd.colorscheme("pywal")
 vim.cmd.colorscheme("catppuccin-frappe")
 

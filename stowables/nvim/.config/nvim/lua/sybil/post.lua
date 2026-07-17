@@ -1,5 +1,3 @@
-print("hi")
-
 -- 2. Configure folding to use Tree-sitter
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

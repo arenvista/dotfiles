@@ -62,10 +62,9 @@ wk.add({
 { "<leader>P", [["+P]], desc = "which_key_ignore", mode = { "n", "v" }, icon = "" },
 
   -- Save, Quit & Suspend
-  { "<c-s>", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>w", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
-  { "<leader>qa", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
+  { "<leader>qx", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
   { "<leader>qo", "<C-w>o", desc = "Close Others", icon = "󰈆 "},
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
   { "<c-x>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
@@ -180,9 +179,9 @@ wk.add{
 { "<leader>lao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing", },
 { "<leader>ls", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols", },
 { "<leader>lS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols", },
-
 { "<leader>lc", function() vim.lsp.buf.code_action() end, desc = "LSP Workspace Symbols", },
 { "<leader>ln", function() vim.lsp.buf.rename() end, desc = "LSP Workspace Symbols", },
+{ "<leader>le", vim.diagnostic.open_float, desc = "Line Diagnostics (float)" },
 
 -- Other
 -- { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", },
@@ -196,6 +195,11 @@ wk.add{
 wk.add({
     { "<leader>nn", function() Snacks.notifier.show_history() end, desc = "Notification History", },
     { "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications", },
+})
+-- Messages
+wk.add({
+    { "<leader>nl", function() require("noice").cmd("last") end, desc = "Last Message" },
+    { "<leader>nh", function() require("noice").cmd("history") end, desc = "Message History" },
 })
 
 
