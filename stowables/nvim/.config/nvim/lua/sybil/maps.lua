@@ -65,7 +65,7 @@ wk.add({
   { "<c-s>", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>w", "<cmd>w<CR>", desc = "which_key_ignore", mode = "n" , icon=" "},
   { "<leader>qa", "<cmd>qa<CR>", desc = "Quit All", mode = "n" },
-  { "<leader>qx", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
+  { "<leader>qa", "<cmd>qa!<CR>", desc = "Quit All Force", mode = "n" },
   { "<leader>qo", "<C-w>o", desc = "Close Others", icon = "󰈆 "},
   { "<leader>qw", "<cmd>q<CR>", desc = "Close Window", mode = "n" },
   { "<c-x>", "<cmd>q<CR>", desc = "Close Window", mode = "n" },

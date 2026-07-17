@@ -1,3 +1,4 @@
+-- Menu ui for neovim ( supports nested menus )
 return {
 	{ "nvzone/volt", lazy = true },
 	{ "nvzone/menu", lazy = true },

@@ -17,6 +17,9 @@ require("lazy").setup({
     { import = "sybil.plugins.treesitter" },
     { import = "sybil.plugins.utils" },
     { import = "sybil.plugins.lsp" },
+    { import = "sybil.plugins.autocomplete" },
+    { import = "sybil.plugins.integrations" },
+    { import = "sybil.plugins.viewers" },
 }, {
         checker = {
             enabled = true,
@@ -29,3 +32,4 @@ require("lazy").setup({
 vim.opt.laststatus = 1
 -- vim.cmd.colorscheme("pywal")
 vim.cmd.colorscheme("catppuccin-frappe")
+
