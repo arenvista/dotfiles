@@ -7,6 +7,7 @@ CLI (tqdm progress bars):
   main.py link  [pkg ...]          stow -D then stow --adopt   (symlinks.sh)
   main.py break [pkg ...]          unstow + rm ~/.config/pkg   (breaklinks.sh)
   main.py copy  [pkg]              direct symlink, no stow      (copy.sh)
+  main.py export [--out DIR]       snapshot installed pacman packages to files
   main.py tui                      launch the Textual UI
 
 Global flags: --stow-dir, --target, --dry-run
@@ -23,6 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 import linker  # noqa: E402
+import pacman  # noqa: E402
 
 try:
     from tqdm import tqdm
@@ -131,6 +133,19 @@ def cmd_copy(args, paths):
     _finish([], args.dry_run)
 
 
+def cmd_export(args, paths):
+    out_dir = args.out or (paths.stow_dir.parent / "packages")
+    print(f"--- Exporting installed pacman packages to {out_dir} ---")
+    try:
+        result = pacman.export(out_dir)
+    except pacman.PacmanError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
+    print(f"  {result.explicit_path}  ({result.explicit_count} packages)")
+    print(f"  {result.foreign_path}  ({result.foreign_count} foreign/AUR)")
+    print("Done!")
+
+
 def cmd_tui(args, paths):
     try:
         from tui import ManagerApp
@@ -198,6 +213,17 @@ def build_parser() -> argparse.ArgumentParser:
         "package", nargs="?", help="Package name; omit to pick interactively"
     )
     p_copy.set_defaults(func=cmd_copy)
+
+    p_export = sub.add_parser(
+        "export", help="Snapshot installed pacman packages to text files"
+    )
+    p_export.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="Output directory (default: <repo>/packages)",
+    )
+    p_export.set_defaults(func=cmd_export)
 
     sub.add_parser("tui", help="Launch the Textual UI").set_defaults(func=cmd_tui)
     return parser

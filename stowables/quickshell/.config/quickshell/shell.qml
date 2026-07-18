@@ -209,7 +209,7 @@ ShellRoot {
 
     Process {
         id: thumbGenProc
-        command: ["bash", "-c", "exec /home/sybil/dotfiles/stowables/test.sh"]
+        command: ["bash", "-c", "exec /home/sybil/dotfiles/stowables/quickshell/.config/quickshell/scripts/create_thumbs.sh"]
         onExited: root.thumbsReady = true
     }
 

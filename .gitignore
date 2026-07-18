@@ -13,3 +13,4 @@ stowables/wallpapers/wallpapers/scripts/wallpaper_state.env
 utils/tmuxscripts/tmux-paths.md
 vaults.md
 stowables/zathura/.config/zathura/zathurarc
+.venv
