@@ -1,0 +1,10 @@
+[project]
+name = "manager"
+version = "0.2.0"
+description = "Textual + tqdm manager for stow-based dotfile symlinks"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = ["textual>=0.60", "tqdm>=4.66"]
+
+[project.scripts]
+manager = "main:main"
