@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-echo "Hi"
 # tmux-csv-manager — manage the sessions CSV used by tmux-csv-sessionizer.
 #
 # Usage:
@@ -49,6 +48,17 @@ mkdir -p -- "${CSV_FILE:h}"
 [[ -e "$CSV_FILE" ]] || : > "$CSV_FILE"
 
 autoload -Uz colors && colors
+
+# ── Inline prompt with an editable default value ────────────────────────
+# Forces the emacs keymap for this vared call so backspace / ^W / ^U delete
+# the whole line — including the pre-filled default. Under vi keybindings
+# (bindkey -v) vared starts in insert mode, where vi-backward-delete-char
+# refuses to erase text that existed before insert mode began, leaving the
+# default title/path impossible to shorten. '-M emacs' sidesteps that
+# without mutating the user's global keymap.
+prompt_edit() {  # prompt_edit <prompt> <varname>
+  vared -M emacs -p "$1" "$2"
+}
 
 # ── Parse CSV, tagging each entry with its line number ──────────────────
 # Emits: lineno <TAB> title <TAB> path
@@ -117,7 +127,7 @@ add)
   title="${2:-}"
   if [[ -z "$title" ]]; then
     title="${dir:t}"                              # default: directory name
-    vared -p "Title: " title
+    prompt_edit "Title: " title
   fi
   [[ -n "$title" ]] || { print -u2 "error: empty title, aborting"; return 1 }
   title="${title//\"/}"                           # keep the CSV parseable
@@ -133,8 +143,8 @@ edit)
   title="${rest%%$'\t'*}"
   dir="${rest#*$'\t'}"
 
-  vared -p "Title: " title
-  vared -p "Path:  " dir
+  prompt_edit "Title: " title
+  prompt_edit "Path:  " dir
   [[ -n "$title" && -n "$dir" ]] || { print -u2 "error: empty field, aborting"; return 1 }
   title="${title//\"/}"
   [[ -d "${dir/#\~/$HOME}" ]] || print -u2 "warning: '$dir' does not exist (saved anyway)"
