@@ -8,43 +8,42 @@
 ##          FetchInfo stats Config          ##
 ##############################################
 [stats]
-username  = {icon = " ", name = "user", color = "(RD)"}
-hostname  = {icon = " ", name = "hostname", color = "(YW)"}
+username = { icon = " ", name = "user", color = "(RD)" }
+hostname = { icon = " ", name = "hostname", color = "(YW)" }
 # uptime    = {icon = " ", name = "uptime", color = "(BE)"}
 # distro    = {icon = " ", name = "distro", color = "(GN)"}
-kernel    = {icon = " ", name = "kernel", color = "(MA)"}
+kernel = { icon = " ", name = "kernel", color = "(MA)" }
 # desktop   = {icon = "󰟀 ", name = "desktop", color = "(CN)"}
-terminal  = {icon = " ", name = "term", color = "(RD)"}
+terminal = { icon = " ", name = "term", color = "(RD)" }
 # shell     = {icon = " ", name = "shell", color = "(YW)"}
-packages  = {icon = " ", name = "packages", color = "(BE)"}  # WARNING: Resource Intensive
+# packages = { icon = " ", name = "packages", color = "(BE)" } # WARNING: Resource Intensive
 # weather   = {icon = " ", name = "weather", color = "(GN)"} # Requires curl and an emoji font. | WARNING: Resource Intensive
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 # cpu       = {icon = " ", name = "cpu", color = "(GN)"}
 # battery   = {icon = " ", name = "battery", color = "(MA)"}
-memory    = {icon = " ", name = "memory", color = "(CN)"}
+memory = { icon = " ", name = "memory", color = "(CN)" }
 # The following stats do not work on MacOS and the BSDs.
-disk_0    = {icon = " ", name = "disk", color = "(RD)"}
+disk_0 = { icon = " ", name = "disk", color = "(RD)" }
 sep_color = "SEPARATOR"
-colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
+colors = { icon = " ", name = "colors", color = "!DT!", symbol = "" }
 
 ##############################################
 ##               Misc Config                ##
 ##############################################
 [misc]
 borderstyle = "line"
-layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
-location = "" # Used for fetching weather; leave empty to use the location of your IP; check https://wttr.in/:help for supported location types
+layout = "Inline"    # [Inline, ArtOnTop, StatsOnTop]
+location = ""        # Used for fetching weather; leave empty to use the location of your IP; check https://wttr.in/:help for supported location types
 # stats_margin_top = 0
 
 [misc.figletLogos] # Requires Figlet.
 enable = false
-color  = "(YW)"
-font   = "slant"
-margin = [0, 0, 0,]
+color = "(YW)"
+font = "slant"
+# margin = [0, 0, 0]
 
 [misc.imageMode] # Requires Viu.
-enable = true
-path   = "/home/sybil/wallpapers/imgs/temp.png" # Please only use absolute paths.
-scale  = 20
-margin = [3, 2, 1,]
-
+enable = false
+path = "/home/sybil/wallpapers/current.jpg" # Please only use absolute paths.
+scale = 20
+margin = [3, 2, 1]

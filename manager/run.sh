@@ -1,1 +1,1 @@
-python main.py tui
+uv run python main.py tui
