@@ -52,4 +52,4 @@ fi
 # 5. STARTUP SCRIPTS
 # =============================================================================
 # Placed last so it doesn't block the shell from initializing quickly
-(( $+commands[fastfetch] )) && fastfetch --logo "$HOME/wallpapers/current" --logo-type kitty --logo-width 20 --logo-height 10
+catnap
