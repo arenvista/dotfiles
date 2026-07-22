@@ -44,6 +44,13 @@ font = "slant"
 
 [misc.imageMode] # Requires Viu.
 enable = false
+<<<<<<< Updated upstream:stowables/catnap/.config/catnap/config.cat
 path = "/home/sybil/wallpapers/current.jpg" # Please only use absolute paths.
 scale = 20
 margin = [3, 2, 1]
+=======
+path   = "/home/sybil/wallpapers/current.jpg" # Please only use absolute paths.
+scale  = 20
+margin = [3, 2, 1,]
+
+>>>>>>> Stashed changes:stowables/catnap/.config/catnap/config.toml

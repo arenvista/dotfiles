@@ -5,44 +5,51 @@ export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/zsh_custom"
 export EDITOR="nvim"
 
-# Prepend Cargo to PATH
-export PATH="$HOME/.cargo/bin:$PATH"
+# Keep $path free of duplicates, prepend Cargo
+typeset -U path
+path=("$HOME/.cargo/bin" $path)
 
-# Load secret keys
-source "$HOME/.secret_keys/openai.env"
+# Load secret keys (skip silently if the file isn't there)
+[[ -r "$HOME/.secret_keys/openai.env" ]] && source "$HOME/.secret_keys/openai.env"
 
 # =============================================================================
 # 2. OH MY ZSH CONFIGURATION
 # =============================================================================
 ZSH_THEME="robbyrussell"
 
-# Plugins array (added 'copypath' and 'extract' from your notes)
-plugins=( git z sudo web-search copypath extract)
+plugins=( git z sudo web-search copypath extract )
 
-# Initialize Oh My Zsh
-source $ZSH/oh-my-zsh.sh
-
-# =============================================================================
-# 3. USER ALIASES & MACROS
-# =============================================================================
-source $ZSH_CUSTOM/aliases.zsh
-source $ZSH_CUSTOM/macros.zsh
+# Initialize Oh My Zsh — this also auto-sources every *.zsh file in
+# $ZSH_CUSTOM (aliases.zsh, macros.zsh), so they must not be sourced again.
+source "$ZSH/oh-my-zsh.sh"
 
 # =============================================================================
-# 4. SYSTEM-INSTALLED PLUGINS (Order matters here!)
+# 3. SYSTEM-INSTALLED PLUGINS (Order matters here!)
 # =============================================================================
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # =============================================================================
-# 5. NODE VERSION MANAGER (NVM)
+# 4. NODE VERSION MANAGER (NVM) — lazy-loaded
 # =============================================================================
+# Sourcing nvm.sh eagerly costs a few hundred ms per shell. Instead, stub the
+# common commands; the first call loads the real nvm and replaces the stubs.
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  _nvm_lazy_cmds=(nvm node npm npx corepack)
+  _nvm_lazy_load() {
+    unfunction $_nvm_lazy_cmds 2>/dev/null
+    source "$NVM_DIR/nvm.sh"
+    [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+  }
+  for _cmd in $_nvm_lazy_cmds; do
+    eval "${_cmd}() { _nvm_lazy_load; ${_cmd} \"\$@\" }"
+  done
+  unset _cmd
+fi
 
 # =============================================================================
-# 6. STARTUP SCRIPTS
+# 5. STARTUP SCRIPTS
 # =============================================================================
 # Placed last so it doesn't block the shell from initializing quickly
-neofetch
+(( $+commands[fastfetch] )) && fastfetch --logo "$HOME/wallpapers/current" --logo-type kitty --logo-width 20 --logo-height 10

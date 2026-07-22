@@ -16,19 +16,10 @@ sudo nvim /etc/tlp.conf
 sudo tlp-stat -s
 wait 10
 
-# undervolt
-sudo pacman -S --needed intel-undervolt
-sudo nvim /etc/intel-undervolt.conf
-sudo intel-undervolt apply
-sudo intel-undervolt read
-wait 10
+yay -S throttled
+systemctl enable throttled
 
 # stress test
 sudo pacman -S --needed stress-ng
 stress-ng --cpu 0 --cpu-method matrixprod -t 5m
 
-# apply settings
-sudo systemctl enable --now intel-undervolt.service
-
-yay -S throttled
-systemctl enable throttled

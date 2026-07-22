@@ -1,14 +1,17 @@
 alias install="sudo pacman -S"
-alias update="sudo pacman -Sy"
+# -Syu, not -Sy: refreshing the db without upgrading invites partial upgrades
+alias update="sudo pacman -Syu"
 
 alias ah="nvim"
 alias ..="cd .."
 alias ls="lsd"
 alias l="ls"
 
-bindkey -s '^s' "tmux-attacher\n"
-bindkey -s '^f' "tmux-sessionizer\n"
+alias reload="source ~/.zshrc"
 
-bindkey -s '^[' "source ~/.zshrc\n"
+# bindkey -s '^s' "tmux-attacher\n"
+# bindkey -s '^f' "tmux-sessionizer\n"
+
+bindkey -s '^[r' "source ~/.zshrc\n"   # Alt+r — bare Esc would swallow arrow keys etc.
 bindkey -s '^n' "nvim\n"
 bindkey -s '^y' "yazi\n"
