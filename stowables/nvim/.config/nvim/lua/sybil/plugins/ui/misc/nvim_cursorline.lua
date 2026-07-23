@@ -1,5 +1,6 @@
 return{
     "https://github.com/yamatsum/nvim-cursorline.git",
+    event = "VeryLazy",
     config = function()
         require('nvim-cursorline').setup({
             cursorline = {

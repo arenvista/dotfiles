@@ -7,10 +7,9 @@ return {
     s({ trig = "todo", snippetType = "autosnippet" }, {
         t("TODO: "),
     }),
-    
+
     -- Typing "email" expands to your email
     s({ trig = "@uv1", snippetType = "autosnippet" }, {
         t("arenv1@umbc.edu"),
     }),
 }
-

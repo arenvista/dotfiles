@@ -1,6 +1,7 @@
 return{
     "michaelb/sniprun",
     branch = "master",
+    cmd = { "SnipRun", "SnipReset", "SnipReplMemoryClean", "SnipClose", "SnipLive", "SnipInfo" },
 
     build = "sh install.sh",
     -- do 'sh install.sh 1' if you want to force compile locally

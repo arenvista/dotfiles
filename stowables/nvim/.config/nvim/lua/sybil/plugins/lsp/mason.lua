@@ -1,5 +1,9 @@
 return {
     "williamboman/mason.nvim",
+    -- Loaded on demand: as a dependency of nvim-lspconfig (so mason.setup runs
+    -- before the LSP config), or via the :Mason* commands. Keeps ~62ms off startup.
+    lazy = true,
+    cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     dependencies = {
         "williamboman/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",

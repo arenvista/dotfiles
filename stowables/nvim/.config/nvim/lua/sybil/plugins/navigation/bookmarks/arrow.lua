@@ -1,5 +1,8 @@
 return {
   "otavioschwanck/arrow.nvim",
+  -- `;` opens the arrow menu; H/L/<c-s>/<A-n> are wired in maps.lua and load
+  -- arrow on first use via a lazy require.
+  keys = { ";", "H", "L", "<c-s>" },
   dependencies = {
     { "nvim-tree/nvim-web-devicons" },
     -- or if using `mini.icons`

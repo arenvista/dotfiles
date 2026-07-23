@@ -1,6 +1,7 @@
 -- Out of box, this plugin reconstructs completion item and applies treesitter highlight queries to produce variable-size highlight ranges.
 return {
 	"xzbdmw/colorful-menu.nvim",
+	event = "InsertEnter",
 	config = function()
 		-- You don't need to set these options.
 		require("colorful-menu").setup({

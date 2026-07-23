@@ -1,4 +1,5 @@
 return{ 'prichrd/netrw.nvim',
+    event = "VeryLazy",
     config = function()
         require'netrw'.setup{
             -- Put your configuration here, or leave the object empty to take the default

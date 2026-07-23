@@ -2,6 +2,9 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+        -- mason must be set up before this config runs (adds servers to PATH,
+        -- registers mason-lspconfig handlers). Listing it here guarantees ordering.
+        "williamboman/mason.nvim",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-cmdline",
         { "antosha417/nvim-lsp-file-operations", config = true },
@@ -134,7 +137,6 @@ return {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
                 local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                local telescope = require("telescope.builtin")
 
                 -- A handy wrapper function so we don't have to type out the `{ buffer, desc }` table every time
                 local map = function(mode, keys, func, desc)
