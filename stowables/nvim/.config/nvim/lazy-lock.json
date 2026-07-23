@@ -14,6 +14,7 @@
   "colorful-menu.nvim": { "branch": "master", "commit": "196ddf16d5f8fec09ba7f20e6b153aa5188e907b" },
   "compiler.nvim": { "branch": "main", "commit": "c09ab4e795b92378727d7377c03b0d5c2453957c" },
   "conform.nvim": { "branch": "master", "commit": "619363c30309d29ffa631e67c8183f2a72caa373" },
+  "copilot.lua": { "branch": "master", "commit": "2a849bc7bec4d175524c332c20d48ca9ece735df" },
   "datepicker.nvim": { "branch": "main", "commit": "3e6b8f2b87cb694b2492ea3254cf7d871f6ca954" },
   "flash.nvim": { "branch": "main", "commit": "b6346946d10d07998efee029fb0f7a593806d0cd" },
   "friendly-snippets": { "branch": "main", "commit": "6cd7280adead7f586db6fccbd15d2cac7e2188b9" },
