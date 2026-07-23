@@ -40,9 +40,7 @@ OUTPUT_PATH_FIREFOX="$HOME/dotfiles/utils/firefox/current.jpg"
 magick "$WALLPAPER_PATH" -resize "${MON_RES}^" -gravity center -extent "$MON_RES" "$OUTPUT_PATH_SWWW"
 magick "$WALLPAPER_PATH" -resize "${MON_RES}^" -gravity center -extent "$MON_RES" "$OUTPUT_PATH_FIREFOX"
 
-
 echo "magick "$WALLPAPER_PATH" -resize "${MON_RES}^" -gravity center -extent "$MON_RES" "$OUTPUT_PATH_SWWW""
-
 
 # Run `swww` in the background with detachment
 setsid awww img "$OUTPUT_PATH_SWWW" --transition-type any --transition-duration 2 >/dev/null 2>&1 &
@@ -53,9 +51,8 @@ setsid wal -i "$WALLPAPER_PATH" -n -q >/dev/null 2>&1 &
 # Sleep for 1 second to ensure processes complete
 sleep 1
 
-neofetch --clean
-
 python ~/.config/zathura/templater.py
+python ~/.config/quickshell/scripts/ghosty-colorizer.py
 
 # Exit the script cleanly
 exit 0

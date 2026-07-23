@@ -1,0 +1,26 @@
+# ~/.config/ghostty/themes/latte-custom
+# Hardcoded light palette (Catppuccin Latte values) — edit freely
+background = #0a0a07
+foreground = #efe0ca
+cursor-color = #efe0ca
+cursor-text = #0a0a07
+selection-background = #0a0a07
+selection-foreground = #efe0ca
+# Normal colors
+palette = 0=#0a0a07
+palette = 1=#1860AE
+palette = 2=#2D6CB6
+palette = 3=#3E74B9
+palette = 4=#5295A5
+palette = 5=#6092CD
+palette = 6=#EECF9D
+palette = 7=#efe0ca
+# Bright colors
+palette = 8=#a79c8d
+palette = 9=#1860AE
+palette = 10=#2D6CB6
+palette = 11=#3E74B9
+palette = 12=#5295A5
+palette = 13=#6092CD
+palette = 14=#EECF9D
+palette = 15=#efe0ca
