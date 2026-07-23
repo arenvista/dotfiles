@@ -1,4 +1,5 @@
 import Quickshell
+import "../Common"
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
@@ -30,7 +31,7 @@ PanelWindow {
     property bool gifsLoaded: false
     property int gifReloadCounter: 0
     property bool isApplyingGif: false
-    property string currentGifSource: "file:///home/sybil/.config/quickshell/assets/gifs/current.gif"
+    property string currentGifSource: Paths.fileUrl("assets/gifs/current.gif")
     property int pendingGifIndex: -1
 
     function formatTime(seconds) {
@@ -78,7 +79,7 @@ PanelWindow {
 
     function reloadMainGif() {
         musicPanel.gifReloadCounter++
-        musicPanel.currentGifSource = "file:///home/sybil/.config/quickshell/assets/gifs/current.gif?v=" + musicPanel.gifReloadCounter + "&t=" + Date.now()
+        musicPanel.currentGifSource = Paths.fileUrl("assets/gifs/current.gif") + "?v=" + musicPanel.gifReloadCounter + "&t=" + Date.now()
         danceGifLoader.active = true
         musicPanel.isApplyingGif = false
         musicPanel.pendingGifIndex = -1
@@ -107,7 +108,7 @@ PanelWindow {
             Rectangle {
                 width: 400
                 height: 180
-                color: Qt.rgba(root.walBackground.r, root.walBackground.g, root.walBackground.b, 0.7)
+                color: Theme.alpha(Theme.background, 0.7)
                 radius: 15
                 clip: true
 
@@ -123,19 +124,19 @@ PanelWindow {
 
                         Text {
                             text: musicPanel.trackTitle || "Nothing is playing"
-                            color: root.walColor5
+                            color: Theme.color5
                             font.pixelSize: 15
                             font.bold: true
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             Layout.fillWidth: true
                             elide: Text.ElideRight
                         }
 
                         Text {
                             text: musicPanel.trackArtist || ""
-                            color: root.walForeground
+                            color: Theme.foreground
                             font.pixelSize: 12
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             opacity: 0.7
                             Layout.fillWidth: true
                             elide: Text.ElideRight
@@ -151,9 +152,9 @@ PanelWindow {
 
                             Text {
                                 text: musicPanel.formatTime(musicPanel.position)
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 10
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
 
                             Rectangle {
@@ -166,7 +167,7 @@ PanelWindow {
                                     width: musicPanel.length > 0 ? parent.width * (musicPanel.position / musicPanel.length) : 0
                                     height: parent.height
                                     radius: 2
-                                    color: root.walColor5
+                                    color: Theme.color5
                                 }
 
                                 MouseArea {
@@ -184,9 +185,9 @@ PanelWindow {
 
                             Text {
                                 text: musicPanel.formatTime(musicPanel.length)
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 10
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                         }
 
@@ -204,9 +205,9 @@ PanelWindow {
                                 Text {
                                     anchors.centerIn: parent
                                     text: "󰒮"
-                                    color: root.walForeground
+                                    color: Theme.foreground
                                     font.pixelSize: 16
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Theme.fontFamily
                                 }
 
                                 MouseArea {
@@ -222,14 +223,14 @@ PanelWindow {
                                 width: 40
                                 height: 40
                                 radius: 20
-                                color: root.walColor5
+                                color: Theme.color5
 
                                 Text {
                                     anchors.centerIn: parent
                                     text: musicPanel.playerStatus === "Playing" ? "󰏤" : "󰐊"
-                                    color: root.walBackground
+                                    color: Theme.background
                                     font.pixelSize: 18
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Theme.fontFamily
                                 }
 
                                 MouseArea {
@@ -248,9 +249,9 @@ PanelWindow {
                                 Text {
                                     anchors.centerIn: parent
                                     text: "󰒭"
-                                    color: root.walForeground
+                                    color: Theme.foreground
                                     font.pixelSize: 16
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Theme.fontFamily
                                 }
 
                                 MouseArea {
@@ -309,9 +310,9 @@ PanelWindow {
                             Text {
                                 anchors.centerIn: parent
                                 text: "󰏫"
-                                color: root.walForeground
+                                color: Theme.foreground
                                 font.pixelSize: 12
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
 
                             MouseArea {
@@ -339,7 +340,7 @@ PanelWindow {
                 height: 260
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: 14
-                color: Qt.rgba(root.walBackground.r, root.walBackground.g, root.walBackground.b, 0.75)
+                color: Theme.alpha(Theme.background, 0.75)
                 border.color: Qt.rgba(1,1,1,0.1)
                 border.width: 1
                 visible: musicPanel.gifSelectorOpen
@@ -367,19 +368,19 @@ PanelWindow {
 
                         Text {
                             text: "Select Animation"
-                            color: root.walColor5
+                            color: Theme.color5
                             font.pixelSize: 12
                             font.bold: true
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             Layout.fillWidth: true
                         }
 
                         Text {
                             visible: musicPanel.gifFiles.length > 0
                             text: (musicPanel.previewGifIndex + 1) + " / " + musicPanel.gifFiles.length
-                            color: root.walColor8
+                            color: Theme.color8
                             font.pixelSize: 10
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             opacity: 0.6
                         }
 
@@ -389,15 +390,15 @@ PanelWindow {
                             width: 20
                             height: 20
                             radius: 10
-                            color: dropCloseMa.containsMouse ? Qt.rgba(root.walColor1.r, root.walColor1.g, root.walColor1.b, 0.5) : Qt.rgba(1,1,1,0.08)
+                            color: dropCloseMa.containsMouse ? Theme.alpha(Theme.color1, 0.5) : Qt.rgba(1,1,1,0.08)
                             Behavior on color { ColorAnimation { duration: 150 } }
 
                             Text {
                                 anchors.centerIn: parent
                                 text: "󰅖"
-                                color: dropCloseMa.containsMouse ? root.walColor1 : root.walForeground
+                                color: dropCloseMa.containsMouse ? Theme.color1 : Theme.foreground
                                 font.pixelSize: 10
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 
@@ -457,9 +458,9 @@ PanelWindow {
                                 anchors.centerIn: parent
                                 visible: musicPanel.gifFiles.length === 0 && musicPanel.gifsLoaded
                                 text: "No gifs found"
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 11
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 opacity: 0.5
                             }
 
@@ -467,9 +468,9 @@ PanelWindow {
                                 anchors.centerIn: parent
                                 visible: !musicPanel.gifsLoaded && musicPanel.gifSelectorOpen
                                 text: "Loading..."
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 11
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 opacity: 0.5
                             }
 
@@ -487,9 +488,9 @@ PanelWindow {
                                     id: nameLabel
                                     anchors.centerIn: parent
                                     text: (musicPanel.gifFiles.length > 0 && musicPanel.previewGifIndex < musicPanel.gifFiles.length) ? musicPanel.gifFileName(musicPanel.gifFiles[musicPanel.previewGifIndex]) : ""
-                                    color: root.walForeground
+                                    color: Theme.foreground
                                     font.pixelSize: 9
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Theme.fontFamily
                                     opacity: 0.9
                                 }
                             }
@@ -505,8 +506,8 @@ PanelWindow {
                             Layout.preferredWidth: 36
                             Layout.preferredHeight: 32
                             radius: 8
-                            color: prevGifMa.containsMouse ? Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.25) : Qt.rgba(1,1,1,0.08)
-                            border.color: prevGifMa.containsMouse ? Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.4) : Qt.rgba(1,1,1,0.05)
+                            color: prevGifMa.containsMouse ? Theme.alpha(Theme.color5, 0.25) : Qt.rgba(1,1,1,0.08)
+                            border.color: prevGifMa.containsMouse ? Theme.alpha(Theme.color5, 0.4) : Qt.rgba(1,1,1,0.05)
                             border.width: 1
                             opacity: musicPanel.gifFiles.length > 1 ? 1.0 : 0.3
                             Behavior on color { ColorAnimation { duration: 150 } }
@@ -515,9 +516,9 @@ PanelWindow {
                             Text {
                                 anchors.centerIn: parent
                                 text: "󰅁"
-                                color: prevGifMa.containsMouse ? root.walColor5 : root.walForeground
+                                color: prevGifMa.containsMouse ? Theme.color5 : Theme.foreground
                                 font.pixelSize: 16
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 
@@ -535,8 +536,8 @@ PanelWindow {
                             Layout.preferredWidth: 36
                             Layout.preferredHeight: 32
                             radius: 8
-                            color: nextGifMa.containsMouse ? Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.25) : Qt.rgba(1,1,1,0.08)
-                            border.color: nextGifMa.containsMouse ? Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.4) : Qt.rgba(1,1,1,0.05)
+                            color: nextGifMa.containsMouse ? Theme.alpha(Theme.color5, 0.25) : Qt.rgba(1,1,1,0.08)
+                            border.color: nextGifMa.containsMouse ? Theme.alpha(Theme.color5, 0.4) : Qt.rgba(1,1,1,0.05)
                             border.width: 1
                             opacity: musicPanel.gifFiles.length > 1 ? 1.0 : 0.3
                             Behavior on color { ColorAnimation { duration: 150 } }
@@ -545,9 +546,9 @@ PanelWindow {
                             Text {
                                 anchors.centerIn: parent
                                 text: "󰅂"
-                                color: nextGifMa.containsMouse ? root.walColor5 : root.walForeground
+                                color: nextGifMa.containsMouse ? Theme.color5 : Theme.foreground
                                 font.pixelSize: 16
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 
@@ -570,12 +571,12 @@ PanelWindow {
                             color: {
                                 if (musicPanel.isApplyingGif) return Qt.rgba(1,1,1,0.03)
                                 if (musicPanel.previewGifIndex === musicPanel.currentGifIndex) return Qt.rgba(1,1,1,0.05)
-                                return applyGifMa.pressed ? root.walColor5 : applyGifMa.containsMouse ? Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.35) : Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.18)
+                                return applyGifMa.pressed ? Theme.color5 : applyGifMa.containsMouse ? Theme.alpha(Theme.color5, 0.35) : Theme.alpha(Theme.color5, 0.18)
                             }
                             border.color: {
                                 if (musicPanel.isApplyingGif) return Qt.rgba(1,1,1,0.05)
                                 if (musicPanel.previewGifIndex === musicPanel.currentGifIndex) return Qt.rgba(1,1,1,0.08)
-                                return applyGifMa.containsMouse ? root.walColor5 : Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.4)
+                                return applyGifMa.containsMouse ? Theme.color5 : Theme.alpha(Theme.color5, 0.4)
                             }
                             border.width: 1
                             Behavior on color { ColorAnimation { duration: 150 } }
@@ -589,13 +590,13 @@ PanelWindow {
                                     return "󰸞 Apply"
                                 }
                                 color: {
-                                    if (musicPanel.isApplyingGif) return Qt.rgba(root.walForeground.r, root.walForeground.g, root.walForeground.b, 0.4)
-                                    if (musicPanel.previewGifIndex === musicPanel.currentGifIndex) return Qt.rgba(root.walForeground.r, root.walForeground.g, root.walForeground.b, 0.3)
-                                    return applyGifMa.pressed ? root.walBackground : root.walColor5
+                                    if (musicPanel.isApplyingGif) return Theme.alpha(Theme.foreground, 0.4)
+                                    if (musicPanel.previewGifIndex === musicPanel.currentGifIndex) return Theme.alpha(Theme.foreground, 0.3)
+                                    return applyGifMa.pressed ? Theme.background : Theme.color5
                                 }
                                 font.pixelSize: 11
                                 font.bold: true
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 
@@ -616,7 +617,7 @@ PanelWindow {
 
     Process {
         id: gifListProc
-        command: ["sh", "-c", "find /home/sybil/.config/quickshell/assets/gifs -maxdepth 1 -name '*.gif' ! -name 'current.gif' -type f 2>/dev/null | sort"]
+        command: ["sh", "-c", "find \"$1/gifs\" -maxdepth 1 -name '*.gif' ! -name 'current.gif' -type f 2>/dev/null | sort", "_", Paths.assets]
         stdout: SplitParser {
             onRead: data => {
                 var file = data.trim()
@@ -638,7 +639,7 @@ PanelWindow {
     Process {
         id: setGifProc
         property string selFile: ""
-        command: ["cp", selFile, "/home/sybil/.config/quickshell/assets/gifs/current.gif"]
+        command: ["cp", selFile, Paths.assets + "/gifs/current.gif"]
         onExited: code => {
             if (code === 0 && musicPanel.pendingGifIndex >= 0) {
                 musicPanel.currentGifIndex = musicPanel.pendingGifIndex

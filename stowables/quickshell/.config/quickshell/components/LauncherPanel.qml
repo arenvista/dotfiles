@@ -1,4 +1,5 @@
 import Quickshell
+import "../Common"
 import Quickshell.Io
 import Quickshell.Wayland
 import QtQuick
@@ -20,7 +21,7 @@ PanelWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: Qt.rgba(root.walBackground.r, root.walBackground.g, root.walBackground.b, 0.7)
+        color: Theme.alpha(Theme.background, 0.7)
         radius: 20
 
         ColumnLayout {
@@ -41,23 +42,23 @@ PanelWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         radius: 8
-                        color: root.activeTab === 0 ? Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.2) : "transparent"
+                        color: root.activeTab === 0 ? Theme.alpha(Theme.color5, 0.2) : "transparent"
                         Behavior on color { ColorAnimation { duration: 150 } }
                         RowLayout {
                             anchors.centerIn: parent
                             spacing: 6
                             Text {
                                 text: "󰀻"
-                                color: root.activeTab === 0 ? root.walColor5 : root.walColor8
+                                color: root.activeTab === 0 ? Theme.color5 : Theme.color8
                                 font.pixelSize: 14
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                             Text {
                                 text: "Apps"
-                                color: root.activeTab === 0 ? root.walColor5 : root.walColor8
+                                color: root.activeTab === 0 ? Theme.color5 : Theme.color8
                                 font.pixelSize: 13
                                 font.bold: root.activeTab === 0
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                         }
                         MouseArea {
@@ -73,23 +74,23 @@ PanelWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         radius: 8
-                        color: root.activeTab === 1 ? Qt.rgba(root.walColor13.r, root.walColor13.g, root.walColor13.b, 0.2) : "transparent"
+                        color: root.activeTab === 1 ? Theme.alpha(Theme.color13, 0.2) : "transparent"
                         Behavior on color { ColorAnimation { duration: 150 } }
                         RowLayout {
                             anchors.centerIn: parent
                             spacing: 6
                             Text {
                                 text: "󰸉"
-                                color: root.activeTab === 1 ? root.walColor13 : root.walColor8
+                                color: root.activeTab === 1 ? Theme.color13 : Theme.color8
                                 font.pixelSize: 14
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                             Text {
                                 text: "Walls"
-                                color: root.activeTab === 1 ? root.walColor13 : root.walColor8
+                                color: root.activeTab === 1 ? Theme.color13 : Theme.color8
                                 font.pixelSize: 13
                                 font.bold: root.activeTab === 1
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                         }
                         MouseArea {
@@ -120,7 +121,7 @@ PanelWindow {
                         color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 12
                         border.width: searchInput.activeFocus ? 1 : 0
-                        border.color: root.walColor5
+                        border.color: Theme.color5
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 14
@@ -128,23 +129,23 @@ PanelWindow {
                             spacing: 10
                             Text {
                                 text: ""
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 14
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                             TextInput {
                                 id: searchInput
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                color: root.walForeground
+                                color: Theme.foreground
                                 font.pixelSize: 14
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 verticalAlignment: TextInput.AlignVCenter
                                 selectByMouse: true
                                 clip: true
                                 Text {
                                     text: "Search apps..."
-                                    color: root.walColor8
+                                    color: Theme.color8
                                     visible: !parent.text
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
@@ -182,9 +183,9 @@ PanelWindow {
                             Text {
                                 visible: searchInput.text.length > 0
                                 text: "󰅖"
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 12
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
@@ -216,7 +217,7 @@ PanelWindow {
                                 radius: 12
                                 color: {
                                     if (index === root.selectedIndex)
-                                        return Qt.rgba(root.walColor5.r, root.walColor5.g, root.walColor5.b, 0.2)
+                                        return Theme.alpha(Theme.color5, 0.2)
                                     if (appItemMouse.containsMouse)
                                         return Qt.rgba(1, 1, 1, 0.05)
                                     return "transparent"
@@ -227,7 +228,7 @@ PanelWindow {
                                     width: 3
                                     height: 22
                                     radius: 2
-                                    color: root.walColor5
+                                    color: Theme.color5
                                     anchors.left: parent.left
                                     anchors.leftMargin: 4
                                     anchors.verticalCenter: parent.verticalCenter
@@ -265,18 +266,18 @@ PanelWindow {
                                         Text {
                                             Layout.fillWidth: true
                                             text: modelData.name
-                                            color: index === root.selectedIndex ? root.walColor5 : root.walForeground
+                                            color: index === root.selectedIndex ? Theme.color5 : Theme.foreground
                                             font.pixelSize: 13
-                                            font.family: "JetBrainsMono Nerd Font"
+                                            font.family: Theme.fontFamily
                                             font.bold: index === root.selectedIndex
                                             elide: Text.ElideRight
                                         }
                                         Text {
                                             Layout.fillWidth: true
                                             text: modelData.exec
-                                            color: root.walColor8
+                                            color: Theme.color8
                                             font.pixelSize: 9
-                                            font.family: "JetBrainsMono Nerd Font"
+                                            font.family: Theme.fontFamily
                                             elide: Text.ElideRight
                                             opacity: 0.7
                                         }
@@ -284,9 +285,9 @@ PanelWindow {
                                     Text {
                                         visible: index === root.selectedIndex
                                         text: "↵"
-                                        color: root.walColor5
+                                        color: Theme.color5
                                         font.pixelSize: 14
-                                        font.family: "JetBrainsMono Nerd Font"
+                                        font.family: Theme.fontFamily
                                         font.bold: true
                                     }
                                 }
@@ -307,9 +308,9 @@ PanelWindow {
                             anchors.centerIn: parent
                             visible: root.filteredApps.length === 0
                             text: "No apps found"
-                            color: root.walColor8
+                            color: Theme.color8
                             font.pixelSize: 14
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                         }
                     }
 
@@ -322,13 +323,13 @@ PanelWindow {
                             anchors.fill: parent
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            Text { text: "↑↓ nav"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "↑↓ nav"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "↵ launch"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "↵ launch"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "tab walls"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "tab walls"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "esc close"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "esc close"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                         }
                     }
                 }
@@ -344,7 +345,7 @@ PanelWindow {
                         color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 12
                         border.width: wallSearchInput.activeFocus ? 1 : 0
-                        border.color: root.walColor13
+                        border.color: Theme.color13
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 14
@@ -352,23 +353,23 @@ PanelWindow {
                             spacing: 10
                             Text {
                                 text: ""
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 14
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                             TextInput {
                                 id: wallSearchInput
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                color: root.walForeground
+                                color: Theme.foreground
                                 font.pixelSize: 14
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 verticalAlignment: TextInput.AlignVCenter
                                 selectByMouse: true
                                 clip: true
                                 Text {
                                     text: "Search wallpapers..."
-                                    color: root.walColor8
+                                    color: Theme.color8
                                     visible: !parent.text
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
@@ -411,9 +412,9 @@ PanelWindow {
                             Text {
                                 visible: wallSearchInput.text.length > 0
                                 text: "󰅖"
-                                color: root.walColor8
+                                color: Theme.color8
                                 font.pixelSize: 12
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
@@ -448,7 +449,7 @@ PanelWindow {
                                     radius: 10
                                     color: {
                                         if (index === root.wallSelectedIndex)
-                                            return Qt.rgba(root.walColor13.r, root.walColor13.g, root.walColor13.b, 0.25)
+                                            return Theme.alpha(Theme.color13, 0.25)
                                         if (wallItemMouse.containsMouse)
                                             return Qt.rgba(1, 1, 1, 0.08)
                                         return Qt.rgba(0, 0, 0, 0.2)
@@ -458,7 +459,7 @@ PanelWindow {
                                         if (index === root.wallSelectedIndex) return 1
                                         return 0
                                     }
-                                    border.color: modelData.path === root.currentWallpaper ? root.walColor2 : root.walColor13
+                                    border.color: modelData.path === root.currentWallpaper ? Theme.color2 : Theme.color13
                                     Behavior on color { ColorAnimation { duration: 120 } }
                                     ColumnLayout {
                                         anchors.fill: parent
@@ -476,7 +477,7 @@ PanelWindow {
                                             Image {
                                                 id: wallThumbImage
                                                 anchors.fill: parent
-                                                source: root.thumbsReady ? "file:///home/sybil/.cache/wallpaper-thumbs/" + wallThumbImage.thumbHash + ".jpg" : ""
+                                                source: root.thumbsReady ? "file://" + Paths.cache + "/wallpaper-thumbs/" + wallThumbImage.thumbHash + ".jpg" : ""
                                                 fillMode: Image.PreserveAspectCrop
                                                 smooth: false
                                                 asynchronous: true
@@ -527,13 +528,13 @@ PanelWindow {
                                                 width: 16
                                                 height: 16
                                                 radius: 8
-                                                color: root.walColor2
+                                                color: Theme.color2
                                                 Text {
                                                     anchors.centerIn: parent
                                                     text: "󰄬"
-                                                    color: root.walBackground
+                                                    color: Theme.background
                                                     font.pixelSize: 10
-                                                    font.family: "JetBrainsMono Nerd Font"
+                                                    font.family: Theme.fontFamily
                                                 }
                                             }
                                         }
@@ -542,12 +543,12 @@ PanelWindow {
                                             Layout.preferredHeight: 22
                                             text: modelData.name
                                             color: {
-                                                if (modelData.path === root.currentWallpaper) return root.walColor2
-                                                if (index === root.wallSelectedIndex) return root.walColor13
-                                                return root.walForeground
+                                                if (modelData.path === root.currentWallpaper) return Theme.color2
+                                                if (index === root.wallSelectedIndex) return Theme.color13
+                                                return Theme.foreground
                                             }
                                             font.pixelSize: 8
-                                            font.family: "JetBrainsMono Nerd Font"
+                                            font.family: Theme.fontFamily
                                             font.bold: index === root.wallSelectedIndex || modelData.path === root.currentWallpaper
                                             elide: Text.ElideMiddle
                                             horizontalAlignment: Text.AlignHCenter
@@ -572,17 +573,17 @@ PanelWindow {
                             anchors.centerIn: parent
                             visible: root.wallsLoaded && root.filteredWallpapers.length === 0
                             text: "No wallpapers found"
-                            color: root.walColor8
+                            color: Theme.color8
                             font.pixelSize: 14
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                         }
                         Text {
                             anchors.centerIn: parent
                             visible: !root.wallsLoaded && root.wallpaperList.length === 0
                             text: "Loading..."
-                            color: root.walColor8
+                            color: Theme.color8
                             font.pixelSize: 13
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                         }
                     }
 
@@ -595,13 +596,13 @@ PanelWindow {
                             anchors.fill: parent
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            Text { text: "←→↑↓ nav"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "←→↑↓ nav"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "↵ apply"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "↵ apply"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "tab apps"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "tab apps"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "esc close"; color: root.walColor8; font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"; opacity: 0.7 }
+                            Text { text: "esc close"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
                         }
                     }
                 }

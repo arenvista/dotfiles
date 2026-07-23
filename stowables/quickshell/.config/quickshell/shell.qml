@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
+import "./Common"
 import "./components"
 
 ShellRoot {
@@ -74,14 +75,6 @@ ShellRoot {
     property bool btScanning: false
     property string btConnectingMAC: ""
 
-    property color walBackground: "#1e1e2e"
-    property color walForeground: "#cdd6f4"
-    property color walColor1: "#f38ba8"
-    property color walColor2: "#a6e3a1"
-    property color walColor4: "#f9e2af"
-    property color walColor5: "#89b4fa"
-    property color walColor8: "#6c7086"
-    property color walColor13: "#f5c2e7"
 
     function toggleLauncher() { launcherVisible = !launcherVisible }
 
@@ -111,23 +104,23 @@ ShellRoot {
 
     function connectBt(mac) {
         root.btConnectingMAC = mac
-        btActionProc.command = ["bash", "-c", "(echo 'trust " + mac + "'; echo 'connect " + mac + "'; sleep 2; echo 'quit') | bluetoothctl 2>/dev/null"]
+        btActionProc.command = ["bash", "-c", "(printf 'trust %s\\nconnect %s\\n' \"$1\" \"$1\"; sleep 2; echo quit) | bluetoothctl 2>/dev/null", "_", mac]
         btActionProc.running = true
     }
 
     function disconnectBt(mac) {
-        btActionProc.command = ["bash", "-c", "echo -e 'disconnect " + mac + "\\nquit' | bluetoothctl 2>/dev/null"]
+        btActionProc.command = ["bash", "-c", "printf 'disconnect %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null", "_", mac]
         btActionProc.running = true
     }
 
     function pairBt(mac) {
         root.btConnectingMAC = mac
-        btActionProc.command = ["bash", "-c", "echo -e 'pair " + mac + "\\nquit' | bluetoothctl 2>/dev/null; sleep 2; echo -e 'trust " + mac + "\\nquit' | bluetoothctl 2>/dev/null; sleep 1; echo -e 'connect " + mac + "\\nquit' | bluetoothctl 2>/dev/null"]
+        btActionProc.command = ["bash", "-c", "printf 'pair %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null; sleep 2; printf 'trust %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null; sleep 1; printf 'connect %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null", "_", mac]
         btActionProc.running = true
     }
 
     function forgetBt(mac) {
-        btActionProc.command = ["bash", "-c", "echo -e 'remove " + mac + "\\nquit' | bluetoothctl 2>/dev/null"]
+        btActionProc.command = ["bash", "-c", "printf 'remove %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null", "_", mac]
         btActionProc.running = true
     }
 
@@ -155,7 +148,7 @@ ShellRoot {
         for (var key in usage) updated[key] = usage[key]
         updated[app.name] = (updated[app.name] || 0) + 1
         appUsage = updated
-        saveUsageProc.command = ["bash", "-c", "echo '" + JSON.stringify(updated) + "' > /home/sybil/.config/quickshell/app_usage.json"]
+        saveUsageProc.command = ["bash", "-c", "printf '%s' \"$1\" > \"$2\"", "_", JSON.stringify(updated), Paths.config + "/app_usage.json"]
         saveUsageProc.running = true
         root.launcherVisible = false
     }
@@ -163,7 +156,7 @@ ShellRoot {
     function applyWallpaper(wallpaper) {
         root.currentWallpaper = wallpaper.path
         root.walApplying = true
-        applyWallProc.command = [ "bash", "-c", "exec ~/.config/quickshell/scripts/applwal.sh '" + wallpaper.path + "'"]
+        applyWallProc.command = ["bash", "-c", "exec \"$1/scripts/applwal.sh\" \"$2\"", "_", Paths.config, wallpaper.path]
         // applyWallProc.command = ["bash", "-c",
         //     "notify-send '" + wallpaper.path + "' ~/wallpapers/current && " +
         //     "ln -sf '" + wallpaper.path + "' ~/wallpapers/current && " +
@@ -209,7 +202,7 @@ ShellRoot {
 
     Process {
         id: thumbGenProc
-        command: ["bash", "-c", "exec /home/sybil/dotfiles/stowables/quickshell/.config/quickshell/scripts/create_thumbs.sh"]
+        command: ["bash", "-c", "exec \"$1/scripts/create_thumbs.sh\"", "_", Paths.config]
         onExited: root.thumbsReady = true
     }
 
@@ -220,23 +213,23 @@ ShellRoot {
 
     Process {
         id: walColorsProc
-        command: ["bash", "-c", "cat /home/sybil/.cache/wal/colors.json"]
+        command: ["bash", "-c", "cat \"$1\"", "_", Paths.home + "/.cache/wal/colors.json"]
         stdout: SplitParser {
             splitMarker: ""
             onRead: data => {
                 try {
                     var json = JSON.parse(data)
                     if (json.special) {
-                        root.walBackground = json.special.background || root.walBackground
-                        root.walForeground = json.special.foreground || root.walForeground
+                        Theme.background = json.special.background || Theme.background
+                        Theme.foreground = json.special.foreground || Theme.foreground
                     }
                     if (json.colors) {
-                        root.walColor1 = json.colors.color1 || root.walColor1
-                        root.walColor2 = json.colors.color2 || root.walColor2
-                        root.walColor4 = json.colors.color4 || root.walColor4
-                        root.walColor5 = json.colors.color5 || root.walColor5
-                        root.walColor8 = json.colors.color8 || root.walColor8
-                        root.walColor13 = json.colors.color13 || root.walColor13
+                        Theme.color1 = json.colors.color1 || Theme.color1
+                        Theme.color2 = json.colors.color2 || Theme.color2
+                        Theme.color4 = json.colors.color4 || Theme.color4
+                        Theme.color5 = json.colors.color5 || Theme.color5
+                        Theme.color8 = json.colors.color8 || Theme.color8
+                        Theme.color13 = json.colors.color13 || Theme.color13
                     }
                 } catch(e) {}
             }
@@ -279,7 +272,7 @@ ShellRoot {
 
     Process {
         id: loadUsageProc
-        command: ["bash", "-c", "cat /home/sybil/.config/quickshell/app_usage.json 2>/dev/null || echo '{}'"]
+        command: ["bash", "-c", "cat \"$1\" 2>/dev/null || echo '{}'", "_", Paths.config + "/app_usage.json"]
         stdout: SplitParser {
             splitMarker: ""
             onRead: data => {
@@ -294,7 +287,7 @@ ShellRoot {
     Process {
         id: appListProc
         command: ["bash", "-c", String.raw`
-        for f in /usr/share/applications/*.desktop /home/sybil/.local/share/applications/*.desktop; do
+        for f in /usr/share/applications/*.desktop "$HOME"/.local/share/applications/*.desktop; do
         [ -f "$f" ] || continue
         nodisplay=$(grep -i '^NoDisplay=true' "$f")
         [ -n "$nodisplay" ] && continue
@@ -390,9 +383,9 @@ ShellRoot {
         property string password: ""
         command: {
             if (password !== "")
-            return ["bash", "-c", "nmcli dev wifi connect '" + ssid + "' password '" + password + "' 2>&1"]
+            return ["bash", "-c", "nmcli dev wifi connect \"$1\" password \"$2\" 2>&1", "_", ssid, password]
             else
-            return ["bash", "-c", "nmcli dev wifi connect '" + ssid + "' 2>&1"]
+            return ["bash", "-c", "nmcli dev wifi connect \"$1\" 2>&1", "_", ssid]
         }
         onExited: {
             root.wifiConnecting = false
@@ -403,7 +396,7 @@ ShellRoot {
 
     Process {
         id: wifiDisconnectProc
-        command: ["bash", "-c", "nmcli dev disconnect wlan0 2>/dev/null; nmcli dev disconnect wlp0s20f3 2>/dev/null"]
+        command: ["bash", "-c", "for dev in $(nmcli -t -f DEVICE,TYPE dev | awk -F: '$2==\"wifi\"{print $1}'); do nmcli dev disconnect \"$dev\" 2>/dev/null; done"]
         onExited: {
             root.wifiCurrentSSID = ""
             root.wifiSignal = 0

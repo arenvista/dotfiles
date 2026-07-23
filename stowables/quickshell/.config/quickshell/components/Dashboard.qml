@@ -1,4 +1,5 @@
 import Quickshell
+import "../Common"
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
@@ -19,12 +20,27 @@ PanelWindow {
     property int ramVal: 0
     property int diskVal: 0
     property int batVal: 100
+    property bool batCharging: false
+    property bool batLowNotified: false
+    readonly property int batLowThreshold: 15
+    readonly property bool batLow: batVal <= batLowThreshold && !batCharging
     property int volVal: 50
     property int brightVal: 100
 
+    // Notify once when the battery drops into the low range while discharging;
+    // re-arm when charging or back above the threshold.
+    function checkLowBattery() {
+        if (batLow && !batLowNotified) {
+            batLowNotified = true
+            batNotifyProc.running = true
+        } else if (!batLow) {
+            batLowNotified = false
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
-        color: Qt.rgba(root.walBackground.r, root.walBackground.g, root.walBackground.b, 0.7)
+        color: Theme.alpha(Theme.background, 0.7)
         radius: 20
 
         ColumnLayout {
@@ -58,14 +74,14 @@ PanelWindow {
                                 radius: 37
                                 color: "transparent"
                                 border.width: 3
-                                border.color: root.walColor5
+                                border.color: Theme.color5
                             }
                             Image {
                                 id: pfpImage
                                 anchors.centerIn: parent
                                 width: 68
                                 height: 68
-                                source: "file:///home/sybil/.config/quickshell/assets/pfps/pfp.jpg"
+                                source: Paths.fileUrl("assets/pfps/pfp.jpg")
                                 fillMode: Image.PreserveAspectCrop
                                 smooth: true
                                 cache: false
@@ -76,7 +92,7 @@ PanelWindow {
                                 function reload() {
                                     reloadTrigger++
                                     source = ""
-                                    source = "file:///home/sybil/.config/quickshell/assets/pfps/pfp.jpg?" + reloadTrigger
+                                    source = Paths.fileUrl("assets/pfps/pfp.jpg") + "?" + reloadTrigger
                                 }
                             }
                             Rectangle {
@@ -100,15 +116,15 @@ PanelWindow {
                                 width: 22
                                 height: 22
                                 radius: 11
-                                color: root.walColor5
+                                color: Theme.color5
                                 border.width: 2
-                                border.color: root.walBackground
+                                border.color: Theme.background
                                 Text {
                                     anchors.centerIn: parent
                                     text: "󰏫"
-                                    color: root.walBackground
+                                    color: Theme.background
                                     font.pixelSize: 12
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Theme.fontFamily
                                 }
                             }
                             MouseArea {
@@ -128,17 +144,17 @@ PanelWindow {
                             spacing: 5
                             Text {
                                 text: "Sybil"
-                                color: root.walColor5
+                                color: Theme.color5
                                 font.pixelSize: 26
                                 font.bold: true
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                             Text {
                                 id: uptimeText
                                 text: "up ..."
-                                color: root.walForeground
+                                color: Theme.foreground
                                 font.pixelSize: 12
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                             }
                         }
                     }
@@ -154,10 +170,10 @@ PanelWindow {
                             spacing: 8
                             Text {
                                 text: "Choose Avatar"
-                                color: root.walColor5
+                                color: Theme.color5
                                 font.pixelSize: 12
                                 font.bold: true
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Theme.fontFamily
                                 Layout.alignment: Qt.AlignHCenter
                             }
                             Flickable {
@@ -184,7 +200,7 @@ PanelWindow {
                                                 radius: 24
                                                 color: "transparent"
                                                 border.width: 2
-                                                border.color: thumbMa.containsMouse ? root.walColor13 : root.walColor5
+                                                border.color: thumbMa.containsMouse ? Theme.color13 : Theme.color5
                                                 Behavior on border.color { ColorAnimation { duration: 150 } }
                                             }
                                             Image {
@@ -233,7 +249,7 @@ PanelWindow {
                 }
                 Process {
                     id: pfpListProc
-                    command: ["bash", "-c", "find /home/sybil/.config/quickshell/assets/pfps -maxdepth 1 -type f \\( -iname '*.jpg' -o -iname '*.png' -o -iname '*.gif' \\) ! -name 'pfp.jpg' | sort"]
+                    command: ["bash", "-c", "find \"$1/pfps\" -maxdepth 1 -type f \\( -iname '*.jpg' -o -iname '*.png' -o -iname '*.gif' \\) ! -name 'pfp.jpg' | sort", "_", Paths.assets]
                     stdout: SplitParser {
                         onRead: data => {
                             var file = data.trim()
@@ -248,7 +264,7 @@ PanelWindow {
                 Process {
                     id: setPfpProc
                     property string selFile: ""
-                    command: ["bash", "-c", "cp '" + selFile + "' /home/sybil/.config/quickshell/assets/pfps/pfp.jpg"]
+                    command: ["cp", selFile, Paths.assets + "/pfps/pfp.jpg"]
                     onExited: {
                         pfpImage.reload()
                         profileSection.pfpPickerOpen = false
@@ -264,11 +280,11 @@ PanelWindow {
                 Row {
                     anchors.centerIn: parent
                     spacing: 25
-                    PowerBtn { icon: "⏻"; iconColor: root.walColor2; cmd: "systemctl poweroff" }
-                    PowerBtn { icon: "󰜉"; iconColor: root.walColor13; cmd: "systemctl reboot" }
-                    PowerBtn { icon: "󰌾"; iconColor: root.walColor5; cmd: "hyprlock" }
-                    PowerBtn { icon: "󰒲"; iconColor: root.walColor4; cmd: "systemctl suspend" }
-                    PowerBtn { icon: "󰍃"; iconColor: root.walColor1; cmd: "hyprctl dispatch exit" }
+                    PowerBtn { icon: "⏻"; iconColor: Theme.color2; cmd: "systemctl poweroff" }
+                    PowerBtn { icon: "󰜉"; iconColor: Theme.color13; cmd: "systemctl reboot" }
+                    PowerBtn { icon: "󰌾"; iconColor: Theme.color5; cmd: "hyprlock" }
+                    PowerBtn { icon: "󰒲"; iconColor: Theme.color4; cmd: "systemctl suspend" }
+                    PowerBtn { icon: "󰍃"; iconColor: Theme.color1; cmd: "hyprctl dispatch exit" }
                 }
             }
 
@@ -284,25 +300,25 @@ PanelWindow {
                     Text {
                         id: batIcon
                         text: "󰁹"
-                        color: root.walColor2
+                        color: dashboard.batLow ? Theme.color1 : Theme.color2
                         font.pixelSize: 32
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Theme.fontFamily
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 3
                         Text {
                             text: "Battery " + dashboard.batVal + "%"
-                            color: root.walForeground
+                            color: Theme.foreground
                             font.pixelSize: 18
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                         }
                         Text {
                             id: batStatus
                             text: "Checking..."
-                            color: root.walColor8
+                            color: dashboard.batLow ? Theme.color1 : Theme.color8
                             font.pixelSize: 12
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                         }
                     }
                 }
@@ -316,9 +332,9 @@ PanelWindow {
                 Row {
                     anchors.centerIn: parent
                     spacing: 30
-                    CircularStat { label: "CPU"; icon: ""; barColor: root.walColor1; value: dashboard.cpuVal }
-                    CircularStat { label: "RAM"; icon: ""; barColor: root.walColor5; value: dashboard.ramVal }
-                    CircularStat { label: "DISK"; icon: ""; barColor: root.walColor4; value: dashboard.diskVal }
+                    CircularStat { label: "CPU"; icon: ""; barColor: Theme.color1; value: dashboard.cpuVal }
+                    CircularStat { label: "RAM"; icon: ""; barColor: Theme.color5; value: dashboard.ramVal }
+                    CircularStat { label: "DISK"; icon: ""; barColor: Theme.color4; value: dashboard.diskVal }
                 }
             }
 
@@ -337,9 +353,9 @@ PanelWindow {
                         Text {
                             width: 25
                             text: dashboard.volVal == 0 ? "󰝟" : dashboard.volVal < 50 ? "󰖀" : "󰕾"
-                            color: root.walColor4
+                            color: Theme.color4
                             font.pixelSize: 18
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             verticalAlignment: Text.AlignVCenter
                             height: 24
                             MouseArea {
@@ -364,7 +380,7 @@ PanelWindow {
                                 width: parent.width * dashboard.volVal / 100
                                 height: parent.height
                                 radius: 4
-                                color: root.walColor4
+                                color: Theme.color4
                                 Behavior on width { NumberAnimation { duration: 100 } }
                             }
                             MouseArea {
@@ -392,9 +408,9 @@ PanelWindow {
                         Text {
                             width: 40
                             text: dashboard.volVal + "%"
-                            color: root.walColor8
+                            color: Theme.color8
                             font.pixelSize: 11
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             horizontalAlignment: Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
                             height: 24
@@ -406,9 +422,9 @@ PanelWindow {
                         Text {
                             width: 25
                             text: dashboard.brightVal < 30 ? "󰃞" : dashboard.brightVal < 70 ? "󰃟" : "󰃠"
-                            color: root.walColor13
+                            color: Theme.color13
                             font.pixelSize: 18
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             verticalAlignment: Text.AlignVCenter
                             height: 24
                         }
@@ -423,7 +439,7 @@ PanelWindow {
                                 width: parent.width * dashboard.brightVal / 100
                                 height: parent.height
                                 radius: 4
-                                color: root.walColor13
+                                color: Theme.color13
                                 Behavior on width { NumberAnimation { duration: 100 } }
                             }
                             MouseArea {
@@ -451,9 +467,9 @@ PanelWindow {
                         Text {
                             width: 40
                             text: dashboard.brightVal + "%"
-                            color: root.walColor8
+                            color: Theme.color8
                             font.pixelSize: 11
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Theme.fontFamily
                             horizontalAlignment: Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
                             height: 24
@@ -475,17 +491,17 @@ PanelWindow {
                         id: timeDisplay
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "12:00:00 AM"
-                        color: root.walColor5
+                        color: Theme.color5
                         font.pixelSize: 40
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Theme.fontFamily
                     }
                     Text {
                         id: dateDisplay
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "01.01.2026, Friday"
-                        color: root.walForeground
+                        color: Theme.foreground
                         font.pixelSize: 14
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Theme.fontFamily
                     }
                 }
             }
@@ -533,23 +549,23 @@ PanelWindow {
                         text: icon
                         color: barColor
                         font.pixelSize: 16
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Theme.fontFamily
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: value + "%"
-                        color: root.walForeground
+                        color: Theme.foreground
                         font.pixelSize: 14
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Theme.fontFamily
                     }
                 }
             }
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: label
-                color: root.walColor8
+                color: Theme.color8
                 font.pixelSize: 11
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Theme.fontFamily
             }
         }
     }
@@ -568,7 +584,7 @@ PanelWindow {
             text: icon
             color: iconColor
             font.pixelSize: 18
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Theme.fontFamily
         }
         MouseArea {
             id: powerMa
@@ -638,7 +654,7 @@ PanelWindow {
     }
     Process {
         id: batProc
-        command: ["bash", "-c", "cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo 100"]
+        command: ["bash", "-c", "bat=$(ls /sys/class/power_supply/ 2>/dev/null | grep -m1 '^BAT'); cat \"/sys/class/power_supply/$bat/capacity\" 2>/dev/null || echo 100"]
         stdout: SplitParser {
             onRead: data => {
                 dashboard.batVal = parseInt(data) || 100
@@ -653,25 +669,33 @@ PanelWindow {
                 else if (cap >= 20) batIcon.text = "󰁼"
                 else if (cap >= 10) batIcon.text = "󰁻"
                 else batIcon.text = "󰁺"
+                dashboard.checkLowBattery()
             }
         }
     }
     Process {
         id: batStatusProc
-        command: ["bash", "-c", "cat /sys/class/power_supply/BAT0/status 2>/dev/null || echo Unknown"]
+        command: ["bash", "-c", "bat=$(ls /sys/class/power_supply/ 2>/dev/null | grep -m1 '^BAT'); cat \"/sys/class/power_supply/$bat/status\" 2>/dev/null || echo Unknown"]
         stdout: SplitParser {
             onRead: data => {
                 var status = data.trim()
+                dashboard.batCharging = (status === "Charging" || status === "Full")
                 if (status === "Charging") {
                     batStatus.text = "Charging"
                     batIcon.text = "󰂄"
                 } else if (status === "Full") {
                     batStatus.text = "Fully charged"
                 } else {
-                    batStatus.text = "Discharging"
+                    batStatus.text = dashboard.batLow ? "Low battery!" : "Discharging"
                 }
+                dashboard.checkLowBattery()
             }
         }
+    }
+    Process {
+        id: batNotifyProc
+        command: ["notify-send", "-u", "critical", "-i", "battery-caution",
+                  "Low battery", "Battery at " + dashboard.batVal + "% — plug in your charger."]
     }
     Process {
         id: volProc
