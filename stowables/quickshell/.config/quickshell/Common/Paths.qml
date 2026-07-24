@@ -12,6 +12,8 @@ Singleton {
     readonly property string config: Quickshell.shellRoot
     readonly property string assets: config + "/assets"
     readonly property string cache: home + "/.cache"
+    // runtime state (app usage etc.) — kept out of the config/git repo
+    readonly property string state: home + "/.local/state/quickshell"
 
     // file:// URL for a path under the config dir, e.g. fileUrl("assets/gifs/current.gif")
     function fileUrl(rel) {

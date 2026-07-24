@@ -148,7 +148,7 @@ ShellRoot {
         for (var key in usage) updated[key] = usage[key]
         updated[app.name] = (updated[app.name] || 0) + 1
         appUsage = updated
-        saveUsageProc.command = ["bash", "-c", "printf '%s' \"$1\" > \"$2\"", "_", JSON.stringify(updated), Paths.config + "/app_usage.json"]
+        saveUsageProc.command = ["bash", "-c", "mkdir -p \"$(dirname \"$2\")\" && printf '%s' \"$1\" > \"$2\"", "_", JSON.stringify(updated), Paths.state + "/app_usage.json"]
         saveUsageProc.running = true
         root.launcherVisible = false
     }
@@ -255,11 +255,9 @@ ShellRoot {
         id: walStepBlur
         command: {
             var wp = root.currentWallpaper
-            if (wp.endsWith(".gif"))
-            return ["bash", "-c", "convert '" + wp + "[0]' -resize 1920x -blur 0x8 -quality 85 ~/wallpapers/.current-blurred.jpg"]
-            else
-            // return ["bash", "-c", "convert '" + wp + "' -resize 1920x -blur 0x8 -quality 85 ~/wallpapers/.current-blurred.jpg"]
-            return ["bash", "-c", "convert '" + wp + "' -resize 1920x -blur 0x8 -quality 85 ~/wallpapers/.current-blurred.jpg"]
+            // gif: blur only the first frame ([0]); pass wp as a positional arg
+            var src = wp.endsWith(".gif") ? "\"$1\"'[0]'" : "\"$1\""
+            return ["bash", "-c", "convert " + src + " -resize 1920x -blur 0x8 -quality 85 ~/wallpapers/.current-blurred.jpg", "_", wp]
         }
         onExited: root.walApplying = false
     }
@@ -272,7 +270,7 @@ ShellRoot {
 
     Process {
         id: loadUsageProc
-        command: ["bash", "-c", "cat \"$1\" 2>/dev/null || echo '{}'", "_", Paths.config + "/app_usage.json"]
+        command: ["bash", "-c", "cat \"$1\" 2>/dev/null || echo '{}'", "_", Paths.state + "/app_usage.json"]
         stdout: SplitParser {
             splitMarker: ""
             onRead: data => {

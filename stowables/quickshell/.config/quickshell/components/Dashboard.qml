@@ -17,6 +17,9 @@ PanelWindow {
     Behavior on margins.right { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 
     property int cpuVal: 0
+    // /proc/stat jiffy counters from the previous sample, for CPU% deltas
+    property real cpuPrevTotal: 0
+    property real cpuPrevIdle: 0
     property int ramVal: 0
     property int diskVal: 0
     property int batVal: 100
@@ -143,7 +146,7 @@ PanelWindow {
                             Layout.fillWidth: true
                             spacing: 5
                             Text {
-                                text: "Sybil"
+                                text: Quickshell.env("USER")
                                 color: Theme.color5
                                 font.pixelSize: 26
                                 font.bold: true
@@ -620,9 +623,11 @@ PanelWindow {
         }
     }
 
+    // Full stats poll — only while the dashboard is visible.
+    // triggeredOnStart gives an instant refresh the moment it opens.
     Timer {
         interval: 2000
-        running: true
+        running: root.dashboardVisible
         repeat: true
         triggeredOnStart: true
         onTriggered: {
@@ -637,10 +642,38 @@ PanelWindow {
         }
     }
 
+    // Battery must keep updating while hidden so low-battery notify still fires.
+    // (Phase 3 replaces this with event-driven UPower.)
+    Timer {
+        interval: 30000
+        running: !root.dashboardVisible
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: {
+            batProc.running = true
+            batStatusProc.running = true
+        }
+    }
+
+    // CPU% from /proc/stat jiffy deltas — cheap read, no `top` process.
     Process {
         id: cpuProc
-        command: ["bash", "-c", "top -bn1 | grep 'Cpu(s)' | awk '{print int($2 + $4)}'"]
-        stdout: SplitParser { onRead: data => dashboard.cpuVal = parseInt(data) || 0 }
+        command: ["head", "-1", "/proc/stat"]
+        stdout: SplitParser {
+            onRead: data => {
+                var f = data.trim().split(/\s+/)  // ["cpu", user, nice, system, idle, iowait, ...]
+                if (f.length < 5 || f[0] !== "cpu") return
+                var total = 0
+                for (var i = 1; i < f.length; i++) total += parseInt(f[i]) || 0
+                var idle = (parseInt(f[4]) || 0) + (parseInt(f[5]) || 0)  // idle + iowait
+                var dTotal = total - dashboard.cpuPrevTotal
+                var dIdle = idle - dashboard.cpuPrevIdle
+                if (dashboard.cpuPrevTotal > 0 && dTotal > 0)
+                    dashboard.cpuVal = Math.round(100 * (dTotal - dIdle) / dTotal)
+                dashboard.cpuPrevTotal = total
+                dashboard.cpuPrevIdle = idle
+            }
+        }
     }
     Process {
         id: ramProc

@@ -14,3 +14,5 @@ utils/tmuxscripts/tmux-paths.md
 vaults.md
 stowables/zathura/.config/zathura/zathurarc
 .venv
+# quickshell runtime state now lives in ~/.local/state/quickshell
+stowables/quickshell/.config/quickshell/app_usage.json

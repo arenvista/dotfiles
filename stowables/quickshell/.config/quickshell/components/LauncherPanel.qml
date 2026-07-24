@@ -485,28 +485,11 @@ PanelWindow {
                                                 sourceSize.width: 180
                                                 sourceSize.height: 120
                                                 visible: false
-                                                property string thumbHash: ""
-                                                Component.onCompleted: {
-                                                    hashProc.wallPath = modelData.path
-                                                    hashProc.imageTarget = wallThumbImage
-                                                    hashProc.running = true
-                                                }
+                                                // md5 of the full path — matches create_thumbs' naming
+                                                property string thumbHash: Qt.md5(modelData.path)
                                                 onStatusChanged: {
                                                     if (status === Image.Error && modelData.path)
                                                         source = "file://" + modelData.path
-                                                }
-                                            }
-                                            Process {
-                                                id: hashProc
-                                                property string wallPath: ""
-                                                property var imageTarget: null
-                                                command: ["bash", "-c", "echo -n '" + wallPath + "' | md5sum | cut -d' ' -f1"]
-                                                stdout: SplitParser {
-                                                    onRead: data => {
-                                                        var hash = data.trim()
-                                                        if (hash.length > 0 && hashProc.imageTarget)
-                                                            hashProc.imageTarget.thumbHash = hash
-                                                    }
                                                 }
                                             }
                                             Rectangle {
