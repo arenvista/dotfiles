@@ -61,13 +61,6 @@ ShellRoot {
     property bool thumbsReady: false
     property bool walApplying: false
 
-    property bool btEnabled: true
-    property var btPairedDevices: []
-    property var btAvailableDevices: []
-    property bool btScanning: false
-    property string btConnectingMAC: ""
-
-
     function toggleLauncher() { launcherVisible = !launcherVisible }
 
     function toggleDashboard() {
@@ -83,37 +76,7 @@ ShellRoot {
 
     function toggleBluetooth() {
         btVisible = !btVisible
-        if (btVisible) { wifiVisible = false; dashboardVisible = false; refreshBluetooth() }
-    }
-
-    function refreshBluetooth() {
-        root.btPairedDevices = []
-        root.btAvailableDevices = []
-        root.btScanning = false
-        root.btConnectingMAC = ""
-        btStatusProc.running = true
-    }
-
-    function connectBt(mac) {
-        root.btConnectingMAC = mac
-        btActionProc.command = ["bash", "-c", "(printf 'trust %s\\nconnect %s\\n' \"$1\" \"$1\"; sleep 2; echo quit) | bluetoothctl 2>/dev/null", "_", mac]
-        btActionProc.running = true
-    }
-
-    function disconnectBt(mac) {
-        btActionProc.command = ["bash", "-c", "printf 'disconnect %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null", "_", mac]
-        btActionProc.running = true
-    }
-
-    function pairBt(mac) {
-        root.btConnectingMAC = mac
-        btActionProc.command = ["bash", "-c", "printf 'pair %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null; sleep 2; printf 'trust %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null; sleep 1; printf 'connect %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null", "_", mac]
-        btActionProc.running = true
-    }
-
-    function forgetBt(mac) {
-        btActionProc.command = ["bash", "-c", "printf 'remove %s\\nquit\\n' \"$1\" | bluetoothctl 2>/dev/null", "_", mac]
-        btActionProc.running = true
+        if (btVisible) { wifiVisible = false; dashboardVisible = false }
     }
 
 
@@ -270,102 +233,6 @@ ShellRoot {
         }
     }
 
-
-    Process {
-        id: btStatusProc
-        command: ["bash", "-c", "echo -e 'show\\nquit' | bluetoothctl 2>/dev/null | grep -q 'Powered: yes' && echo 'true' || echo 'false'"]
-        stdout: SplitParser {
-            onRead: data => root.btEnabled = data.trim() === "true"
-        }
-        onExited: {
-            if (root.btEnabled) btDevicesProc.running = true
-        }
-    }
-
-    Process {
-        id: btToggleOnProc
-        command: ["bash", "-c", "echo -e 'power on\\nquit' | bluetoothctl 2>/dev/null"]
-        onExited: {
-            btToggleDelayTimer.start()
-        }
-    }
-
-    Timer {
-        id: btToggleDelayTimer
-        interval: 1000
-        repeat: false
-        onTriggered: refreshBluetooth()
-    }
-
-    Process {
-        id: btToggleOffProc
-        command: ["bash", "-c", "echo -e 'power off\\nquit' | bluetoothctl 2>/dev/null"]
-        onExited: {
-            root.btEnabled = false
-            root.btPairedDevices = []
-            root.btAvailableDevices = []
-        }
-    }
-
-    Process {
-        id: btDevicesProc
-        command: ["bash", "-c", "echo -e 'devices\\nquit' | bluetoothctl 2>/dev/null | grep '^Device' | while read -r line; do mac=$(echo \"$line\" | awk '{print $2}'); name=$(echo \"$line\" | cut -d' ' -f3-); info=$(echo -e \"info $mac\\nquit\" | bluetoothctl 2>/dev/null); paired=$(echo \"$info\" | grep -oP 'Paired: \\K\\w+'); connected=$(echo \"$info\" | grep -oP 'Connected: \\K\\w+'); if [ \"$paired\" = \"yes\" ]; then echo \"${mac}|${name}|${connected}\"; fi; done"]
-        stdout: SplitParser {
-            onRead: data => {
-                var line = data.trim()
-                if (line.length === 0) return
-                var parts = line.split("|")
-                if (parts.length < 3) return
-                var mac = parts[0]
-                var name = parts[1]
-                var connected = parts[2] === "yes"
-                var current = root.btPairedDevices.slice()
-                for (var i = 0; i < current.length; i++) {
-                    if (current[i].mac === mac) return
-                }
-                current.push({ mac: mac, name: name, connected: connected })
-                root.btPairedDevices = current
-            }
-        }
-    }
-
-    Process {
-        id: btScanProc
-        command: ["bash", "-c", "echo -e 'scan on\\nquit' | bluetoothctl 2>/dev/null; sleep 5; echo -e 'scan off\\nquit' | bluetoothctl 2>/dev/null; sleep 1; echo -e 'devices\\nquit' | bluetoothctl 2>/dev/null | grep '^Device' | while read -r line; do mac=$(echo \"$line\" | awk '{print $2}'); name=$(echo \"$line\" | cut -d' ' -f3-); info=$(echo -e \"info $mac\\nquit\" | bluetoothctl 2>/dev/null); paired=$(echo \"$info\" | grep -oP 'Paired: \\K\\w+'); if [ \"$paired\" != \"yes\" ] && [ -n \"$name\" ] && [ \"$name\" != \"$mac\" ]; then echo \"${mac}|${name}\"; fi; done"]
-        stdout: SplitParser {
-            onRead: data => {
-                var line = data.trim()
-                if (line.length === 0) return
-                var parts = line.split("|")
-                if (parts.length < 2) return
-                var mac = parts[0]
-                var name = parts[1]
-                if (mac.length !== 17) return
-                var current = root.btAvailableDevices.slice()
-                for (var j = 0; j < current.length; j++) {
-                    if (current[j].mac === mac) return
-                }
-                current.push({ mac: mac, name: name })
-                root.btAvailableDevices = current
-            }
-        }
-        onExited: root.btScanning = false
-    }
-
-    Process {
-        id: btActionProc
-        onExited: {
-            root.btConnectingMAC = ""
-            btActionDelayTimer.start()
-        }
-    }
-
-    Timer {
-        id: btActionDelayTimer
-        interval: 1500
-        repeat: false
-        onTriggered: refreshBluetooth()
-    }
 
     Dashboard {}
     MusicPanel {}

@@ -1,6 +1,6 @@
 import Quickshell
 import "../Common"
-import Quickshell.Io
+import Quickshell.Bluetooth
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -15,6 +15,34 @@ PanelWindow {
     implicitWidth: 320
     color: "transparent"
     Behavior on margins.right { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
+
+    // Self-contained Bluetooth state from Quickshell.Bluetooth.
+    readonly property var adapter: Bluetooth.defaultAdapter
+    readonly property bool btEnabled: adapter !== null && adapter.enabled
+    readonly property var allDevices: adapter ? adapter.devices.values : []
+    readonly property var pairedDevices: {
+        var out = []
+        for (var i = 0; i < allDevices.length; i++)
+            if (allDevices[i].paired) out.push(allDevices[i])
+        return out
+    }
+    readonly property var availableDevices: {
+        var out = []
+        for (var i = 0; i < allDevices.length; i++) {
+            var d = allDevices[i]
+            if (!d.paired && (d.deviceName || d.name)) out.push(d)
+        }
+        return out
+    }
+    readonly property bool btScanning: adapter !== null && adapter.discovering
+
+    // Stop discovery when the panel is dismissed.
+    Connections {
+        target: root
+        function onBtVisibleChanged() {
+            if (!root.btVisible && btPanel.adapter) btPanel.adapter.discovering = false
+        }
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -41,13 +69,8 @@ PanelWindow {
                 }
                 Item { Layout.fillWidth: true }
                 ToggleSwitch {
-                    checked: root.btEnabled
-                    onToggled: {
-                        if (root.btEnabled)
-                            btToggleOffProc.running = true
-                        else
-                            btToggleOnProc.running = true
-                    }
+                    checked: btPanel.btEnabled
+                    onToggled: if (btPanel.adapter) btPanel.adapter.enabled = !btPanel.adapter.enabled
                 }
             }
 
@@ -55,7 +78,7 @@ PanelWindow {
                 text: "Paired Devices"
                 color: Theme.color8
                 font.pixelSize: 11
-                visible: root.btEnabled
+                visible: btPanel.btEnabled
             }
 
             Card {
@@ -63,13 +86,13 @@ PanelWindow {
                 Layout.preferredHeight: 180
                 radius: 12
                 clip: true
-                visible: root.btEnabled
+                visible: btPanel.btEnabled
                 ListView {
                     anchors.fill: parent
                     anchors.margins: 6
                     spacing: 4
                     boundsBehavior: Flickable.StopAtBounds
-                    model: root.btPairedDevices
+                    model: btPanel.pairedDevices
                     delegate: Rectangle {
                         width: parent ? parent.width : 0
                         height: 48
@@ -90,22 +113,22 @@ PanelWindow {
                                 Layout.fillWidth: true
                                 spacing: 1
                                 StyledText {
-                                    text: modelData.name
+                                    text: modelData.deviceName || modelData.name || modelData.address
                                     color: modelData.connected ? Theme.color2 : Theme.foreground
                                     font.pixelSize: 12
                                     font.bold: modelData.connected
                                     elide: Text.ElideRight
                                     Layout.fillWidth: true
                                 }
-                                Text {
+                                StyledText {
                                     text: {
-                                        if (root.btConnectingMAC === modelData.mac) return "Connecting..."
-                                        if (modelData.connected) return "Connected"
+                                        if (modelData.state === BluetoothDeviceState.Connecting) return "Connecting..."
+                                        if (modelData.connected)
+                                            return "Connected" + (modelData.batteryAvailable ? " · " + Math.round(modelData.battery * 100) + "%" : "")
                                         return "Paired"
                                     }
                                     color: Theme.color8
                                     font.pixelSize: 9
-                                    font.family: Theme.fontFamily
                                 }
                             }
                             Rectangle {
@@ -124,12 +147,7 @@ PanelWindow {
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: {
-                                        if (modelData.connected)
-                                            root.disconnectBt(modelData.mac)
-                                        else
-                                            root.connectBt(modelData.mac)
-                                    }
+                                    onClicked: modelData.connected ? modelData.disconnect() : modelData.connect()
                                 }
                             }
                             Rectangle {
@@ -148,7 +166,7 @@ PanelWindow {
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: root.forgetBt(modelData.mac)
+                                    onClicked: modelData.forget()
                                 }
                             }
                         }
@@ -157,19 +175,14 @@ PanelWindow {
                             anchors.fill: parent
                             hoverEnabled: true
                             z: -1
-                            onClicked: {
-                                if (modelData.connected)
-                                    root.disconnectBt(modelData.mac)
-                                else
-                                    root.connectBt(modelData.mac)
-                            }
+                            onClicked: modelData.connected ? modelData.disconnect() : modelData.connect()
                         }
                     }
                     ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                 }
                 StyledText {
                     anchors.centerIn: parent
-                    visible: root.btPairedDevices.length === 0
+                    visible: btPanel.pairedDevices.length === 0
                     text: "No paired devices"
                     color: Theme.color8
                     font.pixelSize: 12
@@ -178,7 +191,7 @@ PanelWindow {
 
             RowLayout {
                 Layout.fillWidth: true
-                visible: root.btEnabled
+                visible: btPanel.btEnabled
                 StyledText {
                     text: "Available Devices"
                     color: Theme.color8
@@ -192,7 +205,7 @@ PanelWindow {
                     color: btScanBtnMa.containsMouse ? Theme.alpha(Theme.color5, 0.2) : Qt.rgba(0, 0, 0, 0.3)
                     StyledText {
                         anchors.centerIn: parent
-                        text: root.btScanning ? "Scanning" : "Scan"
+                        text: btPanel.btScanning ? "Scanning" : "Scan"
                         color: Theme.color5
                         font.pixelSize: 10
                     }
@@ -201,13 +214,7 @@ PanelWindow {
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            if (!root.btScanning) {
-                                root.btScanning = true
-                                root.btAvailableDevices = []
-                                btScanProc.running = true
-                            }
-                        }
+                        onClicked: if (btPanel.adapter) btPanel.adapter.discovering = !btPanel.adapter.discovering
                     }
                 }
             }
@@ -217,13 +224,13 @@ PanelWindow {
                 Layout.fillHeight: true
                 radius: 12
                 clip: true
-                visible: root.btEnabled
+                visible: btPanel.btEnabled
                 ListView {
                     anchors.fill: parent
                     anchors.margins: 6
                     spacing: 4
                     boundsBehavior: Flickable.StopAtBounds
-                    model: root.btAvailableDevices
+                    model: btPanel.availableDevices
                     delegate: Rectangle {
                         width: parent ? parent.width : 0
                         height: 44
@@ -241,14 +248,14 @@ PanelWindow {
                                 font.pixelSize: 16
                             }
                             StyledText {
-                                text: modelData.name
+                                text: modelData.deviceName || modelData.name || modelData.address
                                 color: Theme.foreground
                                 font.pixelSize: 12
                                 elide: Text.ElideRight
                                 Layout.fillWidth: true
                             }
                             StyledText {
-                                visible: root.btConnectingMAC === modelData.mac
+                                visible: modelData.pairing || modelData.state === BluetoothDeviceState.Connecting
                                 text: "..."
                                 color: Theme.color8
                                 font.pixelSize: 12
@@ -259,21 +266,21 @@ PanelWindow {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: root.pairBt(modelData.mac)
+                            onClicked: modelData.pair()
                         }
                     }
                     ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                 }
                 StyledText {
                     anchors.centerIn: parent
-                    visible: root.btAvailableDevices.length === 0 && !root.btScanning
+                    visible: btPanel.availableDevices.length === 0 && !btPanel.btScanning
                     text: "Press Scan to find devices"
                     color: Theme.color8
                     font.pixelSize: 11
                 }
                 StyledText {
                     anchors.centerIn: parent
-                    visible: root.btScanning
+                    visible: btPanel.btScanning && btPanel.availableDevices.length === 0
                     text: "Scanning..."
                     color: Theme.color8
                     font.pixelSize: 11
@@ -283,7 +290,7 @@ PanelWindow {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                visible: !root.btEnabled
+                visible: !btPanel.btEnabled
                 color: "transparent"
                 StyledText {
                     anchors.centerIn: parent
