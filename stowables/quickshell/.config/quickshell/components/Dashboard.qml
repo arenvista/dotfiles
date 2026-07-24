@@ -6,7 +6,7 @@ import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
+import Quickshell.Widgets
 
 PanelWindow {
     id: dashboard
@@ -129,39 +129,28 @@ PanelWindow {
                                 border.width: 3
                                 border.color: Theme.color5
                             }
-                            Image {
-                                id: pfpImage
-                                anchors.centerIn: parent
-                                width: 68
-                                height: 68
-                                source: Paths.fileUrl("assets/pfps/pfp.jpg")
-                                fillMode: Image.PreserveAspectCrop
-                                smooth: true
-                                cache: false
-                                sourceSize.width: 256
-                                sourceSize.height: 256
-                                visible: false
-                                property int reloadTrigger: 0
-                                function reload() {
-                                    reloadTrigger++
-                                    source = ""
-                                    source = Paths.fileUrl("assets/pfps/pfp.jpg") + "?" + reloadTrigger
-                                }
-                            }
-                            Rectangle {
-                                id: pfpMask
+                            ClippingRectangle {
                                 anchors.centerIn: parent
                                 width: 68
                                 height: 68
                                 radius: 34
-                                visible: false
-                            }
-                            OpacityMask {
-                                anchors.centerIn: parent
-                                width: 68
-                                height: 68
-                                source: pfpImage
-                                maskSource: pfpMask
+                                color: "transparent"
+                                Image {
+                                    id: pfpImage
+                                    anchors.fill: parent
+                                    source: Paths.fileUrl("assets/pfps/pfp.jpg")
+                                    fillMode: Image.PreserveAspectCrop
+                                    smooth: true
+                                    cache: false
+                                    sourceSize.width: 256
+                                    sourceSize.height: 256
+                                    property int reloadTrigger: 0
+                                    function reload() {
+                                        reloadTrigger++
+                                        source = ""
+                                        source = Paths.fileUrl("assets/pfps/pfp.jpg") + "?" + reloadTrigger
+                                    }
+                                }
                             }
                             Rectangle {
                                 anchors.right: parent.right
@@ -251,32 +240,20 @@ PanelWindow {
                                                 border.color: thumbMa.containsMouse ? Theme.color13 : Theme.color5
                                                 Behavior on border.color { ColorAnimation { duration: 150 } }
                                             }
-                                            Image {
-                                                id: thumbImg
-                                                anchors.centerIn: parent
-                                                width: 44
-                                                height: 44
-                                                source: "file://" + modelData
-                                                fillMode: Image.PreserveAspectCrop
-                                                smooth: true
-                                                sourceSize.width: 128
-                                                sourceSize.height: 128
-                                                visible: false
-                                            }
-                                            Rectangle {
-                                                id: thumbMask
+                                            ClippingRectangle {
                                                 anchors.centerIn: parent
                                                 width: 44
                                                 height: 44
                                                 radius: 22
-                                                visible: false
-                                            }
-                                            OpacityMask {
-                                                anchors.centerIn: parent
-                                                width: 44
-                                                height: 44
-                                                source: thumbImg
-                                                maskSource: thumbMask
+                                                color: "transparent"
+                                                Image {
+                                                    anchors.fill: parent
+                                                    source: "file://" + modelData
+                                                    fillMode: Image.PreserveAspectCrop
+                                                    smooth: true
+                                                    sourceSize.width: 128
+                                                    sourceSize.height: 128
+                                                }
                                             }
                                             MouseArea {
                                                 id: thumbMa

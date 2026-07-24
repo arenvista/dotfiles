@@ -5,7 +5,7 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
+import Quickshell.Widgets
 
 PanelWindow {
     id: launcherPanel
@@ -456,34 +456,27 @@ PanelWindow {
                                                 color: Qt.rgba(0.3, 0.3, 0.3, 0.3)
                                                 visible: wallThumbImage.status !== Image.Ready
                                             }
-                                            Image {
-                                                id: wallThumbImage
-                                                anchors.fill: parent
-                                                source: root.thumbsReady ? "file://" + Paths.cache + "/wallpaper-thumbs/" + wallThumbImage.thumbHash + ".jpg" : ""
-                                                fillMode: Image.PreserveAspectCrop
-                                                smooth: false
-                                                asynchronous: true
-                                                cache: true
-                                                sourceSize.width: 180
-                                                sourceSize.height: 120
-                                                visible: false
-                                                // md5 of the full path — matches create_thumbs' naming
-                                                property string thumbHash: Qt.md5(modelData.path)
-                                                onStatusChanged: {
-                                                    if (status === Image.Error && modelData.path)
-                                                        source = "file://" + modelData.path
-                                                }
-                                            }
-                                            Rectangle {
-                                                id: wallThumbMaskRect
+                                            ClippingRectangle {
                                                 anchors.fill: parent
                                                 radius: 7
-                                                visible: false
-                                            }
-                                            OpacityMask {
-                                                anchors.fill: parent
-                                                source: wallThumbImage
-                                                maskSource: wallThumbMaskRect
+                                                color: "transparent"
+                                                Image {
+                                                    id: wallThumbImage
+                                                    anchors.fill: parent
+                                                    source: root.thumbsReady ? "file://" + Paths.cache + "/wallpaper-thumbs/" + wallThumbImage.thumbHash + ".jpg" : ""
+                                                    fillMode: Image.PreserveAspectCrop
+                                                    smooth: false
+                                                    asynchronous: true
+                                                    cache: true
+                                                    sourceSize.width: 180
+                                                    sourceSize.height: 120
+                                                    // md5 of the full path — matches create_thumbs' naming
+                                                    property string thumbHash: Qt.md5(modelData.path)
+                                                    onStatusChanged: {
+                                                        if (status === Image.Error && modelData.path)
+                                                            source = "file://" + modelData.path
+                                                    }
+                                                }
                                             }
                                             Rectangle {
                                                 visible: modelData.path === root.currentWallpaper
