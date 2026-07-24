@@ -153,37 +153,15 @@ ShellRoot {
 
     Process {
         id: thumbGenProc
-        command: ["bash", "-c", "exec \"$1/scripts/create_thumbs.sh\"", "_", Paths.config]
+        command: ["uv", "run", Paths.config + "/scripts/create_thumbs.py"]
         onExited: root.thumbsReady = true
     }
 
     Process {
         id: applyWallProc
-        // Theme reloads colors itself via a watched FileView; just kick off the
-        // "apply theme everywhere" chain (waybar/swaync/blur).
-        onExited: walStepWaybar.running = true
-    }
-
-    Process {
-        id: walStepWaybar
-        command: ["bash", "-c", "killall waybar; waybar &"]
-        onExited: walStepSwaync.running = true
-    }
-
-    Process {
-        id: walStepSwaync
-        command: ["bash", "-c", "cp ~/.cache/wal/colors-swaync.css ~/.config/swaync/style.css && pkill -SIGUSR1 swaync"]
-        onExited: walStepBlur.running = true
-    }
-
-    Process {
-        id: walStepBlur
-        command: {
-            var wp = root.currentWallpaper
-            // gif: blur only the first frame ([0]); pass wp as a positional arg
-            var src = wp.endsWith(".gif") ? "\"$1\"'[0]'" : "\"$1\""
-            return ["bash", "-c", "convert " + src + " -resize 1920x -blur 0x8 -quality 85 ~/wallpapers/.current-blurred.jpg", "_", wp]
-        }
+        // applwal.sh does the whole "apply theme everywhere" chain (swww, wal,
+        // waybar, swaync, colorizers, blurred copy). Theme reloads colors itself
+        // via a watched FileView, so we only clear the applying flag here.
         onExited: root.walApplying = false
     }
 
