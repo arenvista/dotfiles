@@ -28,60 +28,39 @@ PanelWindow {
 
             RowLayout {
                 Layout.fillWidth: true
-                Text {
+                StyledText {
                     text: "󰂯"
                     color: Theme.color5
                     font.pixelSize: 22
-                    font.family: Theme.fontFamily
                 }
-                Text {
+                StyledText {
                     text: "Bluetooth"
                     color: Theme.color5
                     font.pixelSize: 16
                     font.bold: true
-                    font.family: Theme.fontFamily
                 }
                 Item { Layout.fillWidth: true }
-                Rectangle {
-                    width: 44
-                    height: 24
-                    radius: 12
-                    color: root.btEnabled ? Theme.color5 : Qt.rgba(0.3, 0.3, 0.3, 0.5)
-                    Behavior on color { ColorAnimation { duration: 200 } }
-                    Rectangle {
-                        width: 20
-                        height: 20
-                        radius: 10
-                        y: 2
-                        x: root.btEnabled ? 22 : 2
-                        color: Theme.background
-                        Behavior on x { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            if (root.btEnabled)
-                                btToggleOffProc.running = true
-                            else
-                                btToggleOnProc.running = true
-                        }
+                ToggleSwitch {
+                    checked: root.btEnabled
+                    onToggled: {
+                        if (root.btEnabled)
+                            btToggleOffProc.running = true
+                        else
+                            btToggleOnProc.running = true
                     }
                 }
             }
 
-            Text {
+            StyledText {
                 text: "Paired Devices"
                 color: Theme.color8
                 font.pixelSize: 11
-                font.family: Theme.fontFamily
                 visible: root.btEnabled
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 180
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 12
                 clip: true
                 visible: root.btEnabled
@@ -102,21 +81,19 @@ PanelWindow {
                             anchors.leftMargin: 10
                             anchors.rightMargin: 10
                             spacing: 10
-                            Text {
+                            StyledText {
                                 text: modelData.connected ? "󰂱" : "󰂲"
                                 color: modelData.connected ? Theme.color2 : Theme.color8
                                 font.pixelSize: 18
-                                font.family: Theme.fontFamily
                             }
                             ColumnLayout {
                                 Layout.fillWidth: true
                                 spacing: 1
-                                Text {
+                                StyledText {
                                     text: modelData.name
                                     color: modelData.connected ? Theme.color2 : Theme.foreground
                                     font.pixelSize: 12
                                     font.bold: modelData.connected
-                                    font.family: Theme.fontFamily
                                     elide: Text.ElideRight
                                     Layout.fillWidth: true
                                 }
@@ -136,12 +113,11 @@ PanelWindow {
                                 height: 28
                                 radius: 8
                                 color: btConnBtnMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
-                                Text {
+                                StyledText {
                                     anchors.centerIn: parent
                                     text: modelData.connected ? "󰅖" : "󰐕"
                                     color: modelData.connected ? Theme.color1 : Theme.color5
                                     font.pixelSize: 12
-                                    font.family: Theme.fontFamily
                                 }
                                 MouseArea {
                                     id: btConnBtnMa
@@ -161,12 +137,11 @@ PanelWindow {
                                 height: 28
                                 radius: 8
                                 color: btForgetMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
-                                Text {
+                                StyledText {
                                     anchors.centerIn: parent
                                     text: "󰆴"
                                     color: Theme.color8
                                     font.pixelSize: 12
-                                    font.family: Theme.fontFamily
                                 }
                                 MouseArea {
                                     id: btForgetMa
@@ -192,24 +167,22 @@ PanelWindow {
                     }
                     ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                 }
-                Text {
+                StyledText {
                     anchors.centerIn: parent
                     visible: root.btPairedDevices.length === 0
                     text: "No paired devices"
                     color: Theme.color8
                     font.pixelSize: 12
-                    font.family: Theme.fontFamily
                 }
             }
 
             RowLayout {
                 Layout.fillWidth: true
                 visible: root.btEnabled
-                Text {
+                StyledText {
                     text: "Available Devices"
                     color: Theme.color8
                     font.pixelSize: 11
-                    font.family: Theme.fontFamily
                 }
                 Item { Layout.fillWidth: true }
                 Rectangle {
@@ -217,12 +190,11 @@ PanelWindow {
                     height: 24
                     radius: 6
                     color: btScanBtnMa.containsMouse ? Theme.alpha(Theme.color5, 0.2) : Qt.rgba(0, 0, 0, 0.3)
-                    Text {
+                    StyledText {
                         anchors.centerIn: parent
                         text: root.btScanning ? "Scanning" : "Scan"
                         color: Theme.color5
                         font.pixelSize: 10
-                        font.family: Theme.fontFamily
                     }
                     MouseArea {
                         id: btScanBtnMa
@@ -240,10 +212,9 @@ PanelWindow {
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 12
                 clip: true
                 visible: root.btEnabled
@@ -264,26 +235,23 @@ PanelWindow {
                             anchors.leftMargin: 10
                             anchors.rightMargin: 10
                             spacing: 10
-                            Text {
+                            StyledText {
                                 text: "󰂲"
                                 color: Theme.color8
                                 font.pixelSize: 16
-                                font.family: Theme.fontFamily
                             }
-                            Text {
+                            StyledText {
                                 text: modelData.name
                                 color: Theme.foreground
                                 font.pixelSize: 12
-                                font.family: Theme.fontFamily
                                 elide: Text.ElideRight
                                 Layout.fillWidth: true
                             }
-                            Text {
+                            StyledText {
                                 visible: root.btConnectingMAC === modelData.mac
                                 text: "..."
                                 color: Theme.color8
                                 font.pixelSize: 12
-                                font.family: Theme.fontFamily
                             }
                         }
                         MouseArea {
@@ -296,21 +264,19 @@ PanelWindow {
                     }
                     ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                 }
-                Text {
+                StyledText {
                     anchors.centerIn: parent
                     visible: root.btAvailableDevices.length === 0 && !root.btScanning
                     text: "Press Scan to find devices"
                     color: Theme.color8
                     font.pixelSize: 11
-                    font.family: Theme.fontFamily
                 }
-                Text {
+                StyledText {
                     anchors.centerIn: parent
                     visible: root.btScanning
                     text: "Scanning..."
                     color: Theme.color8
                     font.pixelSize: 11
-                    font.family: Theme.fontFamily
                 }
             }
 
@@ -319,12 +285,11 @@ PanelWindow {
                 Layout.fillHeight: true
                 visible: !root.btEnabled
                 color: "transparent"
-                Text {
+                StyledText {
                     anchors.centerIn: parent
                     text: "Bluetooth is off"
                     color: Theme.color8
                     font.pixelSize: 13
-                    font.family: Theme.fontFamily
                 }
             }
         }

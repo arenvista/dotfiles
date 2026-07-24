@@ -28,76 +28,53 @@ PanelWindow {
 
             RowLayout {
                 Layout.fillWidth: true
-                Text {
+                StyledText {
                     text: "󰤨"
                     color: Theme.color5
                     font.pixelSize: 22
-                    font.family: Theme.fontFamily
                 }
-                Text {
+                StyledText {
                     text: "Wi-Fi"
                     color: Theme.color5
                     font.pixelSize: 16
                     font.bold: true
-                    font.family: Theme.fontFamily
                 }
                 Item { Layout.fillWidth: true }
-                Rectangle {
-                    width: 44
-                    height: 24
-                    radius: 12
-                    color: root.wifiEnabled ? Theme.color5 : Qt.rgba(0.3, 0.3, 0.3, 0.5)
-                    Behavior on color { ColorAnimation { duration: 200 } }
-                    Rectangle {
-                        width: 20
-                        height: 20
-                        radius: 10
-                        y: 2
-                        x: root.wifiEnabled ? 22 : 2
-                        color: Theme.background
-                        Behavior on x { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: wifiToggleProc.running = true
-                    }
+                ToggleSwitch {
+                    checked: root.wifiEnabled
+                    onToggled: wifiToggleProc.running = true
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 radius: 12
-                color: Qt.rgba(0, 0, 0, 0.3)
                 visible: root.wifiCurrentSSID !== ""
                 RowLayout {
                     anchors.fill: parent
                     anchors.margins: 12
                     spacing: 10
-                    Text {
+                    StyledText {
                         text: root.wifiSignal > 66 ? "󰤨" : root.wifiSignal > 33 ? "󰤥" : "󰤟"
                         color: Theme.color2
                         font.pixelSize: 18
-                        font.family: Theme.fontFamily
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 2
-                        Text {
+                        StyledText {
                             text: root.wifiCurrentSSID
                             color: Theme.color2
                             font.pixelSize: 13
                             font.bold: true
-                            font.family: Theme.fontFamily
                             elide: Text.ElideRight
                             Layout.fillWidth: true
                         }
-                        Text {
+                        StyledText {
                             text: "Connected · " + root.wifiSignal + "%"
                             color: Theme.color8
                             font.pixelSize: 10
-                            font.family: Theme.fontFamily
                         }
                     }
                     Rectangle {
@@ -105,12 +82,11 @@ PanelWindow {
                         height: 28
                         radius: 8
                         color: wifiDiscMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
-                        Text {
+                        StyledText {
                             anchors.centerIn: parent
                             text: "󰅖"
                             color: Theme.color1
                             font.pixelSize: 12
-                            font.family: Theme.fontFamily
                         }
                         MouseArea {
                             id: wifiDiscMa
@@ -123,22 +99,20 @@ PanelWindow {
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 36
                 radius: 10
-                color: Qt.rgba(0, 0, 0, 0.3)
                 visible: root.wifiPasswordSSID !== ""
                 RowLayout {
                     anchors.fill: parent
                     anchors.leftMargin: 12
                     anchors.rightMargin: 12
                     spacing: 8
-                    Text {
+                    StyledText {
                         text: "󰌾"
                         color: Theme.color8
                         font.pixelSize: 12
-                        font.family: Theme.fontFamily
                     }
                     TextInput {
                         id: wifiPassInput
@@ -177,13 +151,12 @@ PanelWindow {
                         height: 24
                         radius: 6
                         color: Theme.color5
-                        Text {
+                        StyledText {
                             anchors.centerIn: parent
                             text: "→"
                             color: Theme.background
                             font.pixelSize: 11
                             font.bold: true
-                            font.family: Theme.fontFamily
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -205,11 +178,10 @@ PanelWindow {
             RowLayout {
                 Layout.fillWidth: true
                 visible: root.wifiEnabled
-                Text {
+                StyledText {
                     text: "Available Networks"
                     color: Theme.color8
                     font.pixelSize: 11
-                    font.family: Theme.fontFamily
                 }
                 Item { Layout.fillWidth: true }
                 Rectangle {
@@ -217,12 +189,11 @@ PanelWindow {
                     height: 24
                     radius: 6
                     color: wifiRefreshMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
-                    Text {
+                    StyledText {
                         anchors.centerIn: parent
                         text: root.wifiScanning ? "󰑓" : "󰑐"
                         color: Theme.color8
                         font.pixelSize: 12
-                        font.family: Theme.fontFamily
                     }
                     MouseArea {
                         id: wifiRefreshMa
@@ -236,10 +207,9 @@ PanelWindow {
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 12
                 clip: true
                 ListView {
@@ -259,28 +229,25 @@ PanelWindow {
                             anchors.leftMargin: 10
                             anchors.rightMargin: 10
                             spacing: 10
-                            Text {
+                            StyledText {
                                 text: modelData.signal > 66 ? "󰤨" : modelData.signal > 33 ? "󰤥" : "󰤟"
                                 color: Theme.color5
                                 font.pixelSize: 16
-                                font.family: Theme.fontFamily
                             }
                             ColumnLayout {
                                 Layout.fillWidth: true
                                 spacing: 1
-                                Text {
+                                StyledText {
                                     text: modelData.ssid
                                     color: Theme.foreground
                                     font.pixelSize: 12
-                                    font.family: Theme.fontFamily
                                     elide: Text.ElideRight
                                     Layout.fillWidth: true
                                 }
-                                Text {
+                                StyledText {
                                     text: (modelData.security !== "" && modelData.security !== "--" ? "󰌾 " + modelData.security : "Open") + " · " + modelData.signal + "%"
                                     color: Theme.color8
                                     font.pixelSize: 9
-                                    font.family: Theme.fontFamily
                                 }
                             }
                         }
@@ -304,21 +271,19 @@ PanelWindow {
                     }
                     ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                 }
-                Text {
+                StyledText {
                     anchors.centerIn: parent
                     visible: root.wifiNetworks.length === 0 && !root.wifiScanning
                     text: root.wifiEnabled ? "No networks found" : "Wi-Fi is off"
                     color: Theme.color8
                     font.pixelSize: 12
-                    font.family: Theme.fontFamily
                 }
-                Text {
+                StyledText {
                     anchors.centerIn: parent
                     visible: root.wifiScanning
                     text: "Scanning..."
                     color: Theme.color8
                     font.pixelSize: 12
-                    font.family: Theme.fontFamily
                 }
             }
         }

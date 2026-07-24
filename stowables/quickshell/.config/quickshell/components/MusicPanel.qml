@@ -122,21 +122,19 @@ PanelWindow {
                         Layout.fillHeight: true
                         spacing: 6
 
-                        Text {
+                        StyledText {
                             text: musicPanel.trackTitle || "Nothing is playing"
                             color: Theme.color5
                             font.pixelSize: 15
                             font.bold: true
-                            font.family: Theme.fontFamily
                             Layout.fillWidth: true
                             elide: Text.ElideRight
                         }
 
-                        Text {
+                        StyledText {
                             text: musicPanel.trackArtist || ""
                             color: Theme.foreground
                             font.pixelSize: 12
-                            font.family: Theme.fontFamily
                             opacity: 0.7
                             Layout.fillWidth: true
                             elide: Text.ElideRight
@@ -150,18 +148,16 @@ PanelWindow {
                             spacing: 8
                             visible: musicPanel.hasTrack
 
-                            Text {
+                            StyledText {
                                 text: musicPanel.formatTime(musicPanel.position)
                                 color: Theme.color8
                                 font.pixelSize: 10
-                                font.family: Theme.fontFamily
                             }
 
-                            Rectangle {
+                            Card {
                                 Layout.fillWidth: true
                                 height: 4
                                 radius: 2
-                                color: Qt.rgba(0, 0, 0, 0.3)
 
                                 Rectangle {
                                     width: musicPanel.length > 0 ? parent.width * (musicPanel.position / musicPanel.length) : 0
@@ -183,11 +179,10 @@ PanelWindow {
                                 }
                             }
 
-                            Text {
+                            StyledText {
                                 text: musicPanel.formatTime(musicPanel.length)
                                 color: Theme.color8
                                 font.pixelSize: 10
-                                font.family: Theme.fontFamily
                             }
                         }
 
@@ -202,12 +197,11 @@ PanelWindow {
                                 radius: 8
                                 color: prevMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
 
-                                Text {
+                                StyledText {
                                     anchors.centerIn: parent
                                     text: "󰒮"
                                     color: Theme.foreground
                                     font.pixelSize: 16
-                                    font.family: Theme.fontFamily
                                 }
 
                                 MouseArea {
@@ -225,12 +219,11 @@ PanelWindow {
                                 radius: 20
                                 color: Theme.color5
 
-                                Text {
+                                StyledText {
                                     anchors.centerIn: parent
                                     text: musicPanel.playerStatus === "Playing" ? "󰏤" : "󰐊"
                                     color: Theme.background
                                     font.pixelSize: 18
-                                    font.family: Theme.fontFamily
                                 }
 
                                 MouseArea {
@@ -246,12 +239,11 @@ PanelWindow {
                                 radius: 8
                                 color: nextMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
 
-                                Text {
+                                StyledText {
                                     anchors.centerIn: parent
                                     text: "󰒭"
                                     color: Theme.foreground
                                     font.pixelSize: 16
-                                    font.family: Theme.fontFamily
                                 }
 
                                 MouseArea {
@@ -307,12 +299,11 @@ PanelWindow {
                             color: gifEditMa.containsMouse ? Qt.rgba(1,1,1,0.2) : Qt.rgba(0,0,0,0.3)
                             Behavior on color { ColorAnimation { duration: 150 } }
 
-                            Text {
+                            StyledText {
                                 anchors.centerIn: parent
                                 text: "󰏫"
                                 color: Theme.foreground
                                 font.pixelSize: 12
-                                font.family: Theme.fontFamily
                             }
 
                             MouseArea {
@@ -366,21 +357,19 @@ PanelWindow {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 20
 
-                        Text {
+                        StyledText {
                             text: "Select Animation"
                             color: Theme.color5
                             font.pixelSize: 12
                             font.bold: true
-                            font.family: Theme.fontFamily
                             Layout.fillWidth: true
                         }
 
-                        Text {
+                        StyledText {
                             visible: musicPanel.gifFiles.length > 0
                             text: (musicPanel.previewGifIndex + 1) + " / " + musicPanel.gifFiles.length
                             color: Theme.color8
                             font.pixelSize: 10
-                            font.family: Theme.fontFamily
                             opacity: 0.6
                         }
 
@@ -393,12 +382,11 @@ PanelWindow {
                             color: dropCloseMa.containsMouse ? Theme.alpha(Theme.color1, 0.5) : Qt.rgba(1,1,1,0.08)
                             Behavior on color { ColorAnimation { duration: 150 } }
 
-                            Text {
+                            StyledText {
                                 anchors.centerIn: parent
                                 text: "󰅖"
                                 color: dropCloseMa.containsMouse ? Theme.color1 : Theme.foreground
                                 font.pixelSize: 10
-                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 
@@ -454,23 +442,21 @@ PanelWindow {
                                 }
                             }
 
-                            Text {
+                            StyledText {
                                 anchors.centerIn: parent
                                 visible: musicPanel.gifFiles.length === 0 && musicPanel.gifsLoaded
                                 text: "No gifs found"
                                 color: Theme.color8
                                 font.pixelSize: 11
-                                font.family: Theme.fontFamily
                                 opacity: 0.5
                             }
 
-                            Text {
+                            StyledText {
                                 anchors.centerIn: parent
                                 visible: !musicPanel.gifsLoaded && musicPanel.gifSelectorOpen
                                 text: "Loading..."
                                 color: Theme.color8
                                 font.pixelSize: 11
-                                font.family: Theme.fontFamily
                                 opacity: 0.5
                             }
 
@@ -484,13 +470,12 @@ PanelWindow {
                                 radius: 10
                                 color: Qt.rgba(0,0,0,0.6)
 
-                                Text {
+                                StyledText {
                                     id: nameLabel
                                     anchors.centerIn: parent
                                     text: (musicPanel.gifFiles.length > 0 && musicPanel.previewGifIndex < musicPanel.gifFiles.length) ? musicPanel.gifFileName(musicPanel.gifFiles[musicPanel.previewGifIndex]) : ""
                                     color: Theme.foreground
                                     font.pixelSize: 9
-                                    font.family: Theme.fontFamily
                                     opacity: 0.9
                                 }
                             }
@@ -513,12 +498,11 @@ PanelWindow {
                             Behavior on color { ColorAnimation { duration: 150 } }
                             Behavior on border.color { ColorAnimation { duration: 150 } }
 
-                            Text {
+                            StyledText {
                                 anchors.centerIn: parent
                                 text: "󰅁"
                                 color: prevGifMa.containsMouse ? Theme.color5 : Theme.foreground
                                 font.pixelSize: 16
-                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 
@@ -543,12 +527,11 @@ PanelWindow {
                             Behavior on color { ColorAnimation { duration: 150 } }
                             Behavior on border.color { ColorAnimation { duration: 150 } }
 
-                            Text {
+                            StyledText {
                                 anchors.centerIn: parent
                                 text: "󰅂"
                                 color: nextGifMa.containsMouse ? Theme.color5 : Theme.foreground
                                 font.pixelSize: 16
-                                font.family: Theme.fontFamily
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
 

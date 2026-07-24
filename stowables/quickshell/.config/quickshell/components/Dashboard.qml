@@ -51,11 +51,10 @@ PanelWindow {
             anchors.margins: 20
             spacing: 15
 
-            Rectangle {
+            Card {
                 id: profileSection
                 Layout.fillWidth: true
                 Layout.preferredHeight: pfpPickerOpen ? 280 : 100
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 15
                 clip: true
                 property bool pfpPickerOpen: false
@@ -122,12 +121,11 @@ PanelWindow {
                                 color: Theme.color5
                                 border.width: 2
                                 border.color: Theme.background
-                                Text {
+                                StyledText {
                                     anchors.centerIn: parent
                                     text: "󰏫"
                                     color: Theme.background
                                     font.pixelSize: 12
-                                    font.family: Theme.fontFamily
                                 }
                             }
                             MouseArea {
@@ -145,38 +143,34 @@ PanelWindow {
                         ColumnLayout {
                             Layout.fillWidth: true
                             spacing: 5
-                            Text {
+                            StyledText {
                                 text: Quickshell.env("USER")
                                 color: Theme.color5
                                 font.pixelSize: 26
                                 font.bold: true
-                                font.family: Theme.fontFamily
                             }
-                            Text {
+                            StyledText {
                                 id: uptimeText
                                 text: "up ..."
                                 color: Theme.foreground
                                 font.pixelSize: 12
-                                font.family: Theme.fontFamily
                             }
                         }
                     }
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 10
                         visible: profileSection.pfpPickerOpen
                         ColumnLayout {
                             anchors.fill: parent
                             anchors.margins: 10
                             spacing: 8
-                            Text {
+                            StyledText {
                                 text: "Choose Avatar"
                                 color: Theme.color5
                                 font.pixelSize: 12
                                 font.bold: true
-                                font.family: Theme.fontFamily
                                 Layout.alignment: Qt.AlignHCenter
                             }
                             Flickable {
@@ -275,10 +269,9 @@ PanelWindow {
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 15
                 Row {
                     anchors.centerIn: parent
@@ -291,46 +284,41 @@ PanelWindow {
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 70
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 15
                 RowLayout {
                     anchors.fill: parent
                     anchors.margins: 15
                     spacing: 15
-                    Text {
+                    StyledText {
                         id: batIcon
                         text: "󰁹"
                         color: dashboard.batLow ? Theme.color1 : Theme.color2
                         font.pixelSize: 32
-                        font.family: Theme.fontFamily
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 3
-                        Text {
+                        StyledText {
                             text: "Battery " + dashboard.batVal + "%"
                             color: Theme.foreground
                             font.pixelSize: 18
-                            font.family: Theme.fontFamily
                         }
-                        Text {
+                        StyledText {
                             id: batStatus
                             text: "Checking..."
                             color: dashboard.batLow ? Theme.color1 : Theme.color8
                             font.pixelSize: 12
-                            font.family: Theme.fontFamily
                         }
                     }
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 140
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 15
                 Row {
                     anchors.centerIn: parent
@@ -341,170 +329,68 @@ PanelWindow {
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 100
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 15
                 Column {
                     anchors.fill: parent
                     anchors.margins: 15
                     spacing: 15
-                    Row {
-                        width: parent.width
-                        spacing: 10
-                        Text {
-                            width: 25
-                            text: dashboard.volVal == 0 ? "󰝟" : dashboard.volVal < 50 ? "󰖀" : "󰕾"
-                            color: Theme.color4
-                            font.pixelSize: 18
-                            font.family: Theme.fontFamily
-                            verticalAlignment: Text.AlignVCenter
-                            height: 24
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: volMuteProc.running = true
-                            }
-                            Process {
-                                id: volMuteProc
-                                command: ["bash", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"]
-                                onExited: volProc.running = true
-                            }
-                        }
-                        Rectangle {
-                            id: volSlider
-                            width: parent.width - 75
-                            height: 8
-                            anchors.verticalCenter: parent.verticalCenter
-                            radius: 4
-                            color: Qt.rgba(0,0,0,0.3)
-                            Rectangle {
-                                width: parent.width * dashboard.volVal / 100
-                                height: parent.height
-                                radius: 4
-                                color: Theme.color4
-                                Behavior on width { NumberAnimation { duration: 100 } }
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: function(mouse) {
-                                    var percent = Math.round((mouse.x / parent.width) * 100)
-                                    percent = Math.max(0, Math.min(100, percent))
-                                    dashboard.volVal = percent
-                                    volSetProc.command = ["bash", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + (percent / 100).toFixed(2)]
-                                    volSetProc.running = true
-                                }
-                                onPositionChanged: function(mouse) {
-                                    if (pressed) {
-                                        var percent = Math.round((mouse.x / parent.width) * 100)
-                                        percent = Math.max(0, Math.min(100, percent))
-                                        dashboard.volVal = percent
-                                        volSetProc.command = ["bash", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + (percent / 100).toFixed(2)]
-                                        volSetProc.running = true
-                                    }
-                                }
-                            }
-                            Process { id: volSetProc }
-                        }
-                        Text {
-                            width: 40
-                            text: dashboard.volVal + "%"
-                            color: Theme.color8
-                            font.pixelSize: 11
-                            font.family: Theme.fontFamily
-                            horizontalAlignment: Text.AlignRight
-                            verticalAlignment: Text.AlignVCenter
-                            height: 24
+                    ValueSlider {
+                        icon: dashboard.volVal == 0 ? "󰝟" : dashboard.volVal < 50 ? "󰖀" : "󰕾"
+                        barColor: Theme.color4
+                        value: dashboard.volVal
+                        iconInteractive: true
+                        onIconClicked: volMuteProc.running = true
+                        onMoved: percent => {
+                            dashboard.volVal = percent
+                            volSetProc.command = ["bash", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + (percent / 100).toFixed(2)]
+                            volSetProc.running = true
                         }
                     }
-                    Row {
-                        width: parent.width
-                        spacing: 10
-                        Text {
-                            width: 25
-                            text: dashboard.brightVal < 30 ? "󰃞" : dashboard.brightVal < 70 ? "󰃟" : "󰃠"
-                            color: Theme.color13
-                            font.pixelSize: 18
-                            font.family: Theme.fontFamily
-                            verticalAlignment: Text.AlignVCenter
-                            height: 24
-                        }
-                        Rectangle {
-                            id: brightSlider
-                            width: parent.width - 75
-                            height: 8
-                            anchors.verticalCenter: parent.verticalCenter
-                            radius: 4
-                            color: Qt.rgba(0,0,0,0.3)
-                            Rectangle {
-                                width: parent.width * dashboard.brightVal / 100
-                                height: parent.height
-                                radius: 4
-                                color: Theme.color13
-                                Behavior on width { NumberAnimation { duration: 100 } }
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: function(mouse) {
-                                    var percent = Math.round((mouse.x / parent.width) * 100)
-                                    percent = Math.max(1, Math.min(100, percent))
-                                    dashboard.brightVal = percent
-                                    brightSetProc.command = ["bash", "-c", "brightnessctl set " + percent + "%"]
-                                    brightSetProc.running = true
-                                }
-                                onPositionChanged: function(mouse) {
-                                    if (pressed) {
-                                        var percent = Math.round((mouse.x / parent.width) * 100)
-                                        percent = Math.max(1, Math.min(100, percent))
-                                        dashboard.brightVal = percent
-                                        brightSetProc.command = ["bash", "-c", "brightnessctl set " + percent + "%"]
-                                        brightSetProc.running = true
-                                    }
-                                }
-                            }
-                            Process { id: brightSetProc }
-                        }
-                        Text {
-                            width: 40
-                            text: dashboard.brightVal + "%"
-                            color: Theme.color8
-                            font.pixelSize: 11
-                            font.family: Theme.fontFamily
-                            horizontalAlignment: Text.AlignRight
-                            verticalAlignment: Text.AlignVCenter
-                            height: 24
+                    ValueSlider {
+                        icon: dashboard.brightVal < 30 ? "󰃞" : dashboard.brightVal < 70 ? "󰃟" : "󰃠"
+                        barColor: Theme.color13
+                        value: dashboard.brightVal
+                        minValue: 1
+                        onMoved: percent => {
+                            dashboard.brightVal = percent
+                            brightSetProc.command = ["bash", "-c", "brightnessctl set " + percent + "%"]
+                            brightSetProc.running = true
                         }
                     }
+                    Process {
+                        id: volMuteProc
+                        command: ["bash", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"]
+                        onExited: volProc.running = true
+                    }
+                    Process { id: volSetProc }
+                    Process { id: brightSetProc }
                 }
             }
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 15
                 Column {
                     anchors.fill: parent
                     anchors.margins: 15
                     spacing: 10
-                    Text {
+                    StyledText {
                         id: timeDisplay
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "12:00:00 AM"
                         color: Theme.color5
                         font.pixelSize: 40
-                        font.family: Theme.fontFamily
                     }
-                    Text {
+                    StyledText {
                         id: dateDisplay
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "01.01.2026, Friday"
                         color: Theme.foreground
                         font.pixelSize: 14
-                        font.family: Theme.fontFamily
                     }
                 }
             }
@@ -547,28 +433,25 @@ PanelWindow {
                 Column {
                     anchors.centerIn: parent
                     spacing: 2
-                    Text {
+                    StyledText {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: icon
                         color: barColor
                         font.pixelSize: 16
-                        font.family: Theme.fontFamily
                     }
-                    Text {
+                    StyledText {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: value + "%"
                         color: Theme.foreground
                         font.pixelSize: 14
-                        font.family: Theme.fontFamily
                     }
                 }
             }
-            Text {
+            StyledText {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: label
                 color: Theme.color8
                 font.pixelSize: 11
-                font.family: Theme.fontFamily
             }
         }
     }
@@ -582,12 +465,11 @@ PanelWindow {
         radius: 10
         color: powerMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
         Behavior on color { ColorAnimation { duration: 150 } }
-        Text {
+        StyledText {
             anchors.centerIn: parent
             text: icon
             color: iconColor
             font.pixelSize: 18
-            font.family: Theme.fontFamily
         }
         MouseArea {
             id: powerMa

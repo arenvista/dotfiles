@@ -29,10 +29,9 @@ PanelWindow {
             anchors.margins: 20
             spacing: 15
 
-            Rectangle {
+            Card {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 42
-                color: Qt.rgba(0, 0, 0, 0.3)
                 radius: 12
                 RowLayout {
                     anchors.fill: parent
@@ -47,18 +46,16 @@ PanelWindow {
                         RowLayout {
                             anchors.centerIn: parent
                             spacing: 6
-                            Text {
+                            StyledText {
                                 text: "󰀻"
                                 color: root.activeTab === 0 ? Theme.color5 : Theme.color8
                                 font.pixelSize: 14
-                                font.family: Theme.fontFamily
                             }
-                            Text {
+                            StyledText {
                                 text: "Apps"
                                 color: root.activeTab === 0 ? Theme.color5 : Theme.color8
                                 font.pixelSize: 13
                                 font.bold: root.activeTab === 0
-                                font.family: Theme.fontFamily
                             }
                         }
                         MouseArea {
@@ -79,18 +76,16 @@ PanelWindow {
                         RowLayout {
                             anchors.centerIn: parent
                             spacing: 6
-                            Text {
+                            StyledText {
                                 text: "󰸉"
                                 color: root.activeTab === 1 ? Theme.color13 : Theme.color8
                                 font.pixelSize: 14
-                                font.family: Theme.fontFamily
                             }
-                            Text {
+                            StyledText {
                                 text: "Walls"
                                 color: root.activeTab === 1 ? Theme.color13 : Theme.color8
                                 font.pixelSize: 13
                                 font.bold: root.activeTab === 1
-                                font.family: Theme.fontFamily
                             }
                         }
                         MouseArea {
@@ -115,10 +110,9 @@ PanelWindow {
                     spacing: 15
                     visible: root.activeTab === 0
 
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 42
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 12
                         border.width: searchInput.activeFocus ? 1 : 0
                         border.color: Theme.color5
@@ -127,11 +121,10 @@ PanelWindow {
                             anchors.leftMargin: 14
                             anchors.rightMargin: 14
                             spacing: 10
-                            Text {
+                            StyledText {
                                 text: ""
                                 color: Theme.color8
                                 font.pixelSize: 14
-                                font.family: Theme.fontFamily
                             }
                             TextInput {
                                 id: searchInput
@@ -180,12 +173,11 @@ PanelWindow {
                                     }
                                 }
                             }
-                            Text {
+                            StyledText {
                                 visible: searchInput.text.length > 0
                                 text: "󰅖"
                                 color: Theme.color8
                                 font.pixelSize: 12
-                                font.family: Theme.fontFamily
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
@@ -195,10 +187,9 @@ PanelWindow {
                         }
                     }
 
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 15
                         clip: true
                         ListView {
@@ -263,31 +254,28 @@ PanelWindow {
                                     ColumnLayout {
                                         Layout.fillWidth: true
                                         spacing: 1
-                                        Text {
+                                        StyledText {
                                             Layout.fillWidth: true
                                             text: modelData.name
                                             color: index === root.selectedIndex ? Theme.color5 : Theme.foreground
                                             font.pixelSize: 13
-                                            font.family: Theme.fontFamily
                                             font.bold: index === root.selectedIndex
                                             elide: Text.ElideRight
                                         }
-                                        Text {
+                                        StyledText {
                                             Layout.fillWidth: true
                                             text: modelData.exec
                                             color: Theme.color8
                                             font.pixelSize: 9
-                                            font.family: Theme.fontFamily
                                             elide: Text.ElideRight
                                             opacity: 0.7
                                         }
                                     }
-                                    Text {
+                                    StyledText {
                                         visible: index === root.selectedIndex
                                         text: "↵"
                                         color: Theme.color5
                                         font.pixelSize: 14
-                                        font.family: Theme.fontFamily
                                         font.bold: true
                                     }
                                 }
@@ -304,32 +292,30 @@ PanelWindow {
                             }
                             ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                         }
-                        Text {
+                        StyledText {
                             anchors.centerIn: parent
                             visible: root.filteredApps.length === 0
                             text: "No apps found"
                             color: Theme.color8
                             font.pixelSize: 14
-                            font.family: Theme.fontFamily
                         }
                     }
 
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 28
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 10
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            Text { text: "↑↓ nav"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "↑↓ nav"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "↵ launch"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "↵ launch"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "tab walls"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "tab walls"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "esc close"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "esc close"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                         }
                     }
                 }
@@ -339,10 +325,9 @@ PanelWindow {
                     spacing: 15
                     visible: root.activeTab === 1
 
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 42
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 12
                         border.width: wallSearchInput.activeFocus ? 1 : 0
                         border.color: Theme.color13
@@ -351,11 +336,10 @@ PanelWindow {
                             anchors.leftMargin: 14
                             anchors.rightMargin: 14
                             spacing: 10
-                            Text {
+                            StyledText {
                                 text: ""
                                 color: Theme.color8
                                 font.pixelSize: 14
-                                font.family: Theme.fontFamily
                             }
                             TextInput {
                                 id: wallSearchInput
@@ -409,12 +393,11 @@ PanelWindow {
                                     }
                                 }
                             }
-                            Text {
+                            StyledText {
                                 visible: wallSearchInput.text.length > 0
                                 text: "󰅖"
                                 color: Theme.color8
                                 font.pixelSize: 12
-                                font.family: Theme.fontFamily
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
@@ -424,10 +407,9 @@ PanelWindow {
                         }
                     }
 
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 15
                         clip: true
                         GridView {
@@ -512,12 +494,11 @@ PanelWindow {
                                                 height: 16
                                                 radius: 8
                                                 color: Theme.color2
-                                                Text {
+                                                StyledText {
                                                     anchors.centerIn: parent
                                                     text: "󰄬"
                                                     color: Theme.background
                                                     font.pixelSize: 10
-                                                    font.family: Theme.fontFamily
                                                 }
                                             }
                                         }
@@ -552,40 +533,37 @@ PanelWindow {
                             }
                             ScrollBar.vertical: ScrollBar { active: true; width: 4 }
                         }
-                        Text {
+                        StyledText {
                             anchors.centerIn: parent
                             visible: root.wallsLoaded && root.filteredWallpapers.length === 0
                             text: "No wallpapers found"
                             color: Theme.color8
                             font.pixelSize: 14
-                            font.family: Theme.fontFamily
                         }
-                        Text {
+                        StyledText {
                             anchors.centerIn: parent
                             visible: !root.wallsLoaded && root.wallpaperList.length === 0
                             text: "Loading..."
                             color: Theme.color8
                             font.pixelSize: 13
-                            font.family: Theme.fontFamily
                         }
                     }
 
-                    Rectangle {
+                    Card {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 28
-                        color: Qt.rgba(0, 0, 0, 0.3)
                         radius: 10
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            Text { text: "←→↑↓ nav"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "←→↑↓ nav"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "↵ apply"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "↵ apply"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "tab apps"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "tab apps"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                             Item { Layout.fillWidth: true }
-                            Text { text: "esc close"; color: Theme.color8; font.pixelSize: 10; font.family: Theme.fontFamily; opacity: 0.7 }
+                            StyledText { text: "esc close"; color: Theme.color8; font.pixelSize: 10; opacity: 0.7 }
                         }
                     }
                 }
