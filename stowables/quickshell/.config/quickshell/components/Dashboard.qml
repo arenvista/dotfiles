@@ -1,6 +1,8 @@
 import Quickshell
 import "../Common"
 import Quickshell.Io
+import Quickshell.Services.UPower
+import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -22,13 +24,46 @@ PanelWindow {
     property real cpuPrevIdle: 0
     property int ramVal: 0
     property int diskVal: 0
-    property int batVal: 100
-    property bool batCharging: false
+    property int brightVal: 100
+
+    // Battery — event-driven from UPower.displayDevice (percentage is 0..1).
+    readonly property var batDev: UPower.displayDevice
+    readonly property bool batReady: batDev && batDev.ready
+    readonly property int batVal: batReady ? Math.round(batDev.percentage * 100) : 100
+    readonly property bool batCharging: batReady && (batDev.state === UPowerDeviceState.Charging
+        || batDev.state === UPowerDeviceState.FullyCharged
+        || batDev.state === UPowerDeviceState.PendingCharge)
     property bool batLowNotified: false
     readonly property int batLowThreshold: 15
     readonly property bool batLow: batVal <= batLowThreshold && !batCharging
-    property int volVal: 50
-    property int brightVal: 100
+    onBatLowChanged: checkLowBattery()
+
+    readonly property string batIconGlyph: {
+        if (batReady && batDev.state === UPowerDeviceState.Charging) return "󰂄"
+        var cap = batVal
+        if (cap >= 90) return "󰁹"
+        else if (cap >= 80) return "󰂂"
+        else if (cap >= 70) return "󰂁"
+        else if (cap >= 60) return "󰂀"
+        else if (cap >= 50) return "󰁿"
+        else if (cap >= 40) return "󰁾"
+        else if (cap >= 30) return "󰁽"
+        else if (cap >= 20) return "󰁼"
+        else if (cap >= 10) return "󰁻"
+        return "󰁺"
+    }
+    readonly property string batStatusText: {
+        if (!batReady) return "Checking..."
+        var s = batDev.state
+        if (s === UPowerDeviceState.Charging) return "Charging"
+        if (s === UPowerDeviceState.FullyCharged || s === UPowerDeviceState.PendingCharge) return "Fully charged"
+        return batLow ? "Low battery!" : "Discharging"
+    }
+
+    // Volume — event-driven from the default Pipewire sink (volume is 0..1).
+    readonly property var audioSink: Pipewire.defaultAudioSink
+    readonly property int volVal: (audioSink && audioSink.ready && audioSink.audio)
+        ? Math.round(audioSink.audio.volume * 100) : 0
 
     // Notify once when the battery drops into the low range while discharging;
     // re-arm when charging or back above the threshold.
@@ -40,6 +75,22 @@ PanelWindow {
             batLowNotified = false
         }
     }
+
+    function formatUptime(s) {
+        var d = Math.floor(s / 86400); s -= d * 86400
+        var h = Math.floor(s / 3600); s -= h * 3600
+        var m = Math.floor(s / 60)
+        var parts = []
+        if (d > 0) parts.push(d + (d === 1 ? " day" : " days"))
+        if (h > 0) parts.push(h + (h === 1 ? " hour" : " hours"))
+        if (m > 0 || parts.length === 0) parts.push(m + (m === 1 ? " minute" : " minutes"))
+        return "up " + parts.join(", ")
+    }
+
+    // Keep the default sink's audio properties live.
+    PwObjectTracker { objects: dashboard.audioSink ? [dashboard.audioSink] : [] }
+
+    SystemClock { id: sysClock; precision: SystemClock.Seconds }
 
     Rectangle {
         anchors.fill: parent
@@ -294,7 +345,7 @@ PanelWindow {
                     spacing: 15
                     StyledText {
                         id: batIcon
-                        text: "󰁹"
+                        text: dashboard.batIconGlyph
                         color: dashboard.batLow ? Theme.color1 : Theme.color2
                         font.pixelSize: 32
                     }
@@ -308,7 +359,7 @@ PanelWindow {
                         }
                         StyledText {
                             id: batStatus
-                            text: "Checking..."
+                            text: dashboard.batStatusText
                             color: dashboard.batLow ? Theme.color1 : Theme.color8
                             font.pixelSize: 12
                         }
@@ -342,11 +393,13 @@ PanelWindow {
                         barColor: Theme.color4
                         value: dashboard.volVal
                         iconInteractive: true
-                        onIconClicked: volMuteProc.running = true
+                        onIconClicked: {
+                            if (dashboard.audioSink && dashboard.audioSink.ready && dashboard.audioSink.audio)
+                                dashboard.audioSink.audio.muted = !dashboard.audioSink.audio.muted
+                        }
                         onMoved: percent => {
-                            dashboard.volVal = percent
-                            volSetProc.command = ["bash", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + (percent / 100).toFixed(2)]
-                            volSetProc.running = true
+                            if (dashboard.audioSink && dashboard.audioSink.ready && dashboard.audioSink.audio)
+                                dashboard.audioSink.audio.volume = percent / 100
                         }
                     }
                     ValueSlider {
@@ -360,12 +413,6 @@ PanelWindow {
                             brightSetProc.running = true
                         }
                     }
-                    Process {
-                        id: volMuteProc
-                        command: ["bash", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"]
-                        onExited: volProc.running = true
-                    }
-                    Process { id: volSetProc }
                     Process { id: brightSetProc }
                 }
             }
@@ -381,14 +428,14 @@ PanelWindow {
                     StyledText {
                         id: timeDisplay
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: "12:00:00 AM"
+                        text: Qt.formatTime(sysClock.date, "hh:mm:ss AP")
                         color: Theme.color5
                         font.pixelSize: 40
                     }
                     StyledText {
                         id: dateDisplay
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: "01.01.2026, Friday"
+                        text: Qt.formatDate(sysClock.date, "dd.MM.yyyy, dddd")
                         color: Theme.foreground
                         font.pixelSize: 14
                     }
@@ -484,28 +531,9 @@ PanelWindow {
         }
     }
 
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: {
-            var now = new Date()
-            var hours = now.getHours()
-            var minutes = now.getMinutes()
-            var seconds = now.getSeconds()
-            var ampm = hours >= 12 ? 'PM' : 'AM'
-            hours = hours % 12
-            hours = hours ? hours : 12
-            var h = hours < 10 ? '0' + hours : hours
-            var m = minutes < 10 ? '0' + minutes : minutes
-            var s = seconds < 10 ? '0' + seconds : seconds
-            timeDisplay.text = h + ':' + m + ':' + s + ' ' + ampm
-            dateDisplay.text = Qt.formatDate(now, "dd.MM.yyyy, dddd")
-        }
-    }
-
-    // Full stats poll — only while the dashboard is visible.
+    // Remaining polled stats (cpu/ram/disk/brightness/uptime) — only while the
+    // dashboard is visible. Battery + volume are event-driven (UPower/Pipewire)
+    // and the clock is a SystemClock, so none of those need polling.
     // triggeredOnStart gives an instant refresh the moment it opens.
     Timer {
         interval: 2000
@@ -516,25 +544,16 @@ PanelWindow {
             cpuProc.running = true
             ramProc.running = true
             diskProc.running = true
-            batProc.running = true
-            batStatusProc.running = true
-            volProc.running = true
             brightProc.running = true
-            uptimeProc.running = true
+            uptimeView.reload()
         }
     }
 
-    // Battery must keep updating while hidden so low-battery notify still fires.
-    // (Phase 3 replaces this with event-driven UPower.)
-    Timer {
-        interval: 30000
-        running: !root.dashboardVisible
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: {
-            batProc.running = true
-            batStatusProc.running = true
-        }
+    // Uptime from /proc/uptime — no `uptime -p` process.
+    FileView {
+        id: uptimeView
+        path: "/proc/uptime"
+        onLoaded: uptimeText.text = dashboard.formatUptime(parseFloat(text().split(" ")[0]))
     }
 
     // CPU% from /proc/stat jiffy deltas — cheap read, no `top` process.
@@ -568,63 +587,13 @@ PanelWindow {
         stdout: SplitParser { onRead: data => dashboard.diskVal = parseInt(data) || 0 }
     }
     Process {
-        id: batProc
-        command: ["bash", "-c", "bat=$(ls /sys/class/power_supply/ 2>/dev/null | grep -m1 '^BAT'); cat \"/sys/class/power_supply/$bat/capacity\" 2>/dev/null || echo 100"]
-        stdout: SplitParser {
-            onRead: data => {
-                dashboard.batVal = parseInt(data) || 100
-                var cap = dashboard.batVal
-                if (cap >= 90) batIcon.text = "󰁹"
-                else if (cap >= 80) batIcon.text = "󰂂"
-                else if (cap >= 70) batIcon.text = "󰂁"
-                else if (cap >= 60) batIcon.text = "󰂀"
-                else if (cap >= 50) batIcon.text = "󰁿"
-                else if (cap >= 40) batIcon.text = "󰁾"
-                else if (cap >= 30) batIcon.text = "󰁽"
-                else if (cap >= 20) batIcon.text = "󰁼"
-                else if (cap >= 10) batIcon.text = "󰁻"
-                else batIcon.text = "󰁺"
-                dashboard.checkLowBattery()
-            }
-        }
-    }
-    Process {
-        id: batStatusProc
-        command: ["bash", "-c", "bat=$(ls /sys/class/power_supply/ 2>/dev/null | grep -m1 '^BAT'); cat \"/sys/class/power_supply/$bat/status\" 2>/dev/null || echo Unknown"]
-        stdout: SplitParser {
-            onRead: data => {
-                var status = data.trim()
-                dashboard.batCharging = (status === "Charging" || status === "Full")
-                if (status === "Charging") {
-                    batStatus.text = "Charging"
-                    batIcon.text = "󰂄"
-                } else if (status === "Full") {
-                    batStatus.text = "Fully charged"
-                } else {
-                    batStatus.text = dashboard.batLow ? "Low battery!" : "Discharging"
-                }
-                dashboard.checkLowBattery()
-            }
-        }
-    }
-    Process {
         id: batNotifyProc
         command: ["notify-send", "-u", "critical", "-i", "battery-caution",
                   "Low battery", "Battery at " + dashboard.batVal + "% — plug in your charger."]
     }
     Process {
-        id: volProc
-        command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf \"%.0f\", $2*100}'"]
-        stdout: SplitParser { onRead: data => dashboard.volVal = parseInt(data) || 0 }
-    }
-    Process {
         id: brightProc
         command: ["bash", "-c", "brightnessctl -m | awk -F, '{gsub(/%/,\"\"); print $4}'"]
         stdout: SplitParser { onRead: data => dashboard.brightVal = parseInt(data) || 100 }
-    }
-    Process {
-        id: uptimeProc
-        command: ["bash", "-c", "uptime -p"]
-        stdout: SplitParser { onRead: data => uptimeText.text = data.trim() }
     }
 }
