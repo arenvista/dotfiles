@@ -133,7 +133,6 @@ ShellRoot {
     }
 
     Component.onCompleted: {
-        walColorsProc.running = true
         appListProc.running = true
         loadUsageProc.running = true
         currentWallProc.running = true
@@ -208,35 +207,9 @@ ShellRoot {
 
     Process {
         id: applyWallProc
-        onExited: walColorsProc.running = true
-    }
-
-    Process {
-        id: walColorsProc
-        command: ["bash", "-c", "cat \"$1\"", "_", Paths.home + "/.cache/wal/colors.json"]
-        stdout: SplitParser {
-            splitMarker: ""
-            onRead: data => {
-                try {
-                    var json = JSON.parse(data)
-                    if (json.special) {
-                        Theme.background = json.special.background || Theme.background
-                        Theme.foreground = json.special.foreground || Theme.foreground
-                    }
-                    if (json.colors) {
-                        Theme.color1 = json.colors.color1 || Theme.color1
-                        Theme.color2 = json.colors.color2 || Theme.color2
-                        Theme.color4 = json.colors.color4 || Theme.color4
-                        Theme.color5 = json.colors.color5 || Theme.color5
-                        Theme.color8 = json.colors.color8 || Theme.color8
-                        Theme.color13 = json.colors.color13 || Theme.color13
-                    }
-                } catch(e) {}
-            }
-        }
-        onExited: {
-            if (root.walApplying) walStepWaybar.running = true
-        }
+        // Theme reloads colors itself via a watched FileView; just kick off the
+        // "apply theme everywhere" chain (waybar/swaync/blur).
+        onExited: walStepWaybar.running = true
     }
 
     Process {
