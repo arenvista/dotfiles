@@ -1,6 +1,7 @@
 import Quickshell
 import "../Common"
 import Quickshell.Io
+import Quickshell.Services.Mpris
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -17,13 +18,24 @@ PanelWindow {
     color: "transparent"
     Behavior on margins.top { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 
-    property string playerStatus: "Stopped"
-    property string trackTitle: ""
-    property string trackArtist: ""
+    // Active MPRIS player: prefer one that's playing, else the first available.
+    readonly property var player: {
+        var ps = Mpris.players.values
+        if (ps.length === 0) return null
+        for (var i = 0; i < ps.length; i++) if (ps[i].isPlaying) return ps[i]
+        return ps[0]
+    }
+    readonly property string playerStatus: {
+        if (!player) return "Stopped"
+        if (player.playbackState === MprisPlaybackState.Playing) return "Playing"
+        if (player.playbackState === MprisPlaybackState.Paused) return "Paused"
+        return "Stopped"
+    }
+    readonly property string trackTitle: player ? player.trackTitle : ""
+    readonly property string trackArtist: player ? player.trackArtist : ""
     property real position: 0
-    property real lastPosition: 0
-    property real length: 0
-    property bool hasTrack: playerStatus === "Playing" || playerStatus === "Paused"
+    readonly property real length: player ? player.length : 0
+    readonly property bool hasTrack: playerStatus === "Playing" || playerStatus === "Paused"
     property var gifFiles: []
     property int currentGifIndex: 0
     property int previewGifIndex: 0
@@ -170,10 +182,10 @@ PanelWindow {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: function(mouse) {
-                                        if (musicPanel.length > 0 && !seekProc.running) {
+                                        if (musicPanel.player && musicPanel.length > 0) {
                                             var seekPos = (mouse.x / parent.width) * musicPanel.length
-                                            seekProc.command = ["playerctl", "position", seekPos.toString()]
-                                            seekProc.running = true
+                                            musicPanel.player.position = seekPos
+                                            musicPanel.position = seekPos
                                         }
                                     }
                                 }
@@ -209,7 +221,7 @@ PanelWindow {
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: if (!prevProc.running) prevProc.running = true
+                                    onClicked: if (musicPanel.player) musicPanel.player.previous()
                                 }
                             }
 
@@ -229,7 +241,7 @@ PanelWindow {
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: if (!playPauseProc.running) playPauseProc.running = true
+                                    onClicked: if (musicPanel.player) musicPanel.player.togglePlaying()
                                 }
                             }
 
@@ -251,7 +263,7 @@ PanelWindow {
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: if (!nextProc.running) nextProc.running = true
+                                    onClicked: if (musicPanel.player) musicPanel.player.next()
                                 }
                             }
                         }
@@ -636,100 +648,15 @@ PanelWindow {
         }
     }
 
+    // Title/artist/length/status bind directly to the MPRIS player. Only the
+    // playback position needs refreshing (players don't push it continuously),
+    // so read player.position on a 1s timer while the panel is open — no process.
     Timer {
-        id: playerPollTimer
+        id: posTimer
         interval: 1000
         running: root.musicVisible && !musicPanel.gifSelectorOpen
         repeat: true
         triggeredOnStart: true
-        onTriggered: {
-            if (!musicStatusProc.running) musicStatusProc.running = true
-        }
-    }
-
-    Process {
-        id: musicStatusProc
-        command: ["playerctl", "status"]
-        stdout: SplitParser {
-            onRead: data => {
-                var newStatus = data.trim()
-                if (newStatus === "") newStatus = "Stopped"
-                var wasPlaying = musicPanel.playerStatus === "Playing"
-                var isNowPlaying = newStatus === "Playing"
-                musicPanel.playerStatus = newStatus
-                if (!musicTitleProc.running) musicTitleProc.running = true
-                if (!musicArtistProc.running) musicArtistProc.running = true
-                if (!musicLenProc.running) musicLenProc.running = true
-                if (isNowPlaying) {
-                    if (!musicPosProc.running) musicPosProc.running = true
-                } else if (wasPlaying && !isNowPlaying) {
-                    musicPanel.lastPosition = musicPanel.position
-                } else if (!isNowPlaying) {
-                    musicPanel.position = musicPanel.lastPosition
-                }
-            }
-        }
-        onExited: code => {
-            if (code !== 0) {
-                musicPanel.playerStatus = "Stopped"
-                musicPanel.trackTitle = ""
-                musicPanel.trackArtist = ""
-            }
-        }
-    }
-
-    Process {
-        id: musicTitleProc
-        command: ["playerctl", "metadata", "title"]
-        stdout: SplitParser { onRead: data => musicPanel.trackTitle = data.trim() }
-        onExited: code => { if (code !== 0) musicPanel.trackTitle = "" }
-    }
-
-    Process {
-        id: musicArtistProc
-        command: ["playerctl", "metadata", "artist"]
-        stdout: SplitParser { onRead: data => musicPanel.trackArtist = data.trim() }
-        onExited: code => { if (code !== 0) musicPanel.trackArtist = "" }
-    }
-
-    Process {
-        id: musicPosProc
-        command: ["playerctl", "position"]
-        stdout: SplitParser {
-            onRead: data => {
-                var pos = parseFloat(data.trim()) || 0
-                musicPanel.position = pos
-                musicPanel.lastPosition = pos
-            }
-        }
-    }
-
-    Process {
-        id: musicLenProc
-        command: ["sh", "-c", "playerctl metadata mpris:length 2>/dev/null | awk '{print $1/1000000}'"]
-        stdout: SplitParser { onRead: data => musicPanel.length = parseFloat(data.trim()) || 0 }
-    }
-
-    Process {
-        id: playPauseProc
-        command: ["playerctl", "play-pause"]
-        onExited: { if (!musicStatusProc.running) musicStatusProc.running = true }
-    }
-
-    Process {
-        id: nextProc
-        command: ["playerctl", "next"]
-        onExited: { if (!musicStatusProc.running) musicStatusProc.running = true }
-    }
-
-    Process {
-        id: prevProc
-        command: ["playerctl", "previous"]
-        onExited: { if (!musicStatusProc.running) musicStatusProc.running = true }
-    }
-
-    Process {
-        id: seekProc
-        command: ["playerctl", "position", "0"]
+        onTriggered: musicPanel.position = musicPanel.player ? musicPanel.player.position : 0
     }
 }
