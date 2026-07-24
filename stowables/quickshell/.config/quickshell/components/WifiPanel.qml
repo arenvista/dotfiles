@@ -1,6 +1,7 @@
 import Quickshell
 import "../Common"
 import Quickshell.Io
+import Quickshell.Networking
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -15,6 +16,52 @@ PanelWindow {
     implicitWidth: 320
     color: "transparent"
     Behavior on margins.right { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
+
+    // Self-contained Wi-Fi state from Quickshell.Networking.
+    readonly property var wifiDev: {
+        var devs = Networking.devices.values
+        for (var i = 0; i < devs.length; i++)
+            if (devs[i].type === DeviceType.Wifi) return devs[i]
+        return null
+    }
+    readonly property bool wifiEnabled: Networking.wifiEnabled
+    readonly property var allNetworks: (wifiEnabled && wifiDev && wifiDev.networks) ? wifiDev.networks.values : []
+    readonly property var currentNetwork: {
+        for (var i = 0; i < allNetworks.length; i++)
+            if (allNetworks[i].connected) return allNetworks[i]
+        return null
+    }
+    readonly property string wifiCurrentSSID: currentNetwork ? currentNetwork.name : ""
+    readonly property int wifiSignal: currentNetwork ? Math.round(currentNetwork.signalStrength * 100) : 0
+    // Display list: skip the connected one, dedup by SSID, sort by signal.
+    readonly property var wifiNetworks: {
+        var seen = ({}); var out = []
+        for (var i = 0; i < allNetworks.length; i++) {
+            var n = allNetworks[i]
+            if (!n.name || n.name === "" || n.connected) continue
+            if (seen[n.name]) continue
+            seen[n.name] = true
+            out.push({ ssid: n.name, signal: Math.round(n.signalStrength * 100),
+                       secured: n.security !== WifiSecurityType.Open, net: n })
+        }
+        out.sort(function(a, b) { return b.signal - a.signal })
+        return out
+    }
+    readonly property bool wifiScanning: wifiDev !== null && wifiDev.scannerEnabled === true && wifiNetworks.length === 0
+    property string wifiPasswordSSID: ""
+    property var pendingNetwork: null
+
+    // Scan only while the panel is open. Managed imperatively (rather than via a
+    // Binding) so the refresh button can toggle the scanner without a binding
+    // fighting it back.
+    function syncScanner() {
+        if (wifiDev) wifiDev.scannerEnabled = root.wifiVisible
+    }
+    onWifiDevChanged: syncScanner()
+    Connections {
+        target: root
+        function onWifiVisibleChanged() { wifiPanel.syncScanner() }
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -41,8 +88,8 @@ PanelWindow {
                 }
                 Item { Layout.fillWidth: true }
                 ToggleSwitch {
-                    checked: root.wifiEnabled
-                    onToggled: wifiToggleProc.running = true
+                    checked: wifiPanel.wifiEnabled
+                    onToggled: Networking.wifiEnabled = !Networking.wifiEnabled
                 }
             }
 
@@ -50,13 +97,13 @@ PanelWindow {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 radius: 12
-                visible: root.wifiCurrentSSID !== ""
+                visible: wifiPanel.wifiCurrentSSID !== ""
                 RowLayout {
                     anchors.fill: parent
                     anchors.margins: 12
                     spacing: 10
                     StyledText {
-                        text: root.wifiSignal > 66 ? "󰤨" : root.wifiSignal > 33 ? "󰤥" : "󰤟"
+                        text: wifiPanel.wifiSignal > 66 ? "󰤨" : wifiPanel.wifiSignal > 33 ? "󰤥" : "󰤟"
                         color: Theme.color2
                         font.pixelSize: 18
                     }
@@ -64,7 +111,7 @@ PanelWindow {
                         Layout.fillWidth: true
                         spacing: 2
                         StyledText {
-                            text: root.wifiCurrentSSID
+                            text: wifiPanel.wifiCurrentSSID
                             color: Theme.color2
                             font.pixelSize: 13
                             font.bold: true
@@ -72,7 +119,7 @@ PanelWindow {
                             Layout.fillWidth: true
                         }
                         StyledText {
-                            text: "Connected · " + root.wifiSignal + "%"
+                            text: "Connected · " + wifiPanel.wifiSignal + "%"
                             color: Theme.color8
                             font.pixelSize: 10
                         }
@@ -93,7 +140,7 @@ PanelWindow {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: wifiDisconnectProc.running = true
+                            onClicked: if (wifiPanel.wifiDev) wifiPanel.wifiDev.disconnect()
                         }
                     }
                 }
@@ -103,7 +150,7 @@ PanelWindow {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 36
                 radius: 10
-                visible: root.wifiPasswordSSID !== ""
+                visible: wifiPanel.wifiPasswordSSID !== ""
                 RowLayout {
                     anchors.fill: parent
                     anchors.leftMargin: 12
@@ -125,7 +172,7 @@ PanelWindow {
                         echoMode: TextInput.Password
                         clip: true
                         Text {
-                            text: "Password for " + root.wifiPasswordSSID
+                            text: "Password for " + wifiPanel.wifiPasswordSSID
                             color: Theme.color8
                             visible: !parent.text
                             anchors.left: parent.left
@@ -133,16 +180,16 @@ PanelWindow {
                             font: parent.font
                         }
                         Keys.onReturnPressed: {
-                            if (wifiPassInput.text.length > 0) {
-                                root.wifiConnecting = true
-                                wifiConnectProc.ssid = root.wifiPasswordSSID
-                                wifiConnectProc.password = wifiPassInput.text
-                                wifiConnectProc.running = true
+                            if (wifiPassInput.text.length > 0 && wifiPanel.pendingNetwork) {
+                                wifiPanel.pendingNetwork.connectWithPsk(wifiPassInput.text)
+                                wifiPanel.wifiPasswordSSID = ""
+                                wifiPanel.pendingNetwork = null
                                 wifiPassInput.text = ""
                             }
                         }
                         Keys.onEscapePressed: {
-                            root.wifiPasswordSSID = ""
+                            wifiPanel.wifiPasswordSSID = ""
+                            wifiPanel.pendingNetwork = null
                             wifiPassInput.text = ""
                         }
                     }
@@ -162,11 +209,10 @@ PanelWindow {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                if (wifiPassInput.text.length > 0) {
-                                    root.wifiConnecting = true
-                                    wifiConnectProc.ssid = root.wifiPasswordSSID
-                                    wifiConnectProc.password = wifiPassInput.text
-                                    wifiConnectProc.running = true
+                                if (wifiPassInput.text.length > 0 && wifiPanel.pendingNetwork) {
+                                    wifiPanel.pendingNetwork.connectWithPsk(wifiPassInput.text)
+                                    wifiPanel.wifiPasswordSSID = ""
+                                    wifiPanel.pendingNetwork = null
                                     wifiPassInput.text = ""
                                 }
                             }
@@ -177,7 +223,7 @@ PanelWindow {
 
             RowLayout {
                 Layout.fillWidth: true
-                visible: root.wifiEnabled
+                visible: wifiPanel.wifiEnabled
                 StyledText {
                     text: "Available Networks"
                     color: Theme.color8
@@ -191,7 +237,7 @@ PanelWindow {
                     color: wifiRefreshMa.containsMouse ? Qt.rgba(1,1,1,0.1) : "transparent"
                     StyledText {
                         anchors.centerIn: parent
-                        text: root.wifiScanning ? "󰑓" : "󰑐"
+                        text: wifiPanel.wifiScanning ? "󰑓" : "󰑐"
                         color: Theme.color8
                         font.pixelSize: 12
                     }
@@ -200,8 +246,12 @@ PanelWindow {
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
+                        // Toggle the scanner off/on to force a fresh scan.
                         onClicked: {
-                            if (!root.wifiScanning) root.refreshWifi()
+                            if (wifiPanel.wifiDev) {
+                                wifiPanel.wifiDev.scannerEnabled = false
+                                wifiPanel.wifiDev.scannerEnabled = true
+                            }
                         }
                     }
                 }
@@ -217,7 +267,7 @@ PanelWindow {
                     anchors.margins: 6
                     spacing: 4
                     boundsBehavior: Flickable.StopAtBounds
-                    model: root.wifiNetworks
+                    model: wifiPanel.wifiNetworks
                     delegate: Rectangle {
                         width: parent ? parent.width : 0
                         height: 44
@@ -245,7 +295,7 @@ PanelWindow {
                                     Layout.fillWidth: true
                                 }
                                 StyledText {
-                                    text: (modelData.security !== "" && modelData.security !== "--" ? "󰌾 " + modelData.security : "Open") + " · " + modelData.signal + "%"
+                                    text: (modelData.secured ? "󰌾 Secured" : "Open") + " · " + modelData.signal + "%"
                                     color: Theme.color8
                                     font.pixelSize: 9
                                 }
@@ -257,14 +307,14 @@ PanelWindow {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                if (modelData.security !== "" && modelData.security !== "--") {
-                                    root.wifiPasswordSSID = modelData.ssid
+                                // Known/open networks connect directly; unknown secured
+                                // ones prompt for a passphrase.
+                                if (modelData.secured && !modelData.net.known) {
+                                    wifiPanel.wifiPasswordSSID = modelData.ssid
+                                    wifiPanel.pendingNetwork = modelData.net
                                     wifiPassInput.forceActiveFocus()
                                 } else {
-                                    root.wifiConnecting = true
-                                    wifiConnectProc.ssid = modelData.ssid
-                                    wifiConnectProc.password = ""
-                                    wifiConnectProc.running = true
+                                    modelData.net.connect()
                                 }
                             }
                         }
@@ -273,14 +323,14 @@ PanelWindow {
                 }
                 StyledText {
                     anchors.centerIn: parent
-                    visible: root.wifiNetworks.length === 0 && !root.wifiScanning
-                    text: root.wifiEnabled ? "No networks found" : "Wi-Fi is off"
+                    visible: wifiPanel.wifiNetworks.length === 0 && !wifiPanel.wifiScanning
+                    text: wifiPanel.wifiEnabled ? "No networks found" : "Wi-Fi is off"
                     color: Theme.color8
                     font.pixelSize: 12
                 }
                 StyledText {
                     anchors.centerIn: parent
-                    visible: root.wifiScanning
+                    visible: wifiPanel.wifiScanning
                     text: "Scanning..."
                     color: Theme.color8
                     font.pixelSize: 12

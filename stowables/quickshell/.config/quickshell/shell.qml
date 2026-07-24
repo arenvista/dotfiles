@@ -61,14 +61,6 @@ ShellRoot {
     property bool thumbsReady: false
     property bool walApplying: false
 
-    property bool wifiEnabled: true
-    property string wifiCurrentSSID: ""
-    property int wifiSignal: 0
-    property var wifiNetworks: []
-    property bool wifiScanning: false
-    property string wifiPasswordSSID: ""
-    property bool wifiConnecting: false
-
     property bool btEnabled: true
     property var btPairedDevices: []
     property var btAvailableDevices: []
@@ -86,7 +78,7 @@ ShellRoot {
 
     function toggleWifi() {
         wifiVisible = !wifiVisible
-        if (wifiVisible) { btVisible = false; dashboardVisible = false; refreshWifi() }
+        if (wifiVisible) { btVisible = false; dashboardVisible = false }
     }
 
     function toggleBluetooth() {
@@ -124,13 +116,6 @@ ShellRoot {
         btActionProc.running = true
     }
 
-    function refreshWifi() {
-        root.wifiNetworks = []
-        root.wifiScanning = true
-        wifiStatusProc.running = true
-        wifiCurrentProc.running = true
-        wifiScanProc.running = true
-    }
 
     Component.onCompleted: {
         appListProc.running = true
@@ -285,94 +270,6 @@ ShellRoot {
         }
     }
 
-    Process {
-        id: wifiStatusProc
-        command: ["bash", "-c", "nmcli radio wifi"]
-        stdout: SplitParser { onRead: data => root.wifiEnabled = data.trim() === "enabled" }
-    }
-
-    Process {
-        id: wifiCurrentProc
-        command: ["bash", "-c", "nmcli -t -f active,ssid,signal dev wifi | grep '^yes' | head -1"]
-        stdout: SplitParser {
-            onRead: data => {
-                var parts = data.trim().split(":")
-                if (parts.length >= 3) {
-                    root.wifiCurrentSSID = parts[1]
-                    root.wifiSignal = parseInt(parts[2]) || 0
-                } else {
-                    root.wifiCurrentSSID = ""
-                    root.wifiSignal = 0
-                }
-            }
-        }
-    }
-
-    Process {
-        id: wifiScanProc
-        command: ["bash", "-c", "nmcli -t -f ssid,signal,security dev wifi list --rescan yes 2>/dev/null | head -20"]
-        stdout: SplitParser {
-            onRead: data => {
-                var line = data.trim()
-                if (line.length === 0) return
-                var parts = line.split(":")
-                if (parts.length < 2) return
-                var ssid = parts[0]
-                if (ssid === "" || ssid === root.wifiCurrentSSID) return
-                var signal = parseInt(parts[1]) || 0
-                var security = parts.length >= 3 ? parts[2] : ""
-                var current = root.wifiNetworks.slice()
-                for (var i = 0; i < current.length; i++) {
-                    if (current[i].ssid === ssid) return
-                }
-                current.push({ ssid: ssid, signal: signal, security: security })
-                root.wifiNetworks = current
-            }
-        }
-        onExited: root.wifiScanning = false
-    }
-
-    Process {
-        id: wifiToggleProc
-        command: ["bash", "-c", root.wifiEnabled ? "nmcli radio wifi off" : "nmcli radio wifi on"]
-        onExited: {
-            wifiStatusProc.running = true
-            if (!root.wifiEnabled) wifiScanDelayTimer.start()
-        }
-    }
-
-    Timer {
-        id: wifiScanDelayTimer
-        interval: 2000
-        repeat: false
-        onTriggered: refreshWifi()
-    }
-
-    Process {
-        id: wifiConnectProc
-        property string ssid: ""
-        property string password: ""
-        command: {
-            if (password !== "")
-            return ["bash", "-c", "nmcli dev wifi connect \"$1\" password \"$2\" 2>&1", "_", ssid, password]
-            else
-            return ["bash", "-c", "nmcli dev wifi connect \"$1\" 2>&1", "_", ssid]
-        }
-        onExited: {
-            root.wifiConnecting = false
-            root.wifiPasswordSSID = ""
-            wifiCurrentProc.running = true
-        }
-    }
-
-    Process {
-        id: wifiDisconnectProc
-        command: ["bash", "-c", "for dev in $(nmcli -t -f DEVICE,TYPE dev | awk -F: '$2==\"wifi\"{print $1}'); do nmcli dev disconnect \"$dev\" 2>/dev/null; done"]
-        onExited: {
-            root.wifiCurrentSSID = ""
-            root.wifiSignal = 0
-        }
-    }
 
     Process {
         id: btStatusProc
