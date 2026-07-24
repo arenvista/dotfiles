@@ -264,7 +264,7 @@ PanelWindow {
                                         }
                                         StyledText {
                                             Layout.fillWidth: true
-                                            text: modelData.exec
+                                            text: modelData.execString
                                             color: Theme.color8
                                             font.pixelSize: 9
                                             elide: Text.ElideRight

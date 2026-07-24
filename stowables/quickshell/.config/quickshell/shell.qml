@@ -18,7 +18,14 @@ ShellRoot {
     property bool btVisible: false
     property var pfpFiles: []
     property string searchTerm: ""
-    property var appList: []
+    // Native desktop-entry list (reactive; populates asynchronously).
+    property var appList: {
+        var apps = DesktopEntries.applications.values
+        var out = []
+        for (var i = 0; i < apps.length; i++)
+            if (!apps[i].noDisplay) out.push(apps[i])
+        return out
+    }
     property var appUsage: ({})
     property var filteredApps: {
         var source = appList
@@ -27,15 +34,15 @@ ShellRoot {
             var result = []
             for (var i = 0; i < source.length; i++) {
                 var entry = source[i]
-                if (entry.name.toLowerCase().includes(searchTerm) || entry.exec.toLowerCase().includes(searchTerm)) {
+                if (entry.name.toLowerCase().includes(searchTerm) || entry.execString.toLowerCase().includes(searchTerm)) {
                     result.push(entry)
                 }
             }
             source = result
         }
         var sorted = source.slice().sort(function(a, b) {
-            var countA = usage[a.name] || 0
-            var countB = usage[b.name] || 0
+            var countA = usage[a.id] || 0
+            var countB = usage[b.id] || 0
             if (countB !== countA) return countB - countA
             return a.name.localeCompare(b.name)
         })
@@ -81,19 +88,17 @@ ShellRoot {
 
 
     Component.onCompleted: {
-        appListProc.running = true
         loadUsageProc.running = true
         currentWallProc.running = true
         thumbDirProc.running = true
     }
 
     function launchApp(app) {
-        launchProc.command = ["bash", "-c", app.exec + " &"]
-        launchProc.running = true
+        app.execute()
         var usage = appUsage
         var updated = {}
         for (var key in usage) updated[key] = usage[key]
-        updated[app.name] = (updated[app.name] || 0) + 1
+        updated[app.id] = (updated[app.id] || 0) + 1
         appUsage = updated
         saveUsageProc.command = ["bash", "-c", "mkdir -p \"$(dirname \"$2\")\" && printf '%s' \"$1\" > \"$2\"", "_", JSON.stringify(updated), Paths.state + "/app_usage.json"]
         saveUsageProc.running = true
@@ -201,37 +206,6 @@ ShellRoot {
     }
 
     Process { id: saveUsageProc }
-    Process { id: launchProc }
-
-    Process {
-        id: appListProc
-        command: ["bash", "-c", String.raw`
-        for f in /usr/share/applications/*.desktop "$HOME"/.local/share/applications/*.desktop; do
-        [ -f "$f" ] || continue
-        nodisplay=$(grep -i '^NoDisplay=true' "$f")
-        [ -n "$nodisplay" ] && continue
-        hidden=$(grep -i '^Hidden=true' "$f")
-        [ -n "$hidden" ] && continue
-        name=$(grep -m1 '^Name=' "$f" | cut -d= -f2-)
-        exec=$(grep -m1 '^Exec=' "$f" | cut -d= -f2- | sed 's/ %[fFuUdDnNickvm]//g')
-        icon=$(grep -m1 '^Icon=' "$f" | cut -d= -f2-)
-        [ -z "$name" ] && continue
-        [ -z "$exec" ] && continue
-        printf '%s\t%s\t%s\n' "$name" "$exec" "$icon"
-        done | sort -f -t$'\t' -k1,1 | awk -F'\t' '!seen[$1]++'
-        `]
-        stdout: SplitParser {
-            onRead: data => {
-                var line = data.trim()
-                if (line.length === 0) return
-                var parts = line.split("\t")
-                if (parts.length < 2) return
-                var current = root.appList.slice()
-                current.push({ name: parts[0], exec: parts[1], icon: parts.length > 2 ? parts[2] : "" })
-                root.appList = current
-            }
-        }
-    }
 
 
     Dashboard {}
