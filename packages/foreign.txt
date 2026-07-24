@@ -1,5 +1,4 @@
 # generated 2026-07-18 01:11:18Z
-aconfmgr-git
 adwaita-colors-icon-theme
 adwaita-icon-theme-41
 balena-etcher
