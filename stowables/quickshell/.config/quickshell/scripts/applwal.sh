@@ -36,6 +36,9 @@ sleep 1
 python "$HOME/.config/zathura/templater.py"
 python "$HOME/.config/quickshell/scripts/ghosty-colorizer.py"
 
+# Signal ghostty to reload its colors.
+pkill -SIGUSR2 ghostty
+
 # Restart waybar with the fresh palette.
 killall waybar 2>/dev/null
 setsid waybar >/dev/null 2>&1 &

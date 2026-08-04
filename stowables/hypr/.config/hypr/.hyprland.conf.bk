@@ -140,15 +140,15 @@ general {
     gaps_in = 3
     gaps_out = 8
     border_size = 1
-    col.active_border = rgb(585b70)
+    col.active_border = rgb(e5e6eb)
     col.inactive_border = rgb(2a2b36)
     layout = scrolling
 }
 
 # Glowview 
-bind = $mainMod, g, gloview:toggle
-bind = $mainMod SHIFT, g, gloview:desktop
-bind = $mainMod CTRL, g, gloview:allworkspaces
+# bind = $mainMod, g, gloview:toggle
+# bind = $mainMod SHIFT, g, gloview:desktop
+# bind = $mainMod CTRL, g, gloview:allworkspaces
 
 # --- Keybinds for the Scrolling Layout ---
 bindd = $mainMod, f, Maximize App Window, fullscreen, 1
@@ -195,7 +195,7 @@ scrolling {
 decoration {
     rounding = 16
     active_opacity = 1.0
-    inactive_opacity = 0.95
+    inactive_opacity = 0.75
     dim_inactive = true
     dim_strength = 0.05
     shadow {
@@ -250,7 +250,7 @@ windowrule = suppress_event maximize, match:class .*
 
 # DEFAULT PROGRAMS (TERMINAL, FILE MANAGER, MENU) ---------------
 # $terminal = kitty -o allow_remote_control=yes --single-instance --listen-on unix:@mykitty
-$terminal = ghostty
+$terminal = ghostty 
 $fileManager = ghostty -e yazi
 $menu = rofi -show drun -theme-str "dummywall{background-image:url('"~/wallpapers/current.jpg"', height);}"
 
@@ -379,7 +379,7 @@ windowrule = opacity 0.88 1, match:class sublime_text
 windowrule = opacity 0.9 1, match:class (?i)thunar
 windowrule = opacity 0.88 1, match:class (?i)(vs)?codium
 windowrule = opacity 0.9 1, match:class org.pwmt.zathura
-windowrule = opacity 1.0 override 1.0 override, match:class firefox
+windowrule = opacity 0.9 override 0.85 override, match:class firefox
 
 # mpv: one named rule instead of four anonymous ones
 windowrule {

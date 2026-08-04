@@ -712,6 +712,11 @@ wk.add({
         end,
         desc = "Colorschemes",
     },
+    {
+        "<leader>ut",
+        "<cmd>TableModeToggle<CR>",
+        desc = "Toggle Table Mode",
+    },
 })
 
 -- ==========================================================

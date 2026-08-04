@@ -30,7 +30,13 @@ local function in_mathzone()
         if t == "text_mode" then
             return false
         end
-        if t == "displayed_equation" or t == "inline_formula" or t == "math_environment" or t == "superscript" or t == "subscript" then
+        if
+            t == "displayed_equation"
+            or t == "inline_formula"
+            or t == "math_environment"
+            or t == "superscript"
+            or t == "subscript"
+        then
             return true
         end
         node = node:parent()
@@ -49,7 +55,7 @@ return {
     s({ trig = "hat", snippetType = "autosnippet" }, fmta("\\hat{<>}", { i(1) }), { condition = in_mathzone }),
     s({ trig = "vec", snippetType = "autosnippet" }, fmta("\\vec{<>}", { i(1) }), { condition = in_mathzone }),
     s({ trig = "bar", snippetType = "autosnippet" }, fmta("\\overline{<>}", { i(1) }), { condition = in_mathzone }),
-    s({ trig = "   ", snippetType = "autosnippet" }, t("\\quad" ), { condition = in_mathzone }),
+    s({ trig = "   ", snippetType = "autosnippet" }, t("\\quad"), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 1. SETS & NUMBER SYSTEMS
@@ -75,8 +81,16 @@ return {
     s({ trig = "!!", snippetType = "autosnippet" }, t("\\neg "), { condition = in_mathzone }),
 
     s({ trig = "imp", snippetType = "autosnippet" }, t("\\implies "), { condition = in_mathzone }),
-    s({ trig = "x->", snippetType = "autosnippet", wordTrig = false }, fmta("\\xrightarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
-    s({ trig = "x<-", snippetType = "autosnippet", wordTrig = false }, fmta("\\xleftarrow{<>} ", { i(1, "\\text{}") }), { condition = in_mathzone }),
+    s(
+        { trig = "x->", snippetType = "autosnippet", wordTrig = false },
+        fmta("\\xrightarrow{<>} ", { i(1, "\\text{}") }),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "x<-", snippetType = "autosnippet", wordTrig = false },
+        fmta("\\xleftarrow{<>} ", { i(1, "\\text{}") }),
+        { condition = in_mathzone }
+    ),
     s({ trig = "->", snippetType = "autosnippet", wordTrig = false }, t("\\rightarrow "), { condition = in_mathzone }),
     s({ trig = "<-", snippetType = "autosnippet", wordTrig = false }, t("\\leftarrow "), { condition = in_mathzone }),
     s({ trig = "<->", snippetType = "autosnippet" }, t("\\iff "), { condition = in_mathzone }),
@@ -94,7 +108,7 @@ return {
     s({ trig = "_qed", snippetType = "autosnippet" }, { t("$\\blacksquare$") }),
 
     -- ==========================================================
-    -- DOTS 
+    -- DOTS
     -- ==========================================================
     -- s({ trig = "...", snippetType = "autosnippet", wordTrig=false }, t("\\hdots "), { condition = in_mathzone }),
     s({ trig = "...", snippetType = "autosnippet" }, t("\\dots "), { condition = in_mathzone }),
@@ -102,7 +116,7 @@ return {
     s({ trig = "c..", snippetType = "autosnippet" }, t("\\cdots "), { condition = in_mathzone }),
     s({ trig = "v..", snippetType = "autosnippet" }, t("\\vdots "), { condition = in_mathzone }),
     s({ trig = "ss", snippetType = "autosnippet" }, t("& "), { condition = in_mathzone }),
-    s({ trig = "./", snippetType = "autosnippet", wordTrig=false }, t("\\ "), { condition = in_mathzone }),
+    s({ trig = "./", snippetType = "autosnippet", wordTrig = false }, t("\\ "), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 3. BASIC OPERATORS
@@ -115,37 +129,61 @@ return {
     -- ==========================================================
     -- 4. STRUCTURE SHORTCUTS
     -- ==========================================================
-    s({ trig = "//", snippetType = "autosnippet" }, fmta("\\frac{<>}{<>}", { i(1), i(2) }), { condition = in_mathzone }),
-    s( { trig = "^^", snippetType = "autosnippet", wordTrig = false }, fmta("^{<>}", { i(1) }), { condition = in_mathzone }),
-    s( { trig = "__", snippetType = "autosnippet", wordTrig = false }, fmta("_{<>}", { i(1) }), { condition = in_mathzone }),
+    s(
+        { trig = "//", snippetType = "autosnippet" },
+        fmta("\\frac{<>}{<>}", { i(1), i(2) }),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "^^", snippetType = "autosnippet", wordTrig = false },
+        fmta("^{<>}", { i(1) }),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "__", snippetType = "autosnippet", wordTrig = false },
+        fmta("_{<>}", { i(1) }),
+        { condition = in_mathzone }
+    ),
     s({ trig = "set", snippetType = "autosnippet" }, fmta("\\{ <> \\}", { i(1) }), { condition = in_mathzone }),
     s({ trig = "sq", snippetType = "autosnippet" }, fmta("\\sqrt{<>}", { i(1) }), { condition = in_mathzone }),
 
     -- ==========================================================
     -- 5. CALCULUS
     -- ==========================================================
-    s({ trig = "lim", snippetType = "snippet" },
+    s(
+        { trig = "lim", snippetType = "snippet" },
         fmta("\\lim_{<> \\to <>} ", { i(1, "n"), i(2, "\\infty") }),
-        { condition = in_mathzone }),
+        { condition = in_mathzone }
+    ),
 
-    s({ trig = "sum", snippetType = "snippet" },
+    s(
+        { trig = "sum", snippetType = "snippet" },
         fmta("\\sum_{<>}^{<>} ", { i(1, "n=1"), i(2, "\\infty") }),
-        { condition = in_mathzone }),
+        { condition = in_mathzone }
+    ),
 
-    s({ trig = "int", snippetType = "snippet" },
+    s(
+        { trig = "int", snippetType = "snippet" },
         fmta("\\int_{<>}^{<>} <> \\, d<>", { i(1), i(2), i(3), i(0) }),
-        { condition = in_mathzone }),
+        { condition = in_mathzone }
+    ),
 
-    s({ trig = "part", snippetType = "snippet" },
+    s(
+        { trig = "part", snippetType = "snippet" },
         fmta("\\frac{\\partial <>}{\\partial <>}", { i(1), i(2) }),
-        { condition = in_mathzone }),
+        { condition = in_mathzone }
+    ),
 
     -- ==========================================================
     -- 6. DELIMITERS
     -- ==========================================================
-    s({ trig = "()", snippetType = "snippet" }, fmta("\\left( <> \\right)", { i(1) }), { condition = in_mathzone }),
-    s({ trig = "<>", snippetType = "snippet" }, fmta( "\\left< [1] \\right>", { i(1) }, { delimiters = "[]" }), { condition = in_mathzone }),
-    s({ trig = "[]", snippetType = "snippet" }, fmta("\\left[ <> \\right]", { i(1) }), { condition = in_mathzone }),
+    s({ trig = "()", snippetType = "snippet" }, fmta("\\left( <> \\right", { i(1) }), { condition = in_mathzone }),
+    s(
+        { trig = "<>", snippetType = "snippet" },
+        fmta("\\left< [1] \\right>", { i(1) }, { delimiters = "[]" }),
+        { condition = in_mathzone }
+    ),
+    s({ trig = "[]", snippetType = "snippet" }, fmta("\\left[ <> \\right", { i(1) }), { condition = in_mathzone }),
     s({ trig = "{}", snippetType = "snippet" }, fmta("\\left\\{ <> \\right\\}", { i(1) }), { condition = in_mathzone }),
     s({ trig = "|", snippetType = "snippet" }, fmta("\\left| <> \\right|", { i(1) }), { condition = in_mathzone }),
     s({ trig = "||", snippetType = "snippet" }, fmta("\\left\\| <> \\right\\|", { i(1) }), { condition = in_mathzone }),
@@ -155,7 +193,8 @@ return {
     -- ==========================================================
 
     -- pmatrix
-    s({ trig = "pmat", snippetType = "autosnippet" },
+    s(
+        { trig = "pmat", snippetType = "autosnippet" },
         fmta(
             [[
         \begin{pmatrix}
@@ -168,7 +207,8 @@ return {
     ),
 
     -- bmatrix
-    s({ trig = "bmat", snippetType = "autosnippet" },
+    s(
+        { trig = "bmat", snippetType = "autosnippet" },
         fmta(
             [[
         \begin{bmatrix}
@@ -181,79 +221,56 @@ return {
     ),
 
     -- Plain array
-    s({ trig = "arr", snippetType = "snippet" },
-        array_snippet("", ""),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "arr", snippetType = "snippet" }, array_snippet("", ""), { condition = in_mathzone }),
 
     -- ( )
-    s({ trig = "ar(", snippetType = "snippet" },
-        array_snippet("\\left(", "\\right)"),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar(", snippetType = "snippet" }, array_snippet("\\left(", "\\right)"), { condition = in_mathzone }),
 
     -- [ ]
-    s({ trig = "ar[]", snippetType = "snippet" },
-        array_snippet("\\left[", "\\right]"),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar[]", snippetType = "snippet" }, array_snippet("\\left[", "\\right]"), { condition = in_mathzone }),
 
     -- { }
-    s({ trig = "ar{}", snippetType = "snippet" },
+    s(
+        { trig = "ar{}", snippetType = "snippet" },
         array_snippet("\\left\\{", "\\right\\}"),
         { condition = in_mathzone }
     ),
 
     -- | |
-    s({ trig = "arr|", snippetType = "snippet" },
-        array_snippet("\\left|", "\\right|"),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "arr|", snippetType = "snippet" }, array_snippet("\\left|", "\\right|"), { condition = in_mathzone }),
 
     -- || ||
-    s({ trig = "arr||", snippetType = "snippet" },
+    s(
+        { trig = "arr||", snippetType = "snippet" },
         array_snippet("\\left\\|", "\\right\\|"),
         { condition = in_mathzone }
     ),
 
     -- ⟨ ⟩
-    s({ trig = "ar<>", snippetType = "snippet" },
+    s(
+        { trig = "ar<>", snippetType = "snippet" },
         array_snippet("\\left\\langle", "\\right\\rangle"),
         { condition = in_mathzone }
     ),
 
     --- singles
-    s({ trig = "ar(", snippetType = "snippet" },
-        array_snippet("\\left(", "\\right ."),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar(", snippetType = "snippet" }, array_snippet("\\left(", "\\right ."), { condition = in_mathzone }),
 
     -- [ ]
-    s({ trig = "ar[", snippetType = "snippet" },
-        array_snippet("\\left[", "\\right ."),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar[", snippetType = "snippet" }, array_snippet("\\left[", "\\right ."), { condition = in_mathzone }),
 
     -- { }
-    s({ trig = "ar{", snippetType = "snippet" },
-        array_snippet("\\left\\{", "\\right ."),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar{", snippetType = "snippet" }, array_snippet("\\left\\{", "\\right ."), { condition = in_mathzone }),
 
     -- | |
-    s({ trig = "ar|", snippetType = "snippet" },
-        array_snippet("\\left|", "\\right ."),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar|", snippetType = "snippet" }, array_snippet("\\left|", "\\right ."), { condition = in_mathzone }),
 
     -- || ||
-    s({ trig = "ar||", snippetType = "snippet" },
-        array_snippet("\\left\\|", "\\right ."),
-        { condition = in_mathzone }
-    ),
+    s({ trig = "ar||", snippetType = "snippet" }, array_snippet("\\left\\|", "\\right ."), { condition = in_mathzone }),
 
     -- ⟨ ⟩
-    s({ trig = "ar<", snippetType = "snippet" },
+    s(
+        { trig = "ar<", snippetType = "snippet" },
         array_snippet("\\left\\langle", "\\right ."),
         { condition = in_mathzone }
     ),
@@ -261,32 +278,41 @@ return {
     -- ==========================================================
     -- 8. GREEK LETTERS
     -- ==========================================================
-    s({ trig = "limsup", snippetType = "autosnippet", wordTrig=false  }, t("\\overline{\\lim}"), { condition = in_mathzone }),
-    s({ trig = "liminf", snippetType = "autosnippet", wordTrig=false  }, t("\\underline{\\lim}"), { condition = in_mathzone }),
-    s({ trig = ";n", snippetType = "autosnippet", wordTrig=false  }, t("\\nabla"), { condition = in_mathzone }),
-    s({ trig = ";a", snippetType = "autosnippet", wordTrig=false  }, t("\\alpha"), { condition = in_mathzone }),
-    s({ trig = ";b", snippetType = "autosnippet", wordTrig=false  }, t("\\beta"), { condition = in_mathzone }),
-    s({ trig = ";g", snippetType = "autosnippet", wordTrig=false  }, t("\\gamma"), { condition = in_mathzone }),
-    s({ trig = ";d", snippetType = "autosnippet", wordTrig=false  }, t("\\delta"), { condition = in_mathzone }),
-    s({ trig = ";D", snippetType = "autosnippet", wordTrig=false  }, t("\\Delta"), { condition = in_mathzone }),
-    s({ trig = ";t", snippetType = "autosnippet", wordTrig=false  }, t("\\theta"), { condition = in_mathzone }),
-    s({ trig = ";l", snippetType = "autosnippet", wordTrig=false  }, t("\\lambda"), { condition = in_mathzone }),
-    s({ trig = ";L", snippetType = "autosnippet", wordTrig=false  }, t("\\Lambda"), { condition = in_mathzone }),
-    s({ trig = ";s", snippetType = "autosnippet", wordTrig=false  }, t("\\sigma"), { condition = in_mathzone }),
-    s({ trig = ";s", snippetType = "autosnippet", wordTrig=false  }, t("\\Sigma"), { condition = in_mathzone }),
-    s({ trig = ";p", snippetType = "autosnippet", wordTrig=false  }, t("\\phi"), { condition = in_mathzone }),
-    s({ trig = ";o", snippetType = "autosnippet", wordTrig=false  }, t("\\omega"), { condition = in_mathzone }),
-    s({ trig = ";O", snippetType = "autosnippet", wordTrig=false  }, t("\\Omega"), { condition = in_mathzone }),
-    s({ trig = ";x", snippetType = "autosnippet", wordTrig=false  }, t("\\xi"), { condition = in_mathzone }),
-    s({ trig = ";e", snippetType = "autosnippet", wordTrig=false  }, t("\\epsilon"), { condition = in_mathzone }),
-    s({ trig = ";m", snippetType = "autosnippet", wordTrig=false  }, t("\\mu"), { condition = in_mathzone }),
+    s(
+        { trig = "limsup", snippetType = "autosnippet", wordTrig = false },
+        t("\\overline{\\lim}"),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "liminf", snippetType = "autosnippet", wordTrig = false },
+        t("\\underline{\\lim}"),
+        { condition = in_mathzone }
+    ),
+    s({ trig = ";n", snippetType = "autosnippet", wordTrig = false }, t("\\nabla"), { condition = in_mathzone }),
+    s({ trig = ";a", snippetType = "autosnippet", wordTrig = false }, t("\\alpha"), { condition = in_mathzone }),
+    s({ trig = ";b", snippetType = "autosnippet", wordTrig = false }, t("\\beta"), { condition = in_mathzone }),
+    s({ trig = ";g", snippetType = "autosnippet", wordTrig = false }, t("\\gamma"), { condition = in_mathzone }),
+    s({ trig = ";d", snippetType = "autosnippet", wordTrig = false }, t("\\delta"), { condition = in_mathzone }),
+    s({ trig = ";D", snippetType = "autosnippet", wordTrig = false }, t("\\Delta"), { condition = in_mathzone }),
+    s({ trig = ";t", snippetType = "autosnippet", wordTrig = false }, t("\\theta"), { condition = in_mathzone }),
+    s({ trig = ";l", snippetType = "autosnippet", wordTrig = false }, t("\\lambda"), { condition = in_mathzone }),
+    s({ trig = ";L", snippetType = "autosnippet", wordTrig = false }, t("\\Lambda"), { condition = in_mathzone }),
+    s({ trig = ";s", snippetType = "autosnippet", wordTrig = false }, t("\\sigma"), { condition = in_mathzone }),
+    s({ trig = ";s", snippetType = "autosnippet", wordTrig = false }, t("\\Sigma"), { condition = in_mathzone }),
+    s({ trig = ";p", snippetType = "autosnippet", wordTrig = false }, t("\\phi"), { condition = in_mathzone }),
+    s({ trig = ";o", snippetType = "autosnippet", wordTrig = false }, t("\\omega"), { condition = in_mathzone }),
+    s({ trig = ";O", snippetType = "autosnippet", wordTrig = false }, t("\\Omega"), { condition = in_mathzone }),
+    s({ trig = ";x", snippetType = "autosnippet", wordTrig = false }, t("\\xi"), { condition = in_mathzone }),
+    s({ trig = ";e", snippetType = "autosnippet", wordTrig = false }, t("\\epsilon"), { condition = in_mathzone }),
+    s({ trig = ";m", snippetType = "autosnippet", wordTrig = false }, t("\\mu"), { condition = in_mathzone }),
 
     -- ==========================================================
     -- colors
     -- ==========================================================
-    s({ trig = "gathered", snippetType = "snippet" },
+    s(
+        { trig = "gathered", snippetType = "snippet" },
         fmta(
-        [[
+            [[
         \begin{gathered}
         <>
         \end{gathered}
@@ -294,7 +320,8 @@ return {
             { i(1) }
         )
     ),
-    s({ trig = "._", snippetType = "snippet" },
+    s(
+        { trig = "._", snippetType = "snippet" },
         fmta(
             [[
             \underbrace{<>}_{<>}
@@ -303,4 +330,3 @@ return {
         )
     ),
 }
-

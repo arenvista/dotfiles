@@ -107,9 +107,7 @@ return {
         { trig = "item", snippetType = "autosnippet" },
         fmta(
             [[
-      \begin{itemize}
           \item <>
-      \end{itemize}
     ]],
             { i(0) }
         )

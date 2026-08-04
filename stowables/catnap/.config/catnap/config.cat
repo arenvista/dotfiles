@@ -44,8 +44,8 @@ $stats = [
     ; -- @{id="separator"}
 
     ; -- system ----------------------------------------------------------------
-    ; -- @{id="distro"    icon=''  name="distro"    color=$yellow}
-    ; -- @{id="kernel"    icon=''  name="kernel"    color=$magenta}
+    @{id="distro"    icon=''  name="distro"    color=$yellow}
+    @{id="kernel"    icon=''  name="kernel"    color=$magenta}
     ; -- @{id="packages"  icon=''  name="packages"  color=$red}  ; slow on large installs
     ; -- @{id="separator"}
 

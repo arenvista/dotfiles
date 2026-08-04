@@ -23,7 +23,8 @@ return {
                 -- your snippets' \dm/\il triggers). If a file has no LaTeX in it,
                 -- latexindent is a no-op pass-through, so this is safe either way —
                 -- but if you ever hit odd markdown reformatting, this is why.
-                markdown = { "latexindent", "prettier" },
+                -- markdown = { "latexindent", "prettier" },
+                markdown = { "prettier" },
             },
 
             -- Format on save, but don't block typing and don't blow up if a
