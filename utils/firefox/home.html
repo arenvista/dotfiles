@@ -694,7 +694,7 @@
     }
 
     function taskRow(item, now, today) {
-        const rail = RAILS[(item.color ?? 0) % RAILS.length];
+        const rail = item.railColor || RAILS[(item.color ?? 0) % RAILS.length];
         const start = item.date ? ymd(item.date, item.time) : null;
         const end = item.endTime ? ymd(item.date, item.endTime) : null;
         const live = start && item.time && end && start <= now && end > now;

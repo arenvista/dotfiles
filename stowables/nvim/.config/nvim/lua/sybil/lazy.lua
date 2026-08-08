@@ -22,14 +22,13 @@ require("lazy").setup({
     { import = "sybil.plugins.integrations" },
     { import = "sybil.plugins.viewers" },
 }, {
-        checker = {
-            enabled = true,
-            notify = false,
-        },
-        change_detection = {
-            notify = false,
-        },
-    })
+    checker = {
+        enabled = true,
+        notify = false,
+    },
+    change_detection = {
+        notify = false,
+    },
+})
 vim.opt.laststatus = 1
 vim.cmd.colorscheme("catppuccin-frappe")
-

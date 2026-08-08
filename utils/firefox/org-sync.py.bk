@@ -229,20 +229,9 @@ def parse_heading(raw: str, today: date):
     }
 
 
-def clean_color(value: str) -> str | None:
-    """A #+COLOR / :COLOR: value, or None if it isn't a usable colour.
-
-    Dropping a typo (``#GGG``, a stray ``}``) here means the task quietly
-    falls back to its palette rail instead of emitting broken CSS.
-    """
-    value = value.strip()
-    return value if COLOR_VALUE_RE.match(value) else None
-
-
 def parse_file(text: str, category: str, color: int, today: date) -> list[dict]:
     file_tags: list[str] = []
     file_category = category
-    file_color: str | None = None
 
     items: list[dict] = []
     stack: list[dict] = []  # ancestors, for tag inheritance + breadcrumbs
@@ -255,12 +244,6 @@ def parse_file(text: str, category: str, color: int, today: date) -> list[dict]:
         if in_drawer:
             if DRAWER_END_RE.match(line):
                 in_drawer = False
-            elif current is not None:
-                prop = COLOR_PROP_RE.match(line)  # :COLOR: #ff0000 in :PROPERTIES:
-                if prop:
-                    override = clean_color(prop.group(1))
-                    if override:
-                        current["railColor"] = override
             continue
 
         low = line.lower()
@@ -269,9 +252,6 @@ def parse_file(text: str, category: str, color: int, today: date) -> list[dict]:
             continue
         if low.startswith("#+category:") and not category:
             file_category = line.split(":", 1)[1].strip()
-            continue
-        if low.startswith("#+color:"):
-            file_color = clean_color(line.split(":", 1)[1])
             continue
 
         head = parse_heading(line, today)
@@ -287,7 +267,6 @@ def parse_file(text: str, category: str, color: int, today: date) -> list[dict]:
             head["crumb"] = stack[-1]["title"] if stack else ""
             head["category"] = file_category
             head["color"] = color
-            head["railColor"] = file_color  # a per-heading :COLOR: may override
             head["archived"] = "ARCHIVE" in head["allTags"] or any(
                 p.get("archived") for p in stack
             )
@@ -383,8 +362,6 @@ def build(days: int) -> dict:
             "color": item["color"],
             "crumb": item["crumb"],
         }
-        if item.get("railColor"):
-            record["railColor"] = item["railColor"]
         if item.get("progress"):
             record["progress"] = item["progress"]
         if item.get("deadline"):

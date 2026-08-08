@@ -22,4 +22,3 @@ systemctl enable throttled
 # stress test
 sudo pacman -S --needed stress-ng
 stress-ng --cpu 0 --cpu-method matrixprod -t 5m
-

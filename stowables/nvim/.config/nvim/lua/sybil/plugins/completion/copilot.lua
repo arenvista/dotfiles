@@ -7,7 +7,7 @@ return {
             enabled = true,
             auto_trigger = true, -- show ghost text as you type, no keypress needed
             keymap = {
-                accept = "<M-s>", -- Alt-l accepts the whole suggestion
+                accept = "<M-l>", -- Alt-l accepts the whole suggestion
                 accept_word = false,
                 accept_line = false,
                 next = "<M-]>",

@@ -212,6 +212,24 @@ wk.add({
 -- ==========================================================
 wk.add({
     {
+        "<leader>gds",
+        "<cmd>Gvdiffsplit!<CR>",
+        desc = "Open Diff Split",
+        icon = "",
+    },
+    {
+        "<leader>gdh",
+        "<cmd>diffget //2<CR>",
+        desc = "Get Left Hunk",
+        icon = "",
+    },
+    {
+        "<leader>gdl",
+        "<cmd>diffget //3<CR>",
+        desc = "Get Right Hunk",
+        icon = "",
+    },
+    {
         "<leader>gb",
         function()
             Snacks.picker.git_branches()
@@ -219,7 +237,7 @@ wk.add({
         desc = "Git Branches",
         icon = " ",
     },
-    { "<leader>gf", vim.cmd.Git, desc = " Fugitive", mode = "n", icon = "󰊤 " },
+    { "<leader>gf", "<cmd>tab Git<cr>", desc = "Fugitive", icon = "󰊤" },
     {
         "<leader>gl",
         function()
@@ -253,7 +271,7 @@ wk.add({
         icon = " ",
     },
     {
-        "<leader>gd",
+        "<leader>gD",
         function()
             Snacks.picker.git_diff()
         end,
@@ -671,6 +689,13 @@ wk.add({
         end,
         desc = "Message History",
     },
+})
+
+-- ==========================================================
+-- TOGGLES (static)
+-- ==========================================================
+wk.add({
+    { "<leader>oC", "<cmd>OrgBlocksToggle<cr>", desc = "Org calendar" },
 })
 
 -- ==========================================================
