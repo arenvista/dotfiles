@@ -52,4 +52,5 @@ fi
 # 5. STARTUP SCRIPTS
 # =============================================================================
 # Placed last so it doesn't block the shell from initializing quickly
+catnap
 eval "$(starship init zsh)"

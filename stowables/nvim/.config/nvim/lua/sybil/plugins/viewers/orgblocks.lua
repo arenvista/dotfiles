@@ -8,6 +8,8 @@ return {
             -- files = { "/home/sybil/Documents/Projects/orgblocks/orgblocks.nvim/examples/sample.org" },
             files = {
                 "~/orgfiles/refile.org",
+                "~/orgfiles/commute.org",
+                "~/orgfiles/buffers.org",
                 "~/orgfiles/work.org",
                 "~/orgfiles/school.org",
             },

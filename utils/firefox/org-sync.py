@@ -37,6 +37,8 @@ FILES = [
     {"path": "/home/sybil/orgfiles/refile.org", "category": "main"},
     {"path": "/home/sybil/orgfiles/school.org", "category": "school"},
     {"path": "/home/sybil/orgfiles/work.org", "category": "work"},
+    {"path": "/home/sybil/orgfiles/buffers.org", "category": "buffer"},
+    {"path": "/home/sybil/orgfiles/commute.org", "category": "commute"},
 ]
 
 HORIZON_DAYS = 14  # how far ahead dated items are shown
@@ -67,7 +69,9 @@ LINK_RE = re.compile(r"\[\[([^\]]+?)\](?:\[([^\]]+?)\])?\]")
 DRAWER_OPEN_RE = re.compile(r"^\s*:(?!END:)[\w-]+:\s*$")
 COLOR_PROP_RE = re.compile(r"^\s*:COLOR:\s*(.+?)\s*$", re.I)
 # an explicit rail colour: #rgb / #rgba / #rrggbb / #rrggbbaa, or a CSS name.
-COLOR_VALUE_RE = re.compile(r"^(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|[a-zA-Z]+)$")
+COLOR_VALUE_RE = re.compile(
+    r"^(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|[a-zA-Z]+)$"
+)
 DRAWER_END_RE = re.compile(r"^\s*:END:\s*$", re.I)
 PLANNING_RE = re.compile(r"\b(SCHEDULED|DEADLINE|CLOSED):\s*")
 
