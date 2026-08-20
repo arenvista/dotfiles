@@ -16,3 +16,4 @@ stowables/zathura/.config/zathura/zathurarc
 .venv
 # quickshell runtime state now lives in ~/.local/state/quickshell
 stowables/quickshell/.config/quickshell/app_usage.json
+stowables/nvim/.config/nvim/node_modules/

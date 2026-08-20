@@ -147,8 +147,8 @@ end
 
 -- DEFAULT PROGRAMS -----------------------------------------------------------
 
-local terminal = "ghostty"
-local fileManager = "ghostty -e yazi"
+local terminal = "kitty"
+local fileManager = "kitty -e yazi"
 -- Fixed quoting: the wallpaper path is now interpolated once, cleanly, and ~
 -- is expanded in Lua rather than hoping the shell/rofi does it inside quotes.
 local menu = "rofi -show drun -theme-str \"dummywall{background-image:url('"
@@ -164,7 +164,7 @@ hl.bind(
     { description = "Maximize App Window" }
 )
 
-hl.bind(mainMod .. " + q", hl.dsp.exec_cmd(terminal .. " +new-window"))
+hl.bind(mainMod .. " + q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.window.close())
